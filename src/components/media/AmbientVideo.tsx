@@ -1,0 +1,135 @@
+"use client";
+
+import Image from "next/image";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+const DESKTOP_QUERY = "(min-width: 1024px)";
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function useMedia(query: string) {
+  return useSyncExternalStore(
+    (callback) => {
+      const media = window.matchMedia(query);
+      media.addEventListener("change", callback);
+      return () => media.removeEventListener("change", callback);
+    },
+    () => window.matchMedia(query).matches,
+    () => false,
+  );
+}
+
+export function AmbientVideo({
+  src,
+  poster,
+  alt,
+  priority = false,
+  eager = false,
+  loadPolicy,
+  playbackMode = "loop",
+  scrubId,
+  active = true,
+  className = "",
+  mediaClassName = "",
+  sizes = "100vw",
+}: {
+  src?: string | null;
+  poster: string;
+  alt: string;
+  priority?: boolean;
+  eager?: boolean;
+  loadPolicy?: "eager" | "viewport";
+  playbackMode?: "loop" | "once" | "scrub";
+  scrubId?: string;
+  active?: boolean;
+  className?: string;
+  mediaClassName?: string;
+  sizes?: string;
+}) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const isDesktop = useMedia(DESKTOP_QUERY);
+  const reducedMotion = useMedia(REDUCED_MOTION_QUERY);
+  const eagerLoad = loadPolicy ? loadPolicy === "eager" : eager;
+  const [inRange, setInRange] = useState(eagerLoad);
+  const [visible, setVisible] = useState(eagerLoad);
+  const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    if (eagerLoad || inRange) return;
+    const node = rootRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setInRange(true);
+        observer.disconnect();
+      },
+      { rootMargin: "320px 0px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [eagerLoad, inRange]);
+
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.05 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (playbackMode === "scrub") {
+      video.pause();
+      return;
+    }
+    if (active && visible && !reducedMotion) {
+      void video.play().catch(() => undefined);
+    } else {
+      video.pause();
+    }
+  }, [active, playbackMode, reducedMotion, visible, ready]);
+
+  const shouldLoadVideo = Boolean(src) && isDesktop && !reducedMotion && inRange && !failed;
+
+  return (
+    <div ref={rootRef} className={`overflow-hidden ${className}`}>
+      <Image
+        src={poster}
+        alt={alt}
+        fill
+        loading={priority ? "eager" : undefined}
+        fetchPriority={priority ? "high" : undefined}
+        sizes={sizes}
+        className={`object-cover ${mediaClassName}`}
+      />
+      {shouldLoadVideo ? (
+        <video
+          ref={videoRef}
+          data-scroll-video={scrubId}
+          aria-hidden="true"
+          autoPlay={playbackMode !== "scrub" && active && visible}
+          loop={playbackMode === "loop"}
+          muted
+          playsInline
+          preload={playbackMode === "scrub" ? "auto" : "metadata"}
+          poster={poster}
+          onLoadedMetadata={(event) => {
+            if (playbackMode === "scrub") event.currentTarget.currentTime = 0.001;
+          }}
+          onCanPlay={() => setReady(true)}
+          onError={() => setFailed(true)}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${mediaClassName} ${ready ? "opacity-100" : "opacity-0"}`}
+        >
+          <source src={src ?? undefined} type="video/mp4" />
+        </video>
+      ) : null}
+    </div>
+  );
+}

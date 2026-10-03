@@ -1,0 +1,15 @@
+export const visualTokens = {
+  background: "#f6f7f5",
+  backgroundDeep: "#e2e5e3",
+  surface: "#ffffff",
+  ink: "#0d1b2a",
+  brand: "#153e75",
+  brandDark: "#0c294f",
+  secondary: "#52606d",
+  silver: "#8f97a2",
+  accent: "#153e75",
+  signal: "#e66a21",
+  screenLine: "#8eb7df",
+  lightAmbient: "#d8e2ef",
+  lightCool: "#a8bed9",
+} as const;

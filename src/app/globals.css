@@ -1,26 +1,193 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "../styles/tokens.css";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-brand: var(--brand);
+  --color-accent: var(--accent);
+  --color-signal: var(--signal-ink);
+  --color-signal-bright: var(--signal);
+  --color-line: var(--line);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background-image:
+    linear-gradient(rgba(13, 27, 42, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13, 27, 42, 0.022) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, black, transparent 70%);
+}
+
+@keyframes hero-media-enter {
+  from { opacity: 0.82; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-media-enter {
+  animation: hero-media-enter 1100ms 280ms ease-out both;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.technical-rule {
+  border-top: 1px solid var(--line);
+}
+
+.lab-page-shell {
+  width: min(100%, 1440px);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+
+.lab-section {
+  padding-block: var(--section-space);
+  border-top: 1px solid var(--line);
+}
+
+.lab-kicker {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 1.3;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.media-window {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-media);
+  background: var(--surface-muted);
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  [data-home-panel],
+  [data-home-identity] {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+::view-transition-group(.lab-media-morph) {
+  animation-duration: 560ms;
+  animation-timing-function: cubic-bezier(.22, 1, .36, 1);
+}
+
+::view-transition-image-pair(.lab-media-morph) {
+  isolation: isolate;
+}
+
+::view-transition-old(.lab-media-morph),
+::view-transition-new(.lab-media-morph) {
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-signal-field {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    radial-gradient(circle at 78% 24%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 35%);
+  background-size: 38px 38px, 38px 38px, 100% 100%;
+}
+
+.project-signal-route {
+  fill: none;
+  stroke: var(--brand);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.project-signal-node {
+  fill: var(--accent);
+}
+
+.project-signal-node-active {
+  fill: var(--signal);
+}
+
+.coordinate-corner::before,
+.coordinate-corner::after {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  content: "";
+}
+
+.coordinate-corner::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--signal);
+  border-left: 1px solid var(--signal);
+}
+
+.coordinate-corner::after {
+  right: -1px;
+  bottom: -1px;
+  border-right: 1px solid var(--signal);
+  border-bottom: 1px solid var(--signal);
+}
+
+::selection {
+  background: var(--brand);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.15s !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 150ms !important;
+    animation-name: none !important;
+  }
+
+  .home-desktop-experience {
+    display: none !important;
+  }
+
+  .home-natural-experience {
+    display: block !important;
+  }
 }

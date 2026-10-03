@@ -1,0 +1,136 @@
+import type { GeneratedAtmosphereAsset } from "./types";
+
+export const projectAtmosphere: Record<string, GeneratedAtmosphereAsset> = {
+  "physical-link": {
+    id: "atmosphere-physical-link-interface-01",
+    src: "/images/physical-link-concept-atmosphere-01.webp",
+    kind: "image",
+    alt: "Conceptual rendering of an unbranded physical AI interface module on a bright engineering bench",
+    width: 1440,
+    height: 960,
+    aspectRatio: "3/2",
+    provenance: "generated-atmosphere",
+    status: "ready",
+  },
+  "ai-native-hardware-workspace": {
+    id: "atmosphere-ai-native-hardware-workspace-01",
+    src: "/images/ai-native-hardware-workspace-concept-atmosphere-01.webp",
+    kind: "image",
+    alt: "Conceptual rendering of a bright hardware workspace connecting abstract software signals to generic electronics",
+    width: 1440,
+    height: 960,
+    aspectRatio: "3/2",
+    provenance: "generated-atmosphere",
+    status: "ready",
+  },
+  "bci-dexterous-hand": {
+    id: "atmosphere-bci-dexterous-hand-01",
+    src: "/images/bci-dexterous-hand-concept-atmosphere-01.webp",
+    kind: "image",
+    alt: "Conceptual rendering of an abstract biosignal path connected to a generic dexterous robotic hand",
+    width: 1440,
+    height: 960,
+    aspectRatio: "3/2",
+    provenance: "generated-atmosphere",
+    status: "ready",
+  },
+};
+
+export const originAtmosphere = {
+  digitalIntelligence: {
+    id: "atmosphere-origin-digital-intelligence-01",
+    src: "/images/origin-digital-intelligence-atmosphere-01.webp",
+    kind: "image",
+    alt: "Conceptual rendering of an orange signal moving through abstract computation layers into PCB traces",
+    width: 1440,
+    height: 960,
+    aspectRatio: "3/2",
+    provenance: "generated-atmosphere",
+    status: "ready",
+  },
+  hardwareRobotics: {
+    id: "atmosphere-origin-hardware-robotics-01",
+    src: "/images/origin-hardware-robotics-atmosphere-01.webp",
+    kind: "image",
+    alt: "Conceptual rendering of a generic embedded controller connected to a precision robotic actuator",
+    width: 1440,
+    height: 960,
+    aspectRatio: "3/2",
+    provenance: "generated-atmosphere",
+    status: "ready",
+  },
+} satisfies Record<string, GeneratedAtmosphereAsset>;
+
+export const visionAtmosphere = {
+  system: {
+    id: "atmosphere-vision-physical-systems-02",
+    src: "/images/vision-physical-systems-atmosphere-02.webp",
+    kind: "image",
+    alt: "Conceptual panoramic rendering of a connected robotic arm, dexterous hand rig, electronics, and workstation",
+    width: 1792,
+    height: 768,
+    aspectRatio: "21/9",
+    provenance: "generated-atmosphere",
+    status: "ready",
+  },
+  signalToHand: {
+    id: "atmosphere-vision-signal-to-hand-01",
+    src: "/images/vision-physical-ai-atmosphere-01.webp",
+    kind: "image",
+    alt: "Conceptual signal flow connecting a circuit board to a robotic hand",
+    width: 1792,
+    height: 768,
+    aspectRatio: "21/9",
+    provenance: "generated-atmosphere",
+    status: "ready",
+  },
+} satisfies Record<string, GeneratedAtmosphereAsset>;
+
+export const motionAtmosphere = {
+  homeLab: {
+    id: "atmosphere-home-lab-video-01",
+    src: "/video/home-lab-idle-video-01.mp4",
+    scrubSrc: "/video/home-lab-idle-video-scrub-01.mp4",
+    kind: "video",
+    alt: "Generated cinematic view of a bright private robotics laboratory",
+    width: 1280,
+    height: 720,
+    aspectRatio: "16/9",
+    poster: "/posters/home-lab-video-poster-01.webp",
+    provenance: "generated-atmosphere",
+    status: "ready",
+  },
+  physicalLink: {
+    id: "atmosphere-physical-link-video-01",
+    src: "/video/home-to-physical-link-video-01.mp4",
+    scrubSrc: "/video/home-to-physical-link-video-scrub-01.mp4",
+    kind: "video",
+    alt: "Generated cinematic close view of a conceptual physical interface on an engineering bench",
+    width: 1280,
+    height: 720,
+    aspectRatio: "16/9",
+    poster: "/posters/physical-link-video-poster-01.webp",
+    provenance: "generated-atmosphere",
+    status: "ready",
+  },
+  visionSignal: {
+    id: "atmosphere-vision-signal-video-01",
+    src: "/video/vision-signal-chain-video-01.mp4",
+    scrubSrc: "/video/vision-signal-chain-video-scrub-01.mp4",
+    kind: "video",
+    alt: "Generated macro sequence carrying an orange signal through circuitry into a robotic hand",
+    width: 1280,
+    height: 548,
+    aspectRatio: "21/9",
+    poster: "/posters/vision-signal-chain-video-poster-01.webp",
+    provenance: "generated-atmosphere",
+    status: "ready",
+  },
+} satisfies Record<string, GeneratedAtmosphereAsset>;
+
+export const generatedAtmosphereAssets: GeneratedAtmosphereAsset[] = [
+  ...Object.values(projectAtmosphere),
+  ...Object.values(originAtmosphere),
+  ...Object.values(visionAtmosphere),
+  ...Object.values(motionAtmosphere),
+];

@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/.playwright-mcp/
 
 # next.js
 /.next/
@@ -39,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local visual QA browser state
+/artifacts/
+
+# raw source video working files (rendered assets live in public/video/)
+/*.mp4
