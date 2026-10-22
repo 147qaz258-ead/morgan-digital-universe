@@ -19,7 +19,7 @@ const statusTone: Record<Project["status"], "signal" | "accent" | "neutral"> = {
 
 export function FeaturedProjectCard({ project }: { project: Project }) {
   const isPublished = project.publicationStatus === "published";
-  const verifiedHero = project.media.hero?.status === "verified" ? project.media.hero : null;
+  const projectHero = project.media.hero?.status !== "pending" ? project.media.hero : null;
   const atmosphere = projectAtmosphere[project.slug];
   return (
     <EvidenceComposition
@@ -33,11 +33,12 @@ export function FeaturedProjectCard({ project }: { project: Project }) {
           />
         </div>
       )}
-      media={verifiedHero ? (
+      media={projectHero ? (
           <MediaFrame
-            media={verifiedHero}
-            alt={`${project.shortTitle} hero evidence`}
+            media={projectHero}
+            alt={projectHero.alt}
             aspect="16/9"
+            fit={projectHero.height > projectHero.width ? "contain" : "cover"}
             transitionName={`project-media-${project.slug}`}
           />
         ) : atmosphere ? (
@@ -66,12 +67,25 @@ export function ArchiveProjectRow({ project }: { project: Project }) {
   return (
     <Link
       href={`/experiments/${project.slug}`}
-      className="group flex flex-col gap-2 border-b border-line py-6 transition-colors duration-200 hover:bg-surface/60 md:flex-row md:items-center md:gap-8 md:px-4"
+      className="group grid min-w-0 gap-5 border-b border-line py-6 transition-colors duration-200 hover:bg-surface/60 md:grid-cols-[140px_minmax(0,1fr)] md:items-center md:gap-6 md:px-4"
     >
-      <ProjectIndex value={project.index} className="md:w-20" />
-      <span className="text-[18px] font-semibold text-ink md:w-72">{project.shortTitle}</span>
-      <span className="flex-1 text-[15px] text-ink-secondary">{project.oneLine}</span>
-      <Meta className="text-ink-secondary">{project.dateRange ?? "Review"}</Meta>
+      {project.media.hero ? (
+        <MediaFrame
+          media={project.media.hero}
+          alt={project.media.hero.alt}
+          aspect="16/9"
+          fit={project.media.hero.height > project.media.hero.width ? "contain" : "cover"}
+          className="w-full"
+        />
+      ) : <span className="hidden md:block" />}
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-3">
+          <ProjectIndex value={project.index} />
+          <StatusPill label={project.status.replaceAll("-", " ")} tone={statusTone[project.status]} />
+        </div>
+        <span className="mt-3 block text-[18px] font-semibold text-ink">{project.shortTitle}</span>
+        <span className="mt-2 block max-w-2xl text-[14px] leading-relaxed text-ink-secondary">{project.oneLine}</span>
+      </div>
     </Link>
   );
 }

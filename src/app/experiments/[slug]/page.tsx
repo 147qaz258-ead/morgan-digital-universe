@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, MoveRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, MoveRight } from "lucide-react";
 import { projects, getProject, getAdjacentProjects } from "@/content/projects";
 import { pageCopy } from "@/content/pages";
 import { PageContainer, Section } from "@/components/layout/PageContainer";
@@ -67,7 +67,7 @@ export default async function ProjectDetailPage({ params }: PageProps<"/experime
   const isPublished = project.publicationStatus === "published";
   const verifiedEvidence = project.evidence.filter(isVerifiedEvidence);
   const pendingEvidence = project.evidence.filter((item) => !isVerifiedEvidence(item));
-  const verifiedHero = project.media.hero?.status === "verified" ? project.media.hero : null;
+  const publishedHero = project.media.hero?.status !== "pending" ? project.media.hero : null;
   const atmosphere = projectAtmosphere[project.slug];
   const detailAtmosphere = project.slug === "physical-link" ? motionAtmosphere.physicalLink : atmosphere;
   const pendingFields = [
@@ -86,13 +86,16 @@ export default async function ProjectDetailPage({ params }: PageProps<"/experime
     !project.next ? "Next step" : null,
   ].filter(Boolean) as string[];
 
-  const metadataRows = isPublished
+  const metadataRows: [string, string][] = isPublished
     ? [
-        ["Date", project.dateRange ?? "—"],
-        ["Role", project.myRole ?? "—"],
-        ["Team", project.teamSize ?? "—"],
-        ["Stack", project.stack.length > 0 ? project.stack.join(" / ") : "—"],
-      ]
+        ["Status", statusLabel(project.status)],
+        ["Category", project.category],
+        project.year ? ["Year", String(project.year)] : null,
+        project.dateRange ? ["Date", project.dateRange] : null,
+        project.myRole ? ["Role", project.myRole] : null,
+        project.teamSize ? ["Team", project.teamSize] : null,
+        project.stack.length > 0 ? ["Stack", project.stack.join(" / ")] : null,
+      ].filter((item): item is [string, string] => Boolean(item))
     : [
         ["Record", "Publication review"],
         ["Evidence", `${verifiedEvidence.length} verified`],
@@ -139,8 +142,16 @@ export default async function ProjectDetailPage({ params }: PageProps<"/experime
           </dl>
         </div>
         <div className="mt-12">
-          {verifiedHero ? (
-            <MediaFrame media={verifiedHero} alt={`${project.shortTitle} hero evidence`} aspect="21/9" large preload transitionName={`project-media-${project.slug}`} />
+          {publishedHero ? (
+            <MediaFrame
+              media={publishedHero}
+              alt={publishedHero.alt}
+              aspect="16/9"
+              fit={publishedHero.height > publishedHero.width ? "contain" : "cover"}
+              large
+              preload
+              transitionName={`project-media-${project.slug}`}
+            />
           ) : detailAtmosphere ? (
             <AtmosphereFrame media={detailAtmosphere} aspect="16/9" large preload transitionName={`project-media-${project.slug}`} />
           ) : (
@@ -212,7 +223,12 @@ export default async function ProjectDetailPage({ params }: PageProps<"/experime
           {project.media.gallery.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {project.media.gallery.map((media, index) => (
-                <MediaFrame key={media.id} media={media} alt={`${project.shortTitle} build ${index + 1}`} aspect="4/3" />
+                <MediaFrame
+                  key={media.id}
+                  media={media}
+                  alt={media.alt || `${project.shortTitle} project media ${index + 1}`}
+                  aspect={media.height > media.width ? "4/3" : media.aspectRatio}
+                />
               ))}
             </div>
           ) : null}
@@ -280,6 +296,15 @@ export default async function ProjectDetailPage({ params }: PageProps<"/experime
 
       <SectionBlock id="related" no="10" title="Related / Next">
         {isPublished && project.next ? <BodyLarge className="mb-10 max-w-3xl text-ink">{project.next}</BodyLarge> : null}
+        {project.links.length > 0 ? (
+          <div className="mb-8 flex flex-wrap gap-x-8 gap-y-4">
+            {project.links.map((item) => (
+              <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center gap-2 border-b border-line font-mono text-[11px] uppercase tracking-[0.1em] text-accent hover:border-accent">
+                {item.label} <ArrowUpRight size={14} aria-hidden />
+              </a>
+            ))}
+          </div>
+        ) : null}
         <div className="grid gap-6 border-y border-line py-7 md:grid-cols-3 md:items-center">
           {prev ? (
             <Link href={`/experiments/${prev.slug}`} className="inline-flex items-center gap-3 text-ink-secondary transition-colors hover:text-ink">

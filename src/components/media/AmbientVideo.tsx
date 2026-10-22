@@ -25,6 +25,7 @@ export function AmbientVideo({
   priority = false,
   eager = false,
   loadPolicy,
+  loadWhen = false,
   playbackMode = "loop",
   scrubId,
   active = true,
@@ -37,7 +38,8 @@ export function AmbientVideo({
   alt: string;
   priority?: boolean;
   eager?: boolean;
-  loadPolicy?: "eager" | "viewport";
+  loadPolicy?: "eager" | "viewport" | "controlled";
+  loadWhen?: boolean;
   playbackMode?: "loop" | "once" | "scrub";
   scrubId?: string;
   active?: boolean;
@@ -50,13 +52,14 @@ export function AmbientVideo({
   const isDesktop = useMedia(DESKTOP_QUERY);
   const reducedMotion = useMedia(REDUCED_MOTION_QUERY);
   const eagerLoad = loadPolicy ? loadPolicy === "eager" : eager;
+  const viewportLoad = loadPolicy === "viewport" || (!loadPolicy && !eager);
   const [inRange, setInRange] = useState(eagerLoad);
   const [visible, setVisible] = useState(eagerLoad);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    if (eagerLoad || inRange) return;
+    if (!viewportLoad || eagerLoad || inRange) return;
     const node = rootRef.current;
     if (!node) return;
     const observer = new IntersectionObserver(
@@ -69,7 +72,7 @@ export function AmbientVideo({
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [eagerLoad, inRange]);
+  }, [eagerLoad, inRange, viewportLoad]);
 
   useEffect(() => {
     const node = rootRef.current;
@@ -96,7 +99,8 @@ export function AmbientVideo({
     }
   }, [active, playbackMode, reducedMotion, visible, ready]);
 
-  const shouldLoadVideo = Boolean(src) && isDesktop && !reducedMotion && inRange && !failed;
+  const controlledLoad = loadPolicy === "controlled" && loadWhen;
+  const shouldLoadVideo = Boolean(src) && isDesktop && !reducedMotion && (inRange || controlledLoad) && !failed;
 
   return (
     <div ref={rootRef} className={`overflow-hidden ${className}`}>
@@ -121,7 +125,9 @@ export function AmbientVideo({
           preload={playbackMode === "scrub" ? "auto" : "metadata"}
           poster={poster}
           onLoadedMetadata={(event) => {
-            if (playbackMode === "scrub") event.currentTarget.currentTime = 0.001;
+            if (playbackMode !== "scrub") return;
+            event.currentTarget.currentTime = 0.001;
+            event.currentTarget.dispatchEvent(new Event("lab:scrub-video-ready", { bubbles: true }));
           }}
           onCanPlay={() => setReady(true)}
           onError={() => setFailed(true)}

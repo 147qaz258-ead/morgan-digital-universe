@@ -10,9 +10,9 @@ const sharedOgImage = "/images/site-og-cover-01.webp";
 export const routeMetadata = {
   home: {
     route: "/",
-    title: "MORGAN DIGITAL UNIVERSE — Building AI Systems That Enter the Physical World",
+    title: "MORGAN / DIGITAL LAB — Projects in AI, Hardware, and the Physical World",
     description:
-      "Morgan's portfolio across AI, robotics, hardware, and physical AI — systems that move intelligence into the physical world.",
+      "A personal project archive across AI, robotics, hardware, software, interactive media, and systems entering the physical world.",
     ogImage: sharedOgImage,
   },
   origin: {
@@ -25,7 +25,7 @@ export const routeMetadata = {
     route: "/experiments",
     title: "Experiments",
     description:
-      "Flagship experiments and project archive — PhysicalLink, AI-Native Hardware Workspace, and BCI × Dexterous Hand.",
+      "A complete project index across AI, hardware, robotics, HarmonyOS software, interactive games, and digital films, with links to public source repositories.",
     ogImage: sharedOgImage,
   },
   capabilities: {

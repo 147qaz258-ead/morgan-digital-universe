@@ -10,6 +10,7 @@ import { createPageMetadata } from "@/lib/metadata";
 import { EngineeringIndex } from "@/components/layout/Compositions";
 import { DocumentationStatus } from "@/components/ui/DocumentationStatus";
 import { LabPageHeader } from "@/components/layout/LabInterface";
+import { MediaFrame } from "@/components/ui/MediaFrame";
 
 export const metadata: Metadata = createPageMetadata(routeMetadata.lab);
 
@@ -53,6 +54,9 @@ export default function LabPage() {
                   <div>
                     <p className="font-semibold text-ink">{item.title}</p>
                     <Body className="mt-2 text-[14px] text-ink-secondary">{item.summary}</Body>
+                    {item.media ? (
+                      <MediaFrame media={item.media} alt={item.media.alt} aspect="16/9" className="mt-5 max-w-2xl" />
+                    ) : null}
                     {item.relatedProject ? <Link className="mt-3 inline-block text-[12px] font-medium text-accent" href={`/experiments/${item.relatedProject}`}>Related experiment</Link> : null}
                   </div>
                   <Meta className="text-right text-ink-secondary">{item.status ?? "Open"}</Meta>

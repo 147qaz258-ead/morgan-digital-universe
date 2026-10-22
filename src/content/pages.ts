@@ -1,20 +1,20 @@
 export const pageCopy = {
   home: {
-    eyebrow: "MORGAN DIGITAL UNIVERSE",
+    eyebrow: "MORGAN / DIGITAL LAB",
     headline: "Building AI Systems That Enter the Physical World.",
     supporting: "Moving intelligence from screens into the physical world.",
     featuredLabel: "Flagship experiments",
     featuredTitle: "Systems that cross the boundary.",
     featuredBody:
-      "Three active experiments spanning AI interfaces, embedded hardware, and robotic action.",
+      "Selected systems spanning AI interfaces, embedded hardware, robotics, software, interactive worlds, and digital media.",
     originLabel: "System trajectory",
     originTitle: "Digital systems, intelligence, hardware, physical action.",
     evidenceLabel: "Evidence status",
-    evidenceTitle: "Real work will appear as it is verified.",
+    evidenceTitle: "Real work, shown in its working context.",
     evidencePending:
-      "Project documentation is being prepared. Generated atmosphere is never used as evidence.",
+      "Project photographs, software screens, physical prototypes, and concept films are kept distinct and shown with their context.",
     publicationPending:
-      "Project records remain in publication review. Detailed claims and source files stay private until ownership, redaction, and permission are confirmed.",
+      "This record is being expanded with additional project context.",
     focusLabel: "Current focus",
     focusTitle: "Active lines of work",
   },
@@ -22,8 +22,8 @@ export const pageCopy = {
     eyebrow: "Experiments",
     title: "Proof, not promises.",
     intro:
-      "Each experiment separates current state, verified evidence, limitations, and next steps.",
-    archivePending: "More experiments will enter the archive after their evidence is documented.",
+      "A complete working archive across hardware, AI, robotics, software, games, and digital media.",
+    archivePending: "Project records appear here with the media and source material available for each one.",
   },
   origin: {
     eyebrow: "Origin",
@@ -43,7 +43,7 @@ export const pageCopy = {
     title: "The working process.",
     intro: "Failures, prototypes, equipment, and notes — documented only when the records are real.",
     empty:
-      "The lab index is ready. Entries will appear after dates, context, and supporting media are verified.",
+      "The lab index will collect working notes and field material as they are added.",
   },
   vision: {
     eyebrow: "Vision",

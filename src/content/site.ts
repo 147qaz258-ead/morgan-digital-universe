@@ -1,5 +1,5 @@
 export const site = {
-  brandName: "MORGAN DIGITAL UNIVERSE",
+  brandName: "MORGAN / DIGITAL LAB",
   mission: "Building AI systems that enter the physical world.",
   contactCta: "Build something real.",
   contactBody: "AI × Robotics × Hardware. Contact details will appear after they are confirmed for publication.",

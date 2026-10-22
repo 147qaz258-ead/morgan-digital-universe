@@ -2,7 +2,7 @@ import type { Profile } from "./types";
 
 export const profile: Profile = {
   displayName: "Morgan",
-  brandName: "MORGAN DIGITAL UNIVERSE",
+  brandName: "MORGAN / DIGITAL LAB",
   headline: "Building AI Systems That Enter the Physical World.",
   subheadline: "Moving intelligence from screens into the physical world.",
   location: null,

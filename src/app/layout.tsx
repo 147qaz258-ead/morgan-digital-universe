@@ -13,12 +13,12 @@ export const metadata: Metadata = {
   metadataBase: siteUrl ? new URL(siteUrl) : undefined,
   title: {
     default: routeMetadata.home.title,
-    template: "%s — MORGAN DIGITAL UNIVERSE",
+    template: "%s — MORGAN / DIGITAL LAB",
   },
   description: routeMetadata.home.description,
   alternates: siteUrl ? { canonical: "/" } : undefined,
   openGraph: {
-    title: "MORGAN DIGITAL UNIVERSE",
+    title: "MORGAN / DIGITAL LAB",
     description: profile.headline,
     type: "website",
     url: siteUrl ?? undefined,

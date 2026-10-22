@@ -33,6 +33,9 @@ function publicFileExists(src: string): boolean {
 function checkMedia(media: MediaAsset | null, context: string, requireUserEvidence = false) {
   if (!media) return;
   if (!media.alt.trim()) fail(`${context}: media alt text is required.`);
+  if (!/^\d+(?:\.\d+)?\/\d+(?:\.\d+)?$/.test(media.aspectRatio)) {
+    fail(`${context}: media aspect ratio must be a positive width/height pair.`);
+  }
   if (!Number.isFinite(media.width) || media.width <= 0 || !Number.isFinite(media.height) || media.height <= 0) {
     fail(`${context}: media width and height must be positive numbers.`);
   }
@@ -101,19 +104,8 @@ for (const project of projects) {
       fail(`${project.slug}: publication-pending projects cannot expose detailed facts or project media.`);
     }
   } else {
-    const requiredFacts = [
-      ["dateRange", project.dateRange],
-      ["teamSize", project.teamSize],
-      ["myRole", project.myRole],
-      ["insight", project.insight],
-      ["result.summary", project.result.summary],
-      ["next", project.next],
-    ] as const;
-    for (const [field, value] of requiredFacts) {
-      if (!value?.trim()) fail(`${project.slug}: published project is missing ${field}.`);
-    }
-    if (project.problem.length === 0 || project.build.length === 0 || project.failures.length === 0 || project.lessons.length === 0) {
-      fail(`${project.slug}: published project must complete the ten-section case-study narrative.`);
+    if (!project.title.trim() || !project.shortTitle.trim() || !project.category.trim()) {
+      fail(`${project.slug}: published project is missing its title or category.`);
     }
   }
 

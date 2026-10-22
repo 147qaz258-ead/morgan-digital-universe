@@ -1,7 +1,18 @@
 import type { LabItem } from "./types";
+import { projectMedia } from "./project-media";
 
-// Lab 只记录真实工作过程。暂无已确认条目的分区保持为空，UI 显示低调的待记录状态。
-export const labItems: LabItem[] = [];
+export const labItems: LabItem[] = [
+  {
+    id: "itec-2026-field-note",
+    title: "ITEC 2026 / event environment",
+    date: "2026",
+    category: "note",
+    summary: "A field image of the ITEC 2026 event display, kept as event context rather than a project result claim.",
+    status: "Field note",
+    media: projectMedia.itecFieldNote[0],
+    relatedProject: null,
+  },
+];
 
 export function labByCategory(category: LabItem["category"]): LabItem[] {
   return labItems.filter((item) => item.category === category);

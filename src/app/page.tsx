@@ -10,13 +10,6 @@ const focusTone = { ACTIVE: "accent", BUILDING: "signal", EXPLORING: "neutral" }
 export default function HomePage() {
   return (
     <>
-      <link
-        rel="preload"
-        as="image"
-        href="/posters/home-lab-video-poster-01.webp"
-        media="(max-width: 1023px)"
-        fetchPriority="high"
-      />
       <HomeScrollDirector />
 
       <div id="now" className="lab-page-shell bg-bg">
@@ -36,9 +29,9 @@ export default function HomePage() {
               </div>
             ))}
             <div className="flex items-center justify-between gap-5 border-b border-line py-7">
-              <p className="max-w-md text-[14px] leading-relaxed text-ink-secondary">Project facts and real evidence are published only after verification.</p>
-              <Link href="/lab" className="inline-flex min-h-11 shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ink hover:text-signal">
-                Open lab index <ArrowUpRight size={14} aria-hidden />
+              <p className="max-w-md text-[14px] leading-relaxed text-ink-secondary">The complete archive spans hardware, AI, robotics, software, games, and digital media.</p>
+              <Link href="/experiments" className="inline-flex min-h-11 shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ink hover:text-signal">
+                Open full project index <ArrowUpRight size={14} aria-hidden />
               </Link>
             </div>
           </div>

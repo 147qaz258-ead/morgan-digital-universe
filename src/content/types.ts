@@ -34,7 +34,8 @@ export interface MediaAsset {
   alt: string;
   width: number;
   height: number;
-  aspectRatio: "16/9" | "4/3" | "3/2" | "1/1" | "3/4" | "21/9";
+  aspectRatio: string;
+  caption?: string | null;
   poster?: string | null;
   captions?: string | null;
   provenance: AssetProvenance;

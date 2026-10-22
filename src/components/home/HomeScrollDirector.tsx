@@ -17,10 +17,13 @@ const chapterByProgress = (progress: number) =>
   homeExperienceChapters.find((chapter) => progress >= chapter.range[0] && progress < chapter.range[1])
   ?? homeExperienceChapters[homeExperienceChapters.length - 1];
 
+// Begin fetching each scrub clip about one viewport before its scene starts.
+const VIDEO_PREFETCH_PROGRESS = { physical: 0.08, signal: 0.48 } as const;
+
 function ConceptMark() {
   return (
     <span className="absolute bottom-4 left-4 z-20 bg-bg/92 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-ink-secondary">
-      Concept atmosphere <span className="ml-2 text-signal">Generated / not evidence</span>
+      Concept film <span className="ml-2 text-signal">Atmosphere / not project footage</span>
     </span>
   );
 }
@@ -28,7 +31,15 @@ function ConceptMark() {
 export function HomeScrollDirector() {
   const rootRef = useRef<HTMLElement>(null);
   const lastChapter = useRef("entry");
+  const requestedVideos = useRef({ physical: false, signal: false });
   const [activeChapter, setActiveChapter] = useState("entry");
+  const [loadPhysicalVideo, setLoadPhysicalVideo] = useState(false);
+  const [loadSignalVideo, setLoadSignalVideo] = useState(false);
+  const workspaceMedia = featuredProjects.find((project) => project.slug === "ai-native-hardware-workspace")?.media.hero;
+  const bciMedia = featuredProjects.find((project) => project.slug === "bci-dexterous-hand")?.media.hero;
+  const mediaContextLabel = activeChapter === "ai-native-hardware-workspace" || activeChapter === "bci-dexterous-hand"
+    ? "Project photo / interface capture"
+    : "Concept film / scroll-steered atmosphere";
 
   useEffect(() => {
     const root = rootRef.current;
@@ -88,6 +99,10 @@ export function HomeScrollDirector() {
         seek(scrubVideos.physical, clamp((progress - 0.24) / 0.18));
         seek(scrubVideos.signal, clamp((progress - 0.64) / 0.18));
       };
+      const handleScrubVideoReady = () => {
+        if (!frameRequest) frameRequest = window.requestAnimationFrame(applyScrub);
+      };
+      root.addEventListener("lab:scrub-video-ready", handleScrubVideoReady);
 
       const timeline = gsap.timeline({
         defaults: { ease: "none" },
@@ -103,6 +118,14 @@ export function HomeScrollDirector() {
             const chapterProgress = clamp((progress - chapter.range[0]) / (chapter.range[1] - chapter.range[0]));
             root.style.setProperty("--scene-progress", String(chapterProgress));
             pendingProgress = progress;
+            if (progress >= VIDEO_PREFETCH_PROGRESS.physical && !requestedVideos.current.physical) {
+              requestedVideos.current.physical = true;
+              setLoadPhysicalVideo(true);
+            }
+            if (progress >= VIDEO_PREFETCH_PROGRESS.signal && !requestedVideos.current.signal) {
+              requestedVideos.current.signal = true;
+              setLoadSignalVideo(true);
+            }
             if (!frameRequest) frameRequest = window.requestAnimationFrame(applyScrub);
             if (chapter.id !== lastChapter.current) {
               lastChapter.current = chapter.id;
@@ -151,6 +174,7 @@ export function HomeScrollDirector() {
 
       revertTimeline = () => {
         if (frameRequest) window.cancelAnimationFrame(frameRequest);
+        root.removeEventListener("lab:scrub-video-ready", handleScrubVideoReady);
         timeline.scrollTrigger?.kill();
         timeline.kill();
         gsap.set([...panels, identity], { clearProps: "all" });
@@ -207,7 +231,8 @@ export function HomeScrollDirector() {
             src={motionAtmosphere.physicalLink.scrubSrc ?? motionAtmosphere.physicalLink.src}
             poster={motionAtmosphere.physicalLink.poster ?? ""}
             alt={motionAtmosphere.physicalLink.alt}
-            loadPolicy="eager"
+            loadPolicy="controlled"
+            loadWhen={loadPhysicalVideo}
             playbackMode="scrub"
             scrubId="physical-link"
             className="absolute inset-0"
@@ -215,8 +240,8 @@ export function HomeScrollDirector() {
         </div>
         <div data-home-scene="ai-native-hardware-workspace" className="invisible absolute inset-0 opacity-0 will-change-transform">
           <Image
-            src={projectAtmosphere["ai-native-hardware-workspace"].src ?? ""}
-            alt={projectAtmosphere["ai-native-hardware-workspace"].alt}
+            src={workspaceMedia?.src ?? projectAtmosphere["ai-native-hardware-workspace"].src ?? ""}
+            alt={workspaceMedia?.alt ?? projectAtmosphere["ai-native-hardware-workspace"].alt}
             fill
             sizes="100vw"
             className="object-cover"
@@ -224,8 +249,8 @@ export function HomeScrollDirector() {
         </div>
         <div data-home-scene="bci-dexterous-hand" className="invisible absolute inset-0 opacity-0 will-change-transform">
           <Image
-            src={projectAtmosphere["bci-dexterous-hand"].src ?? ""}
-            alt={projectAtmosphere["bci-dexterous-hand"].alt}
+            src={bciMedia?.src ?? projectAtmosphere["bci-dexterous-hand"].src ?? ""}
+            alt={bciMedia?.alt ?? projectAtmosphere["bci-dexterous-hand"].alt}
             fill
             sizes="100vw"
             className="object-cover"
@@ -236,7 +261,8 @@ export function HomeScrollDirector() {
             src={motionAtmosphere.visionSignal.scrubSrc ?? motionAtmosphere.visionSignal.src}
             poster={motionAtmosphere.visionSignal.poster ?? ""}
             alt={motionAtmosphere.visionSignal.alt}
-            loadPolicy="eager"
+            loadPolicy="controlled"
+            loadWhen={loadSignalVideo}
             playbackMode="scrub"
             scrubId="origin-evidence"
             className="absolute inset-0"
@@ -248,7 +274,7 @@ export function HomeScrollDirector() {
           Scroll controls film / pause anywhere
         </div>
         <div className="pointer-events-none absolute right-[var(--page-gutter)] top-24 z-30 font-mono text-[9px] uppercase tracking-[0.16em] text-white/58">
-          Generated atmosphere / not evidence
+          {mediaContextLabel}
         </div>
 
         <div data-home-entry className="absolute inset-x-0 bottom-0 z-10 mx-auto grid w-full max-w-[1440px] grid-cols-12 gap-6 px-[var(--page-gutter)] pb-12 text-white">
@@ -293,7 +319,7 @@ export function HomeScrollDirector() {
                 <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-white/68">{project.oneLine}</p>
                 <div className="mt-7 grid grid-cols-[82px_1fr] border-y border-white/18 py-3 font-mono text-[9px] uppercase tracking-[0.14em] text-white/54">
                   <span>Media</span>
-                  <span>{movingScene ? "Film 02 / scroll-scrubbed" : "Concept still / camera drift"}</span>
+                  <span>{movingScene ? "Concept film 02 / scroll-steered" : project.media.hero ? "Project capture / still frame" : "Concept still / camera drift"}</span>
                 </div>
                 <Link
                   href={`/experiments/${project.slug}`}
@@ -330,7 +356,7 @@ export function HomeScrollDirector() {
             ))}
             <div className="grid grid-cols-[64px_1fr] gap-5 border-t border-white/24 px-5 py-5">
               <span className="lab-kicker text-signal-bright">DOC</span>
-              <span className="text-[13px] leading-relaxed text-white/62">Verified project evidence remains under publication review. No generated atmosphere is presented as proof.</span>
+              <span className="text-[13px] leading-relaxed text-white/62">The archive brings hardware, software, robotics, and digital experiments into one navigable collection.</span>
             </div>
           </div>
         </div>
@@ -366,14 +392,15 @@ export function HomeScrollDirector() {
           </div>
         </div>
         <div className="px-5 py-20 sm:px-8">
-          <p className="lab-kicker text-signal">Selected work / 03</p>
+          <p className="lab-kicker text-signal">Selected work / {String(featuredProjects.length).padStart(2, "0")}</p>
           {featuredProjects.map((project) => {
-            const media = project.slug === "physical-link" ? motionAtmosphere.physicalLink : projectAtmosphere[project.slug];
+            const media = project.media.hero ?? (project.slug === "physical-link" ? motionAtmosphere.physicalLink : projectAtmosphere[project.slug]);
+            const isConcept = media?.provenance === "generated-atmosphere";
             return (
               <article key={project.slug} className="border-t border-line py-10 first:mt-6">
                 <MediaWindow className="aspect-[4/3]">
-                  {media?.poster || media?.src ? <Image src={media.poster ?? media.src ?? ""} alt={media.alt} fill sizes="100vw" className="object-cover" /> : null}
-                  <ConceptMark />
+                  {media?.poster || media?.src ? <Image src={media.poster ?? media.src ?? ""} alt={media.alt} fill sizes="100vw" className={media.height > media.width ? "object-contain" : "object-cover"} /> : null}
+                  {isConcept ? <ConceptMark /> : null}
                 </MediaWindow>
                 <p className="lab-kicker mt-5 text-signal">EXP.{project.index} / {project.category}</p>
                 <h2 className="mt-3 text-[30px] font-semibold leading-tight tracking-[-0.035em] text-ink">{project.shortTitle}</h2>
@@ -387,7 +414,7 @@ export function HomeScrollDirector() {
           <div className="border-y border-line py-8">
             <p className="lab-kicker text-signal">Origin / documentation</p>
             <p className="mt-4 text-[24px] font-semibold tracking-[-0.03em] text-ink">Digital → Intelligence → Hardware → Physical AI</p>
-            <p className="mt-4 text-[14px] leading-relaxed text-ink-secondary">Verified project documentation remains under publication review.</p>
+            <p className="mt-4 text-[14px] leading-relaxed text-ink-secondary">Ten project records are open in the full index, with the public code archive linked below them.</p>
           </div>
         </div>
       </div>

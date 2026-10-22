@@ -5,7 +5,7 @@ import { Meta } from "./typography";
 import { PendingAsset } from "./PendingAsset";
 import { LazyVideo } from "./LazyVideo";
 
-type Aspect = "16/9" | "4/3" | "3/2" | "1/1" | "3/4" | "21/9";
+type Aspect = string;
 
 export function MediaFrame({
   media,
@@ -14,6 +14,7 @@ export function MediaFrame({
   caption,
   preload = false,
   large = false,
+  fit,
   pendingLabel = "Evidence pending",
   className = "",
   transitionName,
@@ -25,12 +26,16 @@ export function MediaFrame({
   preload?: boolean;
   /** 重点媒体卡：24px 圆角 */
   large?: boolean;
+  fit?: "cover" | "contain";
   pendingLabel?: string;
   className?: string;
   transitionName?: string;
 }) {
   const radius = large ? "rounded-[24px]" : "rounded-[16px]";
   const resolvedAspect = aspect ?? media?.aspectRatio ?? "16/9";
+  const resolvedFit = fit ?? (media && media.height > media.width ? "contain" : "cover");
+  const fitClass = resolvedFit === "contain" ? "object-contain" : "object-cover";
+  const resolvedCaption = caption ?? media?.caption ?? null;
   const frame = (
     <figure className={className}>
       <div
@@ -43,7 +48,7 @@ export function MediaFrame({
               src={media.src}
               poster={media.poster ?? undefined}
               captions={media.captions}
-              className="absolute inset-0 h-full w-full object-cover"
+              className={`absolute inset-0 h-full w-full ${fitClass}`}
             />
           ) : (
             <Image
@@ -52,16 +57,16 @@ export function MediaFrame({
               fill
               preload={preload}
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 1280px"
-              className="object-cover"
+              className={fitClass}
             />
           )
         ) : (
           <PendingAsset className="absolute inset-0 border-0" label={pendingLabel} />
         )}
       </div>
-      {caption ? (
+      {resolvedCaption ? (
         <figcaption className="mt-3">
-          <Meta className="normal-case tracking-normal text-ink-secondary">{caption}</Meta>
+          <Meta className="normal-case tracking-normal text-ink-secondary">{resolvedCaption}</Meta>
         </figcaption>
       ) : null}
     </figure>
