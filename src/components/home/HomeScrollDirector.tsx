@@ -7,39 +7,47 @@ import { useEffect, useRef, useState } from "react";
 import { AmbientVideo } from "@/components/media/AmbientVideo";
 import { ProgressRail } from "@/components/layout/LabInterface";
 import { MediaWindow } from "@/components/ui/MediaWindow";
-import { homeExperienceChapters } from "@/content/home-experience";
+import { getHomeExperienceChapters } from "@/content/home-experience";
 import { motionAtmosphere, projectAtmosphere } from "@/content/atmosphere";
-import { originStages } from "@/content/origin";
-import { pageCopy } from "@/content/pages";
-import { featuredProjects } from "@/content/projects";
+import { getOriginStages } from "@/content/origin";
+import { getPageCopy } from "@/content/pages";
+import { getFeaturedProjects } from "@/content/projects";
+import { getDictionary } from "@/i18n/dictionary";
+import { localePath, type Locale } from "@/i18n/config";
+import type { HomeExperienceChapter } from "@/content/types";
 
-const chapterByProgress = (progress: number) =>
-  homeExperienceChapters.find((chapter) => progress >= chapter.range[0] && progress < chapter.range[1])
-  ?? homeExperienceChapters[homeExperienceChapters.length - 1];
+const chapterByProgress = (chapters: HomeExperienceChapter[], progress: number) =>
+  chapters.find((chapter) => progress >= chapter.range[0] && progress < chapter.range[1])
+  ?? chapters[chapters.length - 1];
 
 // Begin fetching each scrub clip about one viewport before its scene starts.
 const VIDEO_PREFETCH_PROGRESS = { physical: 0.08, signal: 0.48 } as const;
 
-function ConceptMark() {
+function ConceptMark({ label, note }: { label: string; note: string }) {
   return (
     <span className="absolute bottom-4 left-4 z-20 bg-bg/92 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-ink-secondary">
-      Concept film <span className="ml-2 text-signal">Atmosphere / not project footage</span>
+      {label} <span className="ml-2 text-signal">{note}</span>
     </span>
   );
 }
 
-export function HomeScrollDirector() {
+export function HomeScrollDirector({ locale }: { locale: Locale }) {
   const rootRef = useRef<HTMLElement>(null);
   const lastChapter = useRef("entry");
   const requestedVideos = useRef({ physical: false, signal: false });
   const [activeChapter, setActiveChapter] = useState("entry");
   const [loadPhysicalVideo, setLoadPhysicalVideo] = useState(false);
   const [loadSignalVideo, setLoadSignalVideo] = useState(false);
+  const pageCopy = getPageCopy(locale);
+  const chapters = getHomeExperienceChapters(locale);
+  const originStages = getOriginStages(locale);
+  const featuredProjects = getFeaturedProjects(locale);
+  const t = getDictionary(locale).home;
   const workspaceMedia = featuredProjects.find((project) => project.slug === "ai-native-hardware-workspace")?.media.hero;
   const bciMedia = featuredProjects.find((project) => project.slug === "bci-dexterous-hand")?.media.hero;
   const mediaContextLabel = activeChapter === "ai-native-hardware-workspace" || activeChapter === "bci-dexterous-hand"
-    ? "Project photo / interface capture"
-    : "Concept film / scroll-steered atmosphere";
+    ? t.mediaContextProject
+    : t.mediaContextFilm;
 
   useEffect(() => {
     const root = rootRef.current;
@@ -114,7 +122,7 @@ export function HomeScrollDirector() {
           invalidateOnRefresh: true,
           onUpdate: ({ progress }) => {
             root.style.setProperty("--home-progress", String(progress));
-            const chapter = chapterByProgress(progress);
+            const chapter = chapterByProgress(chapters, progress);
             const chapterProgress = clamp((progress - chapter.range[0]) / (chapter.range[1] - chapter.range[0]));
             root.style.setProperty("--scene-progress", String(chapterProgress));
             pendingProgress = progress;
@@ -203,12 +211,12 @@ export function HomeScrollDirector() {
       revertTimeline?.();
       root.style.removeProperty("--home-progress");
       root.style.removeProperty("--scene-progress");
-      window.dispatchEvent(new CustomEvent("lab:chapter", { detail: { label: "INDEX" } }));
+      window.dispatchEvent(new CustomEvent("lab:chapter", { detail: { label: getDictionary(locale).nav.idleChapter } }));
     };
-  }, []);
+  }, [chapters, locale]);
 
   return (
-    <section ref={rootRef} className="relative bg-ink lg:h-[640svh]" aria-label="Morgan Digital Lab introduction">
+    <section ref={rootRef} className="relative bg-ink lg:h-[640svh]" aria-label={t.sectionAria}>
       <noscript>
         <style>{`.home-desktop-experience{display:none!important}.home-natural-experience{display:block!important}`}</style>
       </noscript>
@@ -271,7 +279,7 @@ export function HomeScrollDirector() {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(246,247,245,.10)_0%,rgba(13,27,42,.03)_42%,rgba(13,27,42,.88)_100%)]" />
         <div className="pointer-events-none absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,.2)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.2)_1px,transparent_1px)] [background-size:8vw_8vw] [mask-image:linear-gradient(to_bottom,transparent_16%,black_58%,black)]" />
         <div className="pointer-events-none absolute left-[var(--page-gutter)] top-24 z-30 font-mono text-[9px] uppercase tracking-[0.16em] text-white/58">
-          Scroll controls film / pause anywhere
+          {t.scrollHint}
         </div>
         <div className="pointer-events-none absolute right-[var(--page-gutter)] top-24 z-30 font-mono text-[9px] uppercase tracking-[0.16em] text-white/58">
           {mediaContextLabel}
@@ -279,7 +287,7 @@ export function HomeScrollDirector() {
 
         <div data-home-entry className="absolute inset-x-0 bottom-0 z-10 mx-auto grid w-full max-w-[1440px] grid-cols-12 gap-6 px-[var(--page-gutter)] pb-12 text-white">
           <div className="col-span-8">
-            <p className="lab-kicker text-white/62">Morgan / Digital Lab / Index 2026</p>
+            <p className="lab-kicker text-white/62">{t.entryKicker}</p>
             <h1 className="mt-5 max-w-[850px] text-[clamp(64px,6.6vw,104px)] font-semibold leading-[0.88] tracking-[-0.06em]">
               {pageCopy.home.headline}
             </h1>
@@ -287,19 +295,19 @@ export function HomeScrollDirector() {
           </div>
           <div className="col-span-3 col-start-10 self-end">
             <div className="space-y-3 border-l border-white/30 pl-4 font-mono text-[10px] uppercase tracking-[0.14em] text-white/72">
-              <p>Focus / AI × Hardware</p>
-              <p>Status / Building</p>
-              <p>Index / 2026</p>
+              <p>{t.focusLine}</p>
+              <p>{t.statusLine}</p>
+              <p>{t.indexLine}</p>
             </div>
           </div>
-          <div className="col-span-12 mt-5 text-white/62"><ProgressRail /></div>
+          <div className="col-span-12 mt-5 text-white/62"><ProgressRail label={t.scrollLabel} /></div>
         </div>
 
         <div data-home-identity className="pointer-events-none absolute inset-x-0 top-[20%] z-10 mx-auto grid w-full max-w-[1440px] grid-cols-12 px-[var(--page-gutter)] text-white">
           <div className="col-span-5 col-start-2 border-l border-white/30 pl-6">
-            <p className="lab-kicker text-signal-bright">Identity / 02</p>
-            <p className="mt-4 text-[34px] font-semibold leading-tight tracking-[-0.035em]">A running laboratory, not a résumé page.</p>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/66">The space stays continuous while projects, systems, and evidence move into focus.</p>
+            <p className="lab-kicker text-signal-bright">{t.identityLabel}</p>
+            <p className="mt-4 text-[34px] font-semibold leading-tight tracking-[-0.035em]">{t.identityTitle}</p>
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/66">{t.identityBody}</p>
           </div>
         </div>
 
@@ -318,16 +326,16 @@ export function HomeScrollDirector() {
                 <h2 className="mt-5 text-[48px] font-semibold leading-[0.92] tracking-[-0.055em]">{project.shortTitle}</h2>
                 <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-white/68">{project.oneLine}</p>
                 <div className="mt-7 grid grid-cols-[82px_1fr] border-y border-white/18 py-3 font-mono text-[9px] uppercase tracking-[0.14em] text-white/54">
-                  <span>Media</span>
-                  <span>{movingScene ? "Concept film 02 / scroll-steered" : project.media.hero ? "Project capture / still frame" : "Concept still / camera drift"}</span>
+                  <span>{t.mediaRowLabel}</span>
+                  <span>{movingScene ? t.mediaConceptFilm : project.media.hero ? t.mediaProjectCapture : t.mediaConceptStill}</span>
                 </div>
                 <Link
-                  href={`/experiments/${project.slug}`}
+                  href={localePath(locale, `/experiments/${project.slug}`)}
                   transitionTypes={["project-forward"]}
                   tabIndex={active ? 0 : -1}
                   className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-white/45 font-mono text-[11px] uppercase tracking-[0.13em] text-white transition-colors hover:border-signal-bright hover:text-signal-bright"
                 >
-                  Open case <ArrowUpRight size={15} aria-hidden />
+                  {t.openCase} <ArrowUpRight size={15} aria-hidden />
                 </Link>
               </div>
             </article>
@@ -340,10 +348,10 @@ export function HomeScrollDirector() {
           className="absolute inset-x-0 top-[18%] z-20 mx-auto grid w-full max-w-[1440px] grid-cols-12 gap-6 px-[var(--page-gutter)] text-white will-change-transform"
         >
           <div className="col-span-4">
-            <p className="lab-kicker text-signal-bright">Origin / system path</p>
-            <h2 className="mt-5 text-[48px] font-semibold leading-[0.94] tracking-[-0.05em]">From signal to physical action.</h2>
-            <Link href="/origin" tabIndex={activeChapter === "origin-evidence" ? 0 : -1} className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-white/40 font-mono text-[11px] uppercase tracking-[0.12em] hover:text-signal-bright">
-              View origin <ArrowUpRight size={15} aria-hidden />
+            <p className="lab-kicker text-signal-bright">{t.originLabel}</p>
+            <h2 className="mt-5 text-[48px] font-semibold leading-[0.94] tracking-[-0.05em]">{t.originTitle}</h2>
+            <Link href={localePath(locale, "/origin")} tabIndex={activeChapter === "origin-evidence" ? 0 : -1} className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-white/40 font-mono text-[11px] uppercase tracking-[0.12em] hover:text-signal-bright">
+              {t.viewOrigin} <ArrowUpRight size={15} aria-hidden />
             </Link>
           </div>
           <div className="col-span-7 col-start-6 border-y border-white/24 bg-ink/46">
@@ -351,28 +359,28 @@ export function HomeScrollDirector() {
               <div key={stage.id} className="grid grid-cols-[64px_1fr_auto] items-center gap-5 border-b border-white/16 px-5 py-5 last:border-b-0">
                 <span className="lab-kicker text-signal-bright">{stage.label}</span>
                 <span className="text-[16px] font-medium">{stage.title}</span>
-                <span className="lab-kicker text-white/48">{stage.yearRange ?? "OPEN"}</span>
+                <span className="lab-kicker text-white/48">{stage.yearRange ?? t.openYear}</span>
               </div>
             ))}
             <div className="grid grid-cols-[64px_1fr] gap-5 border-t border-white/24 px-5 py-5">
-              <span className="lab-kicker text-signal-bright">DOC</span>
-              <span className="text-[13px] leading-relaxed text-white/62">The archive brings hardware, software, robotics, and digital experiments into one navigable collection.</span>
+              <span className="lab-kicker text-signal-bright">{t.docLabel}</span>
+              <span className="text-[13px] leading-relaxed text-white/62">{t.docBody}</span>
             </div>
           </div>
         </div>
 
         <div className="absolute bottom-7 left-[var(--page-gutter)] z-30 w-[min(44vw,520px)] text-white/58">
           <div className="mb-3 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.14em]">
-            <span>{homeExperienceChapters.find((item) => item.id === activeChapter)?.label ?? "Scroll"}</span>
-            <span>Scene time</span>
+            <span>{chapters.find((item) => item.id === activeChapter)?.label ?? t.scrollLabel}</span>
+            <span>{t.sceneTime}</span>
           </div>
           <span className="relative block h-px overflow-hidden bg-white/24">
             <span className="absolute inset-y-0 left-0 w-full origin-left scale-x-[var(--scene-progress,0)] bg-signal-bright will-change-transform" />
           </span>
-          <div className="mt-3"><ProgressRail label="Full sequence" /></div>
+          <div className="mt-3"><ProgressRail label={t.fullSequence} /></div>
         </div>
         <a href="#now" className="absolute bottom-7 right-[var(--page-gutter)] z-30 flex min-h-11 items-center gap-3 font-mono text-[9px] uppercase tracking-[0.14em] text-white/58 hover:text-white">
-          Continue <ArrowDown size={14} aria-hidden />
+          {t.continueLabel} <ArrowDown size={14} aria-hidden />
         </a>
       </div>
 
@@ -385,14 +393,14 @@ export function HomeScrollDirector() {
           />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,27,42,.04),rgba(13,27,42,.88))]" />
           <div className="absolute inset-x-0 bottom-0 px-5 pb-9">
-            <p className="lab-kicker text-signal-bright">Morgan / Digital Lab</p>
+            <p className="lab-kicker text-signal-bright">{t.entryKicker}</p>
             <h1 className="mt-5 text-[44px] font-semibold leading-[0.91] tracking-[-0.055em]">{pageCopy.home.headline}</h1>
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/70">{pageCopy.home.supporting}</p>
-            <div className="mt-8 text-white/60"><ProgressRail label="Scroll / 01" /></div>
+            <div className="mt-8 text-white/60"><ProgressRail label={t.scrollLabel} /></div>
           </div>
         </div>
         <div className="px-5 py-20 sm:px-8">
-          <p className="lab-kicker text-signal">Selected work / {String(featuredProjects.length).padStart(2, "0")}</p>
+          <p className="lab-kicker text-signal">{t.selectedLabel} {String(featuredProjects.length).padStart(2, "0")}</p>
           {featuredProjects.map((project) => {
             const media = project.media.hero ?? (project.slug === "physical-link" ? motionAtmosphere.physicalLink : projectAtmosphere[project.slug]);
             const isConcept = media?.provenance === "generated-atmosphere";
@@ -400,21 +408,21 @@ export function HomeScrollDirector() {
               <article key={project.slug} className="border-t border-line py-10 first:mt-6">
                 <MediaWindow className="aspect-[4/3]">
                   {media?.poster || media?.src ? <Image src={media.poster ?? media.src ?? ""} alt={media.alt} fill sizes="100vw" className={media.height > media.width ? "object-contain" : "object-cover"} /> : null}
-                  {isConcept ? <ConceptMark /> : null}
+                  {isConcept ? <ConceptMark label={t.conceptFilm} note={t.conceptNote} /> : null}
                 </MediaWindow>
                 <p className="lab-kicker mt-5 text-signal">EXP.{project.index} / {project.category}</p>
                 <h2 className="mt-3 text-[30px] font-semibold leading-tight tracking-[-0.035em] text-ink">{project.shortTitle}</h2>
                 <p className="mt-4 text-[15px] leading-relaxed text-ink-secondary">{project.oneLine}</p>
-                <Link href={`/experiments/${project.slug}`} transitionTypes={["project-forward"]} className="mt-6 inline-flex min-h-11 items-center gap-3 border-b border-ink/30 font-mono text-[11px] uppercase tracking-[0.12em] text-ink">
-                  Open case <ArrowUpRight size={14} aria-hidden />
+                <Link href={localePath(locale, `/experiments/${project.slug}`)} transitionTypes={["project-forward"]} className="mt-6 inline-flex min-h-11 items-center gap-3 border-b border-ink/30 font-mono text-[11px] uppercase tracking-[0.12em] text-ink">
+                  {t.openCase} <ArrowUpRight size={14} aria-hidden />
                 </Link>
               </article>
             );
           })}
           <div className="border-y border-line py-8">
-            <p className="lab-kicker text-signal">Origin / documentation</p>
-            <p className="mt-4 text-[24px] font-semibold tracking-[-0.03em] text-ink">Digital → Intelligence → Hardware → Physical AI</p>
-            <p className="mt-4 text-[14px] leading-relaxed text-ink-secondary">Ten project records are open in the full index, with the public code archive linked below them.</p>
+            <p className="lab-kicker text-signal">{t.mobileOriginLabel}</p>
+            <p className="mt-4 text-[24px] font-semibold tracking-[-0.03em] text-ink">{t.originChain}</p>
+            <p className="mt-4 text-[14px] leading-relaxed text-ink-secondary">{t.mobileArchiveNote}</p>
           </div>
         </div>
       </div>

@@ -1,20 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
-import { capabilityGroups } from "@/content/capabilities";
-import { pageCopy } from "@/content/pages";
+import { getCapabilityGroups } from "@/content/capabilities";
+import { getPageCopy } from "@/content/pages";
 import { getEvidenceRecord } from "@/content/projects";
 import { PageContainer, Section } from "@/components/layout/PageContainer";
 import { H2, Meta } from "@/components/ui/typography";
 import { ContactCta } from "@/components/layout/ContactCta";
 import { evidenceHref, isVerifiedEvidence } from "@/lib/evidence";
-import { routeMetadata } from "@/content/metadata";
+import { getRouteMetadata } from "@/content/metadata";
 import { createPageMetadata } from "@/lib/metadata";
 import { LabPageHeader } from "@/components/layout/LabInterface";
+import { getDictionary } from "@/i18n/dictionary";
+import { isLocale } from "@/i18n/config";
 
-export const metadata: Metadata = createPageMetadata(routeMetadata.capabilities);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  return createPageMetadata(locale, getRouteMetadata(locale).capabilities);
+}
 
-export default function CapabilitiesPage() {
+export default async function CapabilitiesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+
+  const t = getDictionary(locale).capabilities;
+  const pageCopy = getPageCopy(locale);
+  const capabilityGroups = getCapabilityGroups(locale);
+
   return (
     <PageContainer>
       <LabPageHeader eyebrow={pageCopy.capabilities.eyebrow} title={pageCopy.capabilities.title} intro={pageCopy.capabilities.intro} />
@@ -29,16 +47,16 @@ export default function CapabilitiesPage() {
             </div>
             <div className="border-t border-line md:col-span-7 md:col-start-6">
               {group.items.map((item) => {
-                const record = item.proofEvidenceId ? getEvidenceRecord(item.proofEvidenceId) : null;
+                const record = item.proofEvidenceId ? getEvidenceRecord(locale, item.proofEvidenceId) : null;
                 const verified = record && isVerifiedEvidence(record.evidence) ? record : null;
                 return (
                   <div key={item.name} className="grid gap-3 border-b border-line py-6 md:grid-cols-[1fr_auto] md:items-center">
                     <p className="text-[17px] font-semibold text-ink">{item.name}</p>
                     {verified ? (
-                      <Link href={evidenceHref(verified.project.slug, verified.evidence.id)} className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.08em] text-accent">
+                      <Link href={evidenceHref(locale, verified.project.slug, verified.evidence.id)} className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.08em] text-accent">
                         {item.proofLabel}<ArrowUpRight size={14} aria-hidden />
                       </Link>
-                    ) : <Meta className="text-ink-secondary">Evidence pending</Meta>}
+                    ) : <Meta className="text-ink-secondary">{t.evidencePending}</Meta>}
                   </div>
                 );
               })}
@@ -47,7 +65,7 @@ export default function CapabilitiesPage() {
         ))}
       </Section>
 
-      <ContactCta />
+      <ContactCta locale={locale} />
     </PageContainer>
   );
 }

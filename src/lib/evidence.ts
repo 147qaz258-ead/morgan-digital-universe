@@ -4,6 +4,8 @@ import type {
   EvidenceMediaAsset,
   EvidenceVerification,
 } from "@/content/types";
+import type { Locale } from "@/i18n/config";
+import { localePath } from "@/i18n/config";
 
 export type VerifiedEvidence = Evidence & {
   asset: EvidenceMediaAsset & { src: string; status: "verified" };
@@ -35,6 +37,6 @@ export function isVerifiedEvidence(item: Evidence): item is VerifiedEvidence {
   );
 }
 
-export function evidenceHref(projectSlug: string, evidenceId: EvidenceId): string {
-  return `/experiments/${projectSlug}#${evidenceId}`;
+export function evidenceHref(locale: Locale, projectSlug: string, evidenceId: EvidenceId): string {
+  return localePath(locale, `/experiments/${projectSlug}#${evidenceId}`);
 }

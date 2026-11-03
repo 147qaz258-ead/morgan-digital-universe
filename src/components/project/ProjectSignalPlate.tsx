@@ -1,5 +1,7 @@
 import type { Project } from "@/content/types";
 import { Meta } from "@/components/ui/typography";
+import { getDictionary } from "@/i18n/dictionary";
+import type { Locale } from "@/i18n/config";
 
 const routes = {
   "01": "M18 118 L92 118 L92 66 L164 66 L164 28 L282 28",
@@ -7,13 +9,22 @@ const routes = {
   "03": "M18 104 L72 104 L72 42 L142 42 L142 112 L220 112 L220 52 L282 52",
 } as const;
 
-export function ProjectSignalPlate({ project, compact = false }: { project: Project; compact?: boolean }) {
+export function ProjectSignalPlate({
+  project,
+  locale = "en",
+  compact = false,
+}: {
+  project: Project;
+  locale?: Locale;
+  compact?: boolean;
+}) {
+  const t = getDictionary(locale).media;
   const path = routes[project.index as keyof typeof routes] ?? routes["01"];
   return (
     <div
       className={`project-signal-field coordinate-corner relative overflow-hidden border border-line bg-surface ${compact ? "min-h-40" : "min-h-64"}`}
       role="img"
-      aria-label={`Abstract index visual for ${project.shortTitle}; not project evidence`}
+      aria-label={`${t.indexVisual} / ${project.shortTitle} — ${t.notEvidence}`}
     >
       <svg viewBox="0 0 300 150" className="absolute inset-0 h-full w-full" aria-hidden>
         <path d={path} className="project-signal-route" />
@@ -26,7 +37,7 @@ export function ProjectSignalPlate({ project, compact = false }: { project: Proj
           <Meta className="text-signal">Field / {project.index}</Meta>
           <p className="mt-1 text-[12px] font-medium text-ink">{project.shortTitle}</p>
         </div>
-        <Meta className="text-right text-ink-secondary">Index visual<br />Not evidence</Meta>
+        <Meta className="text-right text-ink-secondary">{t.indexVisual}<br />{t.notEvidence}</Meta>
       </div>
     </div>
   );

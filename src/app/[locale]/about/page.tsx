@@ -1,18 +1,36 @@
 import type { Metadata } from "next";
-import { profile } from "@/content/profile";
-import { pageCopy } from "@/content/pages";
+import { notFound } from "next/navigation";
+import { getProfile } from "@/content/profile";
+import { getPageCopy } from "@/content/pages";
 import { PageContainer, Section } from "@/components/layout/PageContainer";
 import { Body, Meta } from "@/components/ui/typography";
 import { MediaFrame } from "@/components/ui/MediaFrame";
 import { DocumentationStatus } from "@/components/ui/DocumentationStatus";
 import { ContactCta } from "@/components/layout/ContactCta";
-import { routeMetadata } from "@/content/metadata";
+import { getRouteMetadata } from "@/content/metadata";
 import { createPageMetadata } from "@/lib/metadata";
 import { LabPageHeader } from "@/components/layout/LabInterface";
+import { getDictionary } from "@/i18n/dictionary";
+import { isLocale } from "@/i18n/config";
 
-export const metadata: Metadata = createPageMetadata(routeMetadata.about);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  return createPageMetadata(locale, getRouteMetadata(locale).about);
+}
 
-export default function AboutPage() {
+export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+
+  const t = getDictionary(locale).about;
+  const profile = getProfile(locale);
+  const pageCopy = getPageCopy(locale);
+
   return (
     <PageContainer>
       <LabPageHeader eyebrow={pageCopy.about.eyebrow} title={pageCopy.about.title} intro={pageCopy.about.intro} />
@@ -33,19 +51,20 @@ export default function AboutPage() {
           <aside className="md:col-span-4 md:col-start-9">
             <div className="sticky top-28">
               {profile.portrait?.status === "verified" ? (
-                <MediaFrame media={profile.portrait} alt={profile.portrait.alt} aspect="3/4" large />
+                <MediaFrame media={profile.portrait} alt={profile.portrait.alt} aspect="3/4" large locale={locale} />
               ) : (
                 <DocumentationStatus
-                  label="Portrait / pending"
-                  title="A real working portrait will appear here."
-                  body="No generated person or substitute photograph is used. Publication permission and caption remain required."
+                  locale={locale}
+                  label={t.portraitLabel}
+                  title={t.portraitTitle}
+                  body={t.portraitBody}
                 />
               )}
               <dl className="mt-6 border-t border-line">
                 {[
-                  ["Location", profile.location ?? "Private"],
-                  ["Contact", profile.email ? "Available" : "On request"],
-                  ["Focus", "Physical AI systems"],
+                  [t.rowLocation, profile.location ?? t.valuePrivate],
+                  [t.rowContact, profile.email ? t.valueAvailable : t.valueOnRequest],
+                  [t.rowFocus, t.valueFocus],
                 ].map(([label, value]) => (
                   <div key={label} className="grid grid-cols-[90px_1fr] gap-4 border-b border-line py-4">
                     <dt><Meta className="text-ink-secondary">{label}</Meta></dt>
@@ -58,7 +77,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <ContactCta />
+      <ContactCta locale={locale} />
     </PageContainer>
   );
 }

@@ -1,45 +1,9 @@
-import type { Evidence, EvidenceId, EvidenceType, Project } from "./types";
-import { projectMedia } from "./project-media";
-
-export const evidenceIds = {
-  physicalLink: {
-    hero: "evidence-physical-link-hero",
-    pcb: "evidence-physical-link-pcb",
-    demo: "evidence-physical-link-demo",
-  },
-  hardwareWorkspace: {
-    hero: "evidence-ai-native-hardware-workspace-hero",
-    flow: "evidence-ai-native-hardware-workspace-flow",
-    deviceOutput: "evidence-ai-native-hardware-workspace-device-output",
-  },
-  bciDexterousHand: {
-    experiment: "evidence-bci-dexterous-hand-experiment",
-    controlTest: "evidence-bci-dexterous-hand-control-test",
-  },
-} as const satisfies Record<string, Record<string, EvidenceId>>;
-
-function pendingEvidence(id: EvidenceId, title: string, type: EvidenceType): Evidence {
-  return {
-    id,
-    title,
-    type,
-    asset: null,
-    caption: null,
-    verification: {
-      state: "pending",
-      publicPermission: "pending",
-      userConfirmed: false,
-      claim: null,
-      captureDate: null,
-      owner: null,
-      redactionRequired: null,
-    },
-    isVerified: false,
-  };
-}
+import type { Project } from "../types";
+import { projectMedia } from "../project-media";
+import { evidenceIds, pendingEvidence } from "./shared";
 
 // 只填写已确定信息；未知结果、数据、成绩一律 null / 空，不编造。
-export const projects: Project[] = [
+export const enProjects: Project[] = [
   {
     slug: "physical-link",
     index: "01",
@@ -187,8 +151,7 @@ export const projects: Project[] = [
       "A dexterous hand looks like the easy end of the problem and is the hard one: without tactile feedback there is no closed loop, only an open-loop pose.",
       "Between headset and hand sit three transports — Bluetooth RFCOMM, a Python runtime, a vendor SDK — and any of them can fail without saying so.",
     ],
-    insight:
-      "Prove one signal-to-motion event end to end, with timestamps and a state trace, before claiming any decoding.",
+    insight: "Prove one signal-to-motion event end to end, with timestamps and a state trace, before claiming any decoding.",
     solution: [
       "Bridge Mind Link over Bluetooth RFCOMM into a Python runtime that timestamps every packet and records whether fake data was used.",
       "Gate a command on signal quality and a dwell window, so a single command is an explicit commissioning event rather than a stream of guesses.",
@@ -271,8 +234,7 @@ export const projects: Project[] = [
       "The interface shows the capsule image with the inspection result, plus a separate summary panel for the demonstration table.",
       "The whole system was presented publicly at a hackathon showcase, which is where the documentation photographs come from.",
     ],
-    myRole:
-      "Built the inspection bench, the detection pipeline, and the operator review interface for the hackathon entry.",
+    myRole: "Built the inspection bench, the detection pipeline, and the operator review interface for the hackathon entry.",
     stack: ["Computer vision", "Embedded control", "Operator interface"],
     systemDiagram: null,
     evidence: [],
@@ -281,7 +243,8 @@ export const projects: Project[] = [
       {
         what: "The demo worked better than the documentation.",
         why: "The rig and interface were ready for a public table before anyone had recorded what the model actually got right and wrong.",
-        change: "Results are now described only as what the photographs show: a working bench and a review interface, with no accuracy claim attached.",
+        change:
+          "Results are now described only as what the photographs show: a working bench and a review interface, with no accuracy claim attached.",
         lesson: "A showcase proves the system runs. It never proves the system works.",
       },
     ],
@@ -294,8 +257,7 @@ export const projects: Project[] = [
       "Inspection is a lighting problem before it is a model problem.",
       "The person standing at the bench needs a reason, not a score.",
     ],
-    next:
-      "Publish a small labelled sample and a reject-rate curve, then close the loop from a rejected frame to a physical gate that moves.",
+    next: "Publish a small labelled sample and a reject-rate curve, then close the loop from a rejected frame to a physical gate that moves.",
     links: [{ label: "GitHub repository", href: "https://github.com/147qaz258-ead/capsule-defect-detection" }],
     featured: false,
   },
@@ -332,8 +294,7 @@ export const projects: Project[] = [
       "A team surface that lays out which agent owns which part, so the division of work is visible without reading a log.",
       "Session and task history are kept as first-class records, which is what makes an agent's claim checkable after the fact.",
     ],
-    myRole:
-      "Solo build: product structure, workspace interface, agent routing and the run-record model behind the screens.",
+    myRole: "Solo build: product structure, workspace interface, agent routing and the run-record model behind the screens.",
     stack: ["Local-first agent runtime", "Desktop workspace UI", "Task and session store"],
     systemDiagram: null,
     evidence: [],
@@ -396,8 +357,7 @@ export const projects: Project[] = [
       "File management, note handling and developer utilities are separate destinations rather than nested menus.",
       "The activity dashboard starts at zero on a fresh install — the screens show the empty state honestly rather than with sample data.",
     ],
-    myRole:
-      "Solo build: information architecture, ArkUI implementation, editor surface, and the file and utility screens.",
+    myRole: "Solo build: information architecture, ArkUI implementation, editor surface, and the file and utility screens.",
     stack: ["ArkTS", "HarmonyOS NEXT", "ArkUI"],
     systemDiagram: null,
     evidence: [],
@@ -406,7 +366,8 @@ export const projects: Project[] = [
       {
         what: "Treated the mobile editor as a small desktop editor.",
         why: "The first layout carried desktop assumptions — toolbars, panels, and a file tree that assumed a mouse — onto a six-inch screen.",
-        change: "The layout was rebuilt around one primary task per screen, with navigation doing the work the desktop layout did with panel space.",
+        change:
+          "The layout was rebuilt around one primary task per screen, with navigation doing the work the desktop layout did with panel space.",
         lesson: "Porting a layout is not porting an editor. The interaction model has to be rebuilt.",
       },
     ],
@@ -419,8 +380,7 @@ export const projects: Project[] = [
       "On a phone, every control you keep costs a line of code the user cannot see.",
       "Empty states are product decisions, not placeholders.",
     ],
-    next:
-      "Measure the interruption case properly: kill the app mid-edit, reopen it, and check that nothing entered has to be retyped.",
+    next: "Measure the interruption case properly: kill the app mid-edit, reopen it, and check that nothing entered has to be retyped.",
     links: [{ label: "GitHub repository", href: "https://github.com/147qaz258-ead/turbo-editor" }],
     featured: false,
   },
@@ -457,8 +417,7 @@ export const projects: Project[] = [
       "Captures were taken from both sides of the process — the editor and the running game — because neither alone describes the project.",
       "Third-party assets and the engine's licence terms are not documented here and are not claimed as original work.",
     ],
-    myRole:
-      "Scene construction, level blocking and playable build: the environment and its interactive form.",
+    myRole: "Scene construction, level blocking and playable build: the environment and its interactive form.",
     stack: ["Blender", "Browser-playable build"],
     systemDiagram: null,
     evidence: [],
@@ -476,12 +435,8 @@ export const projects: Project[] = [
       summary:
         "Prototype. The space is constructed in Blender and playable in a browser build, documented through captures of both; the named collaboration, engine and asset licences are outside this record.",
     },
-    lessons: [
-      "Atmosphere is a sequence, not a frame.",
-      "The cheapest time to fix a room is before the player can walk into it.",
-    ],
-    next:
-      "Give the walk a reason: one interaction that only works because of the way the garden is laid out.",
+    lessons: ["Atmosphere is a sequence, not a frame.", "The cheapest time to fix a room is before the player can walk into it."],
+    next: "Give the walk a reason: one interaction that only works because of the way the garden is laid out.",
     links: [],
     featured: false,
   },
@@ -518,8 +473,7 @@ export const projects: Project[] = [
       "A booth presentation for the Douyin AI Innovation Plan, with an exhibit board carrying the project name 'Emotional Habitat' and its premise.",
       "The capture from the showcase includes the phone's recording status bar, which is left visible rather than cropped away.",
     ],
-    myRole:
-      "Concept, conversation design and the exhibit presentation: the character premise and the interface built around it.",
+    myRole: "Concept, conversation design and the exhibit presentation: the character premise and the interface built around it.",
     stack: ["Mobile chat interface", "Character dialogue system"],
     systemDiagram: null,
     evidence: [],
@@ -537,12 +491,8 @@ export const projects: Project[] = [
       summary:
         "Prototype, shown publicly at the Douyin AI Innovation Plan. The interface and exhibit are documented; retention, evaluation and any real-world interaction claim are not.",
     },
-    lessons: [
-      "Warmth is not a prompt. It is continuity.",
-      "A booth forces the product to explain itself in one glance, which is a useful test for the app too.",
-    ],
-    next:
-      "Run a two-week return test: does a second session feel like the same character, and can the user tell what it remembered?",
+    lessons: ["Warmth is not a prompt. It is continuity.", "A booth forces the product to explain itself in one glance, which is a useful test for the app too."],
+    next: "Run a two-week return test: does a second session feel like the same character, and can the user tell what it remembered?",
     links: [],
     featured: false,
   },
@@ -579,8 +529,7 @@ export const projects: Project[] = [
       "The delivered video is the silent web derivative of the original render; the original file is kept separately.",
       "Both the workspace and the finished film are shown, because the interesting part is the distance between them.",
     ],
-    myRole:
-      "Character setup, animation and rendering: the rig, the shot and the final sequence.",
+    myRole: "Character setup, animation and rendering: the rig, the shot and the final sequence.",
     stack: ["Blender", "Character rigging", "CGI rendering"],
     systemDiagram: null,
     evidence: [],
@@ -598,12 +547,8 @@ export const projects: Project[] = [
       summary:
         "Prototype. The rig and a thirty-second rendered sequence exist and are shown together; model provenance, music and asset licences are not documented here.",
     },
-    lessons: [
-      "Thirty seconds exposes every shortcut in a rig.",
-      "Keeping the workspace next to the render is the honest version of a making-of.",
-    ],
-    next:
-      "Rebuild one shot with a rig designed for that shot alone, and compare how much of the animation survives without correction.",
+    lessons: ["Thirty seconds exposes every shortcut in a rig.", "Keeping the workspace next to the render is the honest version of a making-of."],
+    next: "Rebuild one shot with a rig designed for that shot alone, and compare how much of the animation survives without correction.",
     links: [],
     featured: false,
   },
@@ -640,8 +585,7 @@ export const projects: Project[] = [
       "A TouchSight concept board presents the product direction as a generated visualisation. It is direction, not a photograph of a finished device, and it carries that label wherever it appears.",
       "The project currently sits between a bench prototype and a concept: the hardware exists, the image-to-touch pipeline does not yet.",
     ],
-    myRole:
-      "Bench apparatus and concept direction: the physical prototype and the interface concept for image-to-touch interaction.",
+    myRole: "Bench apparatus and concept direction: the physical prototype and the interface concept for image-to-touch interaction.",
     stack: ["Tactile display hardware", "Robotic arm", "Concept interface"],
     systemDiagram: null,
     evidence: [],
@@ -659,39 +603,9 @@ export const projects: Project[] = [
       summary:
         "Prototype. A bench-scale tactile display and arm are documented physically; the image-to-touch pipeline, resolution and any closed-loop grasp result are not.",
     },
-    lessons: [
-      "Touch is a timing problem as much as a spatial one.",
-      "Keeping concept imagery labelled is cheaper than explaining it later.",
-    ],
-    next:
-      "Drive one channel from a camera frame and record the resulting surface pattern, so the mapping has a first measurable point.",
+    lessons: ["Touch is a timing problem as much as a spatial one.", "Keeping concept imagery labelled is cheaper than explaining it later."],
+    next: "Drive one channel from a camera frame and record the resulting surface pattern, so the mapping has a first measurable point.",
     links: [{ label: "Insta360 hackathon repository", href: "https://github.com/147qaz258-ead/insta360-hackathon" }],
     featured: false,
   },
 ];
-
-export const featuredProjects = projects.filter((p) => p.featured);
-export const archiveProjects = projects.filter((p) => !p.featured);
-
-export function getProject(slug: string): Project | undefined {
-  return projects.find((p) => p.slug === slug);
-}
-
-export function getEvidenceRecord(id: EvidenceId): { project: Project; evidence: Evidence } | null {
-  for (const project of projects) {
-    const evidence = project.evidence.find((item) => item.id === id);
-    if (evidence) return { project, evidence };
-  }
-  return null;
-}
-
-export function getAdjacentProjects(slug: string): {
-  prev: Project | null;
-  next: Project | null;
-} {
-  const i = projects.findIndex((p) => p.slug === slug);
-  return {
-    prev: i > 0 ? projects[i - 1] : null,
-    next: i >= 0 && i < projects.length - 1 ? projects[i + 1] : null,
-  };
-}

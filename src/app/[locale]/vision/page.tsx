@@ -1,23 +1,39 @@
 import type { Metadata } from "next";
-import { visionStages } from "@/content/vision";
-import { pageCopy } from "@/content/pages";
+import { notFound } from "next/navigation";
+import { getVisionStages } from "@/content/vision";
+import { getPageCopy } from "@/content/pages";
 import { PageContainer, Section } from "@/components/layout/PageContainer";
 import { BodyLarge, Meta } from "@/components/ui/typography";
 import { ContactCta } from "@/components/layout/ContactCta";
-import { routeMetadata } from "@/content/metadata";
+import { getRouteMetadata } from "@/content/metadata";
 import { createPageMetadata } from "@/lib/metadata";
 import { AtmosphereFrame } from "@/components/ui/AtmosphereFrame";
 import { motionAtmosphere, visionAtmosphere } from "@/content/atmosphere";
 import { LabPageHeader } from "@/components/layout/LabInterface";
+import { isLocale } from "@/i18n/config";
 
-export const metadata: Metadata = createPageMetadata(routeMetadata.vision);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  return createPageMetadata(locale, getRouteMetadata(locale).vision);
+}
 
-export default function VisionPage() {
+export default async function VisionPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+
+  const pageCopy = getPageCopy(locale);
+  const visionStages = getVisionStages(locale);
+
   return (
     <PageContainer>
       <LabPageHeader eyebrow={pageCopy.vision.eyebrow} title={pageCopy.vision.title} intro={pageCopy.vision.intro} />
 
-      <AtmosphereFrame media={visionAtmosphere.system} aspect="21/9" large preload />
+      <AtmosphereFrame media={visionAtmosphere.system} aspect="21/9" large preload locale={locale} />
 
       <Section className="!pt-16 md:!pt-20">
         {visionStages.map((stage, index) => (
@@ -26,12 +42,12 @@ export default function VisionPage() {
               <div className="md:col-span-3"><Meta className="text-signal">0{index + 1} / {stage.label}</Meta></div>
               <BodyLarge className="max-w-3xl md:col-span-8 md:col-start-5">{stage.narrative}</BodyLarge>
             </div>
-            {index === 1 ? <AtmosphereFrame media={motionAtmosphere.visionSignal} aspect="21/9" className="mb-10 md:mb-14" /> : null}
+            {index === 1 ? <AtmosphereFrame media={motionAtmosphere.visionSignal} aspect="21/9" locale={locale} className="mb-10 md:mb-14" /> : null}
           </div>
         ))}
       </Section>
 
-      <ContactCta />
+      <ContactCta locale={locale} />
     </PageContainer>
   );
 }

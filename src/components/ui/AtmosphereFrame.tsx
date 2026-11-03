@@ -3,6 +3,8 @@ import { ViewTransition } from "react";
 import type { GeneratedAtmosphereAsset } from "@/content/types";
 import { AmbientVideo } from "@/components/media/AmbientVideo";
 import { Meta } from "./typography";
+import { getDictionary } from "@/i18n/dictionary";
+import type { Locale } from "@/i18n/config";
 
 type AtmosphereAspect = "16/9" | "4/3" | "3/2" | "21/9";
 
@@ -11,6 +13,7 @@ export function AtmosphereFrame({
   aspect,
   preload = false,
   large = false,
+  locale = "en",
   className = "",
   transitionName,
 }: {
@@ -18,9 +21,11 @@ export function AtmosphereFrame({
   aspect?: AtmosphereAspect;
   preload?: boolean;
   large?: boolean;
+  locale?: Locale;
   className?: string;
   transitionName?: string;
 }) {
+  const t = getDictionary(locale).media;
   const radius = large ? "rounded-[24px]" : "rounded-[16px]";
   const frame = (
     <figure className={className}>
@@ -48,8 +53,8 @@ export function AtmosphereFrame({
           />
         )}
         <div className="absolute bottom-3 left-3 flex min-w-0 flex-col items-start gap-1 border-l border-signal-bright bg-bg/92 px-3 py-2 text-ink md:bottom-4 md:left-4 md:flex-row md:items-center md:gap-3">
-          <Meta className="text-ink-secondary">Concept atmosphere</Meta>
-          <Meta className="text-signal">Generated / not evidence</Meta>
+          <Meta className="text-ink-secondary">{t.conceptAtmosphere}</Meta>
+          <Meta className="text-signal">{t.generatedNote}</Meta>
         </div>
       </div>
     </figure>

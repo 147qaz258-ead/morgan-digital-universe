@@ -4,6 +4,8 @@ import type { MediaAsset } from "@/content/types";
 import { Meta } from "./typography";
 import { PendingAsset } from "./PendingAsset";
 import { LazyVideo } from "./LazyVideo";
+import { getDictionary } from "@/i18n/dictionary";
+import type { Locale } from "@/i18n/config";
 
 type Aspect = string;
 
@@ -15,7 +17,8 @@ export function MediaFrame({
   preload = false,
   large = false,
   fit,
-  pendingLabel = "Evidence pending",
+  pendingLabel,
+  locale = "en",
   className = "",
   transitionName,
 }: {
@@ -28,9 +31,11 @@ export function MediaFrame({
   large?: boolean;
   fit?: "cover" | "contain";
   pendingLabel?: string;
+  locale?: Locale;
   className?: string;
   transitionName?: string;
 }) {
+  const resolvedPendingLabel = pendingLabel ?? getDictionary(locale).media.pendingLabel;
   const radius = large ? "rounded-[24px]" : "rounded-[16px]";
   const resolvedAspect = aspect ?? media?.aspectRatio ?? "16/9";
   const resolvedFit = fit ?? (media && media.height > media.width ? "contain" : "cover");
@@ -61,7 +66,7 @@ export function MediaFrame({
             />
           )
         ) : (
-          <PendingAsset className="absolute inset-0 border-0" label={pendingLabel} />
+          <PendingAsset className="absolute inset-0 border-0" label={resolvedPendingLabel} />
         )}
       </div>
       {resolvedCaption ? (

@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { pageCopy } from "@/content/pages";
+import { getPageCopy } from "@/content/pages";
 import { motionAtmosphere } from "@/content/atmosphere";
 import { AmbientVideo } from "@/components/media/AmbientVideo";
+
+/** Legacy hero, kept for reference. Renders the English copy only. */
+const pageCopy = getPageCopy("en");
 
 const hotspots = [
   {

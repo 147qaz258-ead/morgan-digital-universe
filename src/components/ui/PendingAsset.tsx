@@ -1,18 +1,23 @@
 import { Meta } from "./typography";
+import { getDictionary } from "@/i18n/dictionary";
+import type { Locale } from "@/i18n/config";
 
 /** 素材缺失时的中性占位：灰白 + Evidence pending，禁止彩色 skeleton。 */
 export function PendingAsset({
-  label = "Evidence pending",
+  label,
+  locale = "en",
   className = "",
 }: {
   label?: string;
+  locale?: Locale;
   className?: string;
 }) {
+  const resolvedLabel = label ?? getDictionary(locale).media.pendingLabel;
   return (
     <div
       className={`relative flex items-center justify-center overflow-hidden border border-dashed border-line bg-surface-muted ${className}`}
       role="img"
-      aria-label={label}
+      aria-label={resolvedLabel}
     >
       <div
         className="absolute inset-0 opacity-40"
@@ -25,7 +30,7 @@ export function PendingAsset({
       />
       <div className="relative flex items-center gap-3 bg-surface/85 px-4 py-3">
         <span className="h-2 w-2 bg-signal-bright" aria-hidden />
-        <Meta className="text-ink-secondary">{label}</Meta>
+        <Meta className="text-ink-secondary">{resolvedLabel}</Meta>
       </div>
     </div>
   );

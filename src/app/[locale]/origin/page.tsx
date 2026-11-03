@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
-import { originStages, originTurningPoint } from "@/content/origin";
-import { pageCopy } from "@/content/pages";
+import { getOriginStages, getOriginTurningPoint } from "@/content/origin";
+import { getPageCopy } from "@/content/pages";
 import { getEvidenceRecord, getProject } from "@/content/projects";
 import { PageContainer, Section } from "@/components/layout/PageContainer";
 import { H2, Body, Meta } from "@/components/ui/typography";
@@ -11,24 +12,42 @@ import { PendingAsset } from "@/components/ui/PendingAsset";
 import { TrackOnView } from "@/components/motion/Track";
 import { ContactCta } from "@/components/layout/ContactCta";
 import { evidenceHref, isVerifiedEvidence } from "@/lib/evidence";
-import { routeMetadata } from "@/content/metadata";
+import { getRouteMetadata } from "@/content/metadata";
 import { createPageMetadata } from "@/lib/metadata";
 import { DocumentationStatus } from "@/components/ui/DocumentationStatus";
 import type { OriginStage } from "@/content/types";
 import { AtmosphereFrame } from "@/components/ui/AtmosphereFrame";
 import { originAtmosphere } from "@/content/atmosphere";
 import { LabPageHeader, SectionIndex } from "@/components/layout/LabInterface";
+import { getDictionary } from "@/i18n/dictionary";
+import { isLocale, localePath } from "@/i18n/config";
 
-export const metadata: Metadata = createPageMetadata(routeMetadata.origin);
-
-function publishedProjectsFor(stage: OriginStage) {
-  return stage.projectRefs
-    .map((slug) => getProject(slug))
-    .filter((project) => project?.publicationStatus === "published");
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  return createPageMetadata(locale, getRouteMetadata(locale).origin);
 }
 
-export default function OriginPage() {
+export default async function OriginPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+
+  const t = getDictionary(locale).origin;
+  const pageCopy = getPageCopy(locale);
+  const originStages = getOriginStages(locale);
+  const turningPoint = getOriginTurningPoint(locale);
+
+  const publishedProjectsFor = (stage: OriginStage) =>
+    stage.projectRefs
+      .map((slug) => getProject(locale, slug))
+      .filter((project) => project?.publicationStatus === "published");
+
   const hasConfirmedTimeline = originStages.some((stage) => Boolean(stage.yearRange));
+
   return (
     <PageContainer>
       <LabPageHeader eyebrow={pageCopy.origin.eyebrow} title={pageCopy.origin.title} intro={pageCopy.origin.intro} />
@@ -37,7 +56,7 @@ export default function OriginPage() {
         <div className="grid gap-12 lg:grid-cols-12">
           <aside className="hidden lg:col-span-3 lg:block">
             <div className="sticky top-24">
-              <SectionIndex items={originStages.map((stage) => ({ id: stage.id, number: stage.label, label: stage.title }))} label="Origin stages" />
+              <SectionIndex items={originStages.map((stage) => ({ id: stage.id, number: stage.label, label: stage.title }))} label={t.stagesLabel} />
             </div>
           </aside>
 
@@ -46,7 +65,7 @@ export default function OriginPage() {
               <article id={stage.id} key={stage.id} className="scroll-mt-28 border-t border-line py-12 first:border-t-0 first:pt-0 md:py-16">
                 <div className="grid gap-8 md:grid-cols-[1fr_1.05fr] md:items-center">
                   <div>
-                    <Meta className="text-signal">Stage {stage.label}</Meta>
+                    <Meta className="text-signal">{t.stageLabel} {stage.label}</Meta>
                     <H2 className="mt-4 !text-[30px]">{stage.title}</H2>
                     <Body className="mt-4 font-medium text-ink">{stage.oneLine}</Body>
                     <Body className="mt-4 text-ink-secondary">{stage.narrative}</Body>
@@ -56,22 +75,22 @@ export default function OriginPage() {
                     {publishedProjectsFor(stage).length > 0 ? (
                       <div className="mt-6 flex flex-col items-start gap-2">
                         {publishedProjectsFor(stage).map((project) => project ? (
-                            <Link key={project.slug} href={`/experiments/${project.slug}`} className="inline-flex items-center gap-2 border-b border-accent/30 pb-1 text-[13px] font-medium text-accent hover:border-accent">
+                            <Link key={project.slug} href={localePath(locale, `/experiments/${project.slug}`)} className="inline-flex items-center gap-2 border-b border-accent/30 pb-1 text-[13px] font-medium text-accent hover:border-accent">
                               {project.shortTitle}<ArrowUpRight size={14} aria-hidden />
                             </Link>
                           ) : null)}
                       </div>
                     ) : null}
                     {stage.evidenceRefs.some((id) => {
-                      const record = getEvidenceRecord(id);
+                      const record = getEvidenceRecord(locale, id);
                       return Boolean(record && isVerifiedEvidence(record.evidence));
                     }) ? (
                       <div className="mt-4 flex flex-col items-start gap-2 border-t border-line pt-4">
                         {stage.evidenceRefs.map((id) => {
-                          const record = getEvidenceRecord(id);
+                          const record = getEvidenceRecord(locale, id);
                           return record && isVerifiedEvidence(record.evidence) ? (
-                            <Link key={id} href={evidenceHref(record.project.slug, id)} className="inline-flex items-center gap-2 text-[12px] font-medium text-accent">
-                              Verified evidence: {record.evidence.title}<ArrowUpRight size={13} aria-hidden />
+                            <Link key={id} href={evidenceHref(locale, record.project.slug, id)} className="inline-flex items-center gap-2 text-[12px] font-medium text-accent">
+                              {t.verifiedEvidence}: {record.evidence.title}<ArrowUpRight size={13} aria-hidden />
                             </Link>
                           ) : null;
                         })}
@@ -79,9 +98,9 @@ export default function OriginPage() {
                     ) : null}
                   </div>
                   {stage.id === "intelligence" ? (
-                    <AtmosphereFrame media={originAtmosphere.digitalIntelligence} aspect="4/3" />
+                    <AtmosphereFrame media={originAtmosphere.digitalIntelligence} aspect="4/3" locale={locale} />
                   ) : stage.id === "building-physical-systems" ? (
-                    <AtmosphereFrame media={originAtmosphere.hardwareRobotics} aspect="4/3" />
+                    <AtmosphereFrame media={originAtmosphere.hardwareRobotics} aspect="4/3" locale={locale} />
                   ) : (
                     <div className="coordinate-corner relative aspect-[4/3] border border-line bg-surface p-6 md:p-8">
                       <StageVisual type={stage.visualType} />
@@ -97,12 +116,12 @@ export default function OriginPage() {
       <Section className="border-t border-line">
         <div className="grid gap-10 md:grid-cols-12 md:items-center">
           <div className="md:col-span-5">
-            <Meta className="text-signal">Turning point</Meta>
-            <H2 className="mt-5 !text-[38px] md:!text-[52px]">“{originTurningPoint.line}”</H2>
+            <Meta className="text-signal">{t.turningPoint}</Meta>
+            <H2 className="mt-5 !text-[38px] md:!text-[52px]">“{turningPoint.line}”</H2>
           </div>
           <div className="md:col-span-6 md:col-start-7">
-            <PendingAsset className="aspect-[16/9] w-full" label="Real hardware close-up pending" />
-            <Meta className="mt-3 block text-ink-secondary">User evidence / not generated</Meta>
+            <PendingAsset className="aspect-[16/9] w-full" label={t.closeupPending} />
+            <Meta className="mt-3 block text-ink-secondary">{t.userEvidenceNote}</Meta>
           </div>
         </div>
       </Section>
@@ -120,14 +139,15 @@ export default function OriginPage() {
           </div>
         ) : (
           <DocumentationStatus
-            label="Timeline / withheld"
-            title="Unconfirmed dates are not rendered as a chronology."
+            locale={locale}
+            label={t.timelineLabel}
+            title={t.timelineTitle}
             body={pageCopy.origin.timelinePending}
           />
         )}
       </TrackOnView>
 
-      <ContactCta />
+      <ContactCta locale={locale} />
     </PageContainer>
   );
 }

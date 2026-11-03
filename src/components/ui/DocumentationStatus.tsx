@@ -1,21 +1,26 @@
 import type { Evidence } from "@/content/types";
 import { Body, Meta } from "./typography";
+import { getDictionary } from "@/i18n/dictionary";
+import type { Locale } from "@/i18n/config";
 
 export function DocumentationStatus({
-  label = "Documentation status / pending",
+  label,
   title,
   body,
+  locale = "en",
   className = "",
 }: {
   label?: string;
   title: string;
   body: string;
+  locale?: Locale;
   className?: string;
 }) {
+  const resolvedLabel = label ?? getDictionary(locale).project.documentationPending;
   return (
     <div className={`relative border-y border-line py-7 ${className}`}>
       <div className="grid gap-4 lg:grid-cols-[220px_1fr] lg:gap-8">
-        <Meta className="text-signal">{label}</Meta>
+        <Meta className="text-signal">{resolvedLabel}</Meta>
         <div>
           <p className="text-[15px] font-semibold text-ink">{title}</p>
           <Body className="mt-2 max-w-2xl text-[14px] text-ink-secondary">{body}</Body>
@@ -25,10 +30,11 @@ export function DocumentationStatus({
   );
 }
 
-export function PendingEvidenceList({ evidence }: { evidence: Evidence[] }) {
+export function PendingEvidenceList({ evidence, locale = "en" }: { evidence: Evidence[]; locale?: Locale }) {
   if (evidence.length === 0) return null;
+  const t = getDictionary(locale).project;
   return (
-    <div className="border-t border-line" aria-label="Pending evidence list">
+    <div className="border-t border-line" aria-label={t.pendingEvidenceList}>
       {evidence.map((item, index) => (
         <div
           id={item.id}
@@ -40,7 +46,7 @@ export function PendingEvidenceList({ evidence }: { evidence: Evidence[] }) {
             <p className="text-[14px] font-medium text-ink">{item.title}</p>
             <Meta className="mt-1 block text-ink-secondary">{item.type}</Meta>
           </div>
-          <Meta className="text-ink-secondary">Pending</Meta>
+          <Meta className="text-ink-secondary">{t.pending}</Meta>
         </div>
       ))}
     </div>

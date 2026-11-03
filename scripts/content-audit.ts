@@ -1,18 +1,23 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import ts from "typescript";
-import { capabilityGroups } from "../src/content/capabilities";
-import { labItems } from "../src/content/lab";
-import { staticRouteMetadata } from "../src/content/metadata";
-import { originStages } from "../src/content/origin";
-import { profile } from "../src/content/profile";
-import { getEvidenceRecord, projects } from "../src/content/projects";
+import { getCapabilityGroups } from "../src/content/capabilities";
+import { getLabItems } from "../src/content/lab";
+import { getStaticRouteMetadata } from "../src/content/metadata";
+import { getOriginStages } from "../src/content/origin";
+import { getProfile } from "../src/content/profile";
+import { getEvidenceRecord, getProjects } from "../src/content/projects";
 import type { MediaAsset, SystemDiagram } from "../src/content/types";
 import { generatedAtmosphereAssets } from "../src/content/atmosphere";
+import { dictionary } from "../src/i18n/dictionary";
+import { locales, type Locale } from "../src/i18n/config";
 
 const repoRoot = process.cwd();
 const failures: string[] = [];
 const notices: string[] = [];
+
+const enProjects = getProjects("en");
+const zhProjects = getProjects("zh");
 
 function fail(message: string) {
   failures.push(message);
@@ -76,7 +81,7 @@ const evidenceIds = new Set<string>();
 let pendingEvidence = 0;
 let verifiedEvidence = 0;
 
-for (const project of projects) {
+for (const project of enProjects) {
   if (!project.oneLine.trim()) fail(`${project.slug}: homepage summary is empty.`);
   const summaryWords = project.oneLine.trim().split(/\s+/).length;
   if (summaryWords < 18 || summaryWords > 32) {
@@ -149,8 +154,102 @@ for (const project of projects) {
   }
 }
 
-checkMedia(profile.portrait, "profile/portrait", true);
-labItems.forEach((item) => checkMedia(item.media, `lab/${item.id}`, true));
+// --- Cross-locale parity -------------------------------------------------
+// Structural fields must match between locales: only the words differ.
+if (zhProjects.length !== enProjects.length) {
+  fail(`locale parity: en has ${enProjects.length} projects, zh has ${zhProjects.length}.`);
+} else {
+  enProjects.forEach((en, index) => {
+    const zh = zhProjects[index];
+    const where = `locale parity / ${en.slug}`;
+    if (!zh) {
+      fail(`${where}: missing in zh.`);
+      return;
+    }
+    if (zh.slug !== en.slug) fail(`${where}: zh slug is ${zh.slug}.`);
+    if (zh.index !== en.index) fail(`${where}: index differs.`);
+    if (zh.status !== en.status) fail(`${where}: status differs.`);
+    if (zh.publicationStatus !== en.publicationStatus) fail(`${where}: publicationStatus differs.`);
+    if (zh.featured !== en.featured) fail(`${where}: featured flag differs.`);
+    if (zh.year !== en.year) fail(`${where}: year differs.`);
+    if (zh.media.hero?.id !== en.media.hero?.id) fail(`${where}: hero media differs.`);
+    if (zh.media.gallery.length !== en.media.gallery.length) fail(`${where}: gallery length differs.`);
+    if (zh.evidence.length !== en.evidence.length) fail(`${where}: evidence count differs.`);
+    zh.evidence.forEach((item, i) => {
+      if (item.id !== en.evidence[i]?.id) fail(`${where}: evidence ${i} id differs.`);
+    });
+    if (zh.links.length !== en.links.length) fail(`${where}: link count differs.`);
+    zh.links.forEach((link, i) => {
+      if (link.href !== en.links[i]?.href) fail(`${where}: link ${i} href differs.`);
+    });
+
+    const zhText = [
+      zh.title, zh.shortTitle, zh.category, zh.oneLine,
+      zh.insight ?? "", zh.myRole ?? "", zh.result.summary ?? "", zh.next ?? "",
+      ...zh.problem, ...zh.solution, ...zh.build, ...zh.lessons,
+      ...zh.failures.flatMap((failure) => [failure.what, failure.why, failure.change ?? "", failure.lesson ?? ""]),
+      ...zh.evidence.map((item) => item.title),
+      ...zh.links.map((link) => link.label),
+    ];
+    zhText.forEach((value, i) => {
+      if (!value.trim()) fail(`${where}: zh text field ${i} is empty.`);
+      if (!/[\u3400-\u9fff]/.test(value) && value !== zh.shortTitle && value.length > 3) {
+        notices.push(`${where}: zh text field ${i} has no Chinese characters: "${value.slice(0, 40)}"`);
+      }
+    });
+  });
+}
+
+for (const locale of locales) {
+  const list = getProjects(locale);
+  for (const project of list) {
+    if (!project.title.trim() || !project.oneLine.trim()) fail(`${locale}/${project.slug}: title or summary is empty.`);
+  }
+}
+
+const enOrigin = getOriginStages("en");
+const zhOrigin = getOriginStages("zh");
+if (enOrigin.length !== zhOrigin.length) fail("locale parity: origin stage count differs.");
+enOrigin.forEach((stage, index) => {
+  if (zhOrigin[index]?.id !== stage.id) fail(`locale parity: origin stage ${index} id differs.`);
+  if (zhOrigin[index]?.evidenceRefs.length !== stage.evidenceRefs.length) {
+    fail(`locale parity: origin stage ${stage.id} evidence refs differ.`);
+  }
+});
+
+for (const group of getCapabilityGroups("en")) {
+  for (const item of group.items) {
+    if (!item.proofEvidenceId || !item.proofProjectSlug) {
+      fail(`Capability "${item.name}" must declare a project slug and a stable Evidence ID.`);
+      continue;
+    }
+    const record = getEvidenceRecord("en", item.proofEvidenceId);
+    if (!record) fail(`Capability "${item.name}" references unknown evidence ${item.proofEvidenceId}.`);
+    else if (record.project.slug !== item.proofProjectSlug) {
+      fail(`Capability "${item.name}" project/evidence references do not match.`);
+    }
+  }
+}
+
+for (const group of getCapabilityGroups("zh")) {
+  for (const item of group.items) {
+    if (!getEvidenceRecord("zh", item.proofEvidenceId!)) {
+      fail(`Capability zh "${item.name}" references unknown evidence ${item.proofEvidenceId}.`);
+    }
+  }
+}
+
+for (const stage of getOriginStages("en")) {
+  for (const id of stage.evidenceRefs) {
+    if (!getEvidenceRecord("en", id)) fail(`Origin stage ${stage.id} references unknown evidence ${id}.`);
+  }
+}
+
+checkMedia(getProfile("en").portrait, "profile/portrait", true);
+for (const locale of locales) {
+  getLabItems(locale).forEach((item) => checkMedia(item.media, `lab/${locale}/${item.id}`, true));
+}
+
 generatedAtmosphereAssets.forEach((media) => {
   checkMedia(media, `atmosphere/${media.id}`);
   if (media.scrubSrc && !publicFileExists(media.scrubSrc)) {
@@ -161,37 +260,42 @@ generatedAtmosphereAssets.forEach((media) => {
   }
 });
 
-for (const group of capabilityGroups) {
-  for (const item of group.items) {
-    if (!item.proofEvidenceId || !item.proofProjectSlug) {
-      fail(`Capability "${item.name}" must declare a project slug and a stable Evidence ID.`);
-      continue;
-    }
-    const record = getEvidenceRecord(item.proofEvidenceId);
-    if (!record) fail(`Capability "${item.name}" references unknown evidence ${item.proofEvidenceId}.`);
-    else if (record.project.slug !== item.proofProjectSlug) {
-      fail(`Capability "${item.name}" project/evidence references do not match.`);
-    }
-  }
-}
-
-for (const stage of originStages) {
-  for (const id of stage.evidenceRefs) {
-    if (!getEvidenceRecord(id)) fail(`Origin stage ${stage.id} references unknown evidence ${id}.`);
-  }
-}
-
 const metadataRoutes = new Set<string>();
-for (const entry of staticRouteMetadata) {
-  if (metadataRoutes.has(entry.route)) fail(`Duplicate metadata route: ${entry.route}.`);
-  metadataRoutes.add(entry.route);
-  if (!entry.title.trim() || !entry.description.trim()) fail(`${entry.route}: metadata title and description are required.`);
-  if (!publicFileExists(entry.ogImage)) fail(`${entry.route}: OG image does not exist: ${entry.ogImage}`);
+for (const locale of locales) {
+  const routesForLocale = new Set<string>();
+  for (const entry of getStaticRouteMetadata(locale)) {
+    if (routesForLocale.has(entry.route)) fail(`Duplicate metadata route (${locale}): ${entry.route}.`);
+    routesForLocale.add(entry.route);
+    if (!entry.title.trim() || !entry.description.trim()) fail(`${locale}/${entry.route}: metadata title and description are required.`);
+    if (!publicFileExists(entry.ogImage)) fail(`${entry.route}: OG image does not exist: ${entry.ogImage}`);
+  }
+  for (const route of routesForLocale) metadataRoutes.add(`${locale}:${route}`);
 }
 
-const sourceFiles = ["src/app", "src/components", "src/content"]
+for (const locale of locales) {
+  const dict = dictionary[locale];
+  const missing: string[] = [];
+  const checkStrings = (node: unknown, trail: string) => {
+    if (typeof node === "string") {
+      if (!node.trim()) missing.push(trail);
+      return;
+    }
+    if (node && typeof node === "object") {
+      for (const [key, value] of Object.entries(node)) checkStrings(value, `${trail}.${key}`);
+    }
+  };
+  checkStrings(dict, "dictionary");
+  missing.forEach((trail) => fail(`${locale}: dictionary string is empty: ${trail}`));
+}
+
+const sourceFiles = ["src/app", "src/components", "src/content", "src/i18n"]
   .flatMap((directory) => walk(path.join(repoRoot, directory)))
   .filter((file) => /\.tsx?$/.test(file));
+
+// Chinese is allowed only in the content and dictionary layers. Everything else
+// renders through those layers, so a Chinese literal elsewhere is a leak.
+const chineseAllowed = (relative: string) =>
+  relative.startsWith("src/content/") || relative.startsWith("src/i18n/");
 
 for (const file of sourceFiles) {
   const source = readFileSync(file, "utf8");
@@ -211,9 +315,9 @@ for (const file of sourceFiles) {
     const visibleText = ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node) || ts.isJsxText(node)
       ? node.text
       : null;
-    if (visibleText && /[\u3400-\u9fff]/.test(visibleText)) {
+    if (visibleText && /[\u3400-\u9fff]/.test(visibleText) && !chineseAllowed(relative)) {
       const line = sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1;
-      fail(`${relative}:${line}: user-visible string contains Chinese characters.`);
+      fail(`${relative}:${line}: user-visible string contains Chinese characters outside src/content or src/i18n.`);
     }
     if (relative.endsWith("/page.tsx") && ts.isStringLiteral(node)) {
       const parent = node.parent;
@@ -241,6 +345,6 @@ if (failures.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Content audit passed: ${projects.length} projects, ${evidenceIds.size} stable evidence IDs (${verifiedEvidence} verified, ${pendingEvidence} pending), ${metadataRoutes.size} metadata routes.`,
+    `Content audit passed: ${enProjects.length} projects x ${locales.length} locales, ${evidenceIds.size} stable evidence IDs (${verifiedEvidence} verified, ${pendingEvidence} pending), ${metadataRoutes.size} metadata routes.`,
   );
 }

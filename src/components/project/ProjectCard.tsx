@@ -8,6 +8,8 @@ import { Meta, H3, Body } from "../ui/typography";
 import { ProjectSignalPlate } from "./ProjectSignalPlate";
 import { AtmosphereFrame } from "../ui/AtmosphereFrame";
 import { projectAtmosphere } from "@/content/atmosphere";
+import { getDictionary } from "@/i18n/dictionary";
+import { localePath, type Locale } from "@/i18n/config";
 
 const statusTone: Record<Project["status"], "signal" | "accent" | "neutral"> = {
   "active-research": "signal",
@@ -17,7 +19,8 @@ const statusTone: Record<Project["status"], "signal" | "accent" | "neutral"> = {
   completed: "accent",
 };
 
-export function FeaturedProjectCard({ project }: { project: Project }) {
+export function FeaturedProjectCard({ locale, project }: { locale: Locale; project: Project }) {
+  const t = getDictionary(locale);
   const isPublished = project.publicationStatus === "published";
   const projectHero = project.media.hero?.status !== "pending" ? project.media.hero : null;
   const atmosphere = projectAtmosphere[project.slug];
@@ -28,7 +31,7 @@ export function FeaturedProjectCard({ project }: { project: Project }) {
         <div className="flex items-start justify-between gap-4 md:flex-col">
           <ProjectIndex value={project.index} />
           <StatusPill
-            label={isPublished ? project.status : "publication review"}
+            label={isPublished ? t.status[project.status] : t.status["publication-review"]}
             tone={isPublished ? statusTone[project.status] : "neutral"}
           />
         </div>
@@ -39,22 +42,23 @@ export function FeaturedProjectCard({ project }: { project: Project }) {
             alt={projectHero.alt}
             aspect="16/9"
             fit={projectHero.height > projectHero.width ? "contain" : "cover"}
+            locale={locale}
             transitionName={`project-media-${project.slug}`}
           />
         ) : atmosphere ? (
-          <AtmosphereFrame media={atmosphere} aspect="3/2" transitionName={`project-media-${project.slug}`} />
-        ) : <ProjectSignalPlate project={project} compact />}
+          <AtmosphereFrame media={atmosphere} aspect="3/2" locale={locale} transitionName={`project-media-${project.slug}`} />
+        ) : <ProjectSignalPlate project={project} locale={locale} compact />}
       content={(
         <div className="flex h-full flex-col items-start justify-center">
         <Meta className="text-ink-secondary">{project.category}</Meta>
         <H3 className="mt-4 max-w-md">{project.shortTitle}</H3>
         <Body className="mt-4 max-w-sm text-ink-secondary">{project.oneLine}</Body>
         <Link
-          href={`/experiments/${project.slug}`}
+          href={localePath(locale, `/experiments/${project.slug}`)}
           transitionTypes={["project-forward"]}
           className="mt-8 inline-flex items-center gap-2 border-b border-accent/30 pb-1 font-mono text-[12px] font-semibold uppercase tracking-[0.08em] text-accent transition-colors hover:border-accent"
         >
-          Open case
+          {t.experiments.openCase}
           <ArrowRight size={15} aria-hidden />
         </Link>
         </div>
@@ -63,10 +67,11 @@ export function FeaturedProjectCard({ project }: { project: Project }) {
   );
 }
 
-export function ArchiveProjectRow({ project }: { project: Project }) {
+export function ArchiveProjectRow({ locale, project }: { locale: Locale; project: Project }) {
+  const t = getDictionary(locale);
   return (
     <Link
-      href={`/experiments/${project.slug}`}
+      href={localePath(locale, `/experiments/${project.slug}`)}
       className="group grid min-w-0 gap-5 border-b border-line py-6 transition-colors duration-200 hover:bg-surface/60 md:grid-cols-[140px_minmax(0,1fr)] md:items-center md:gap-6 md:px-4"
     >
       {project.media.hero ? (
@@ -75,13 +80,14 @@ export function ArchiveProjectRow({ project }: { project: Project }) {
           alt={project.media.hero.alt}
           aspect="16/9"
           fit={project.media.hero.height > project.media.hero.width ? "contain" : "cover"}
+          locale={locale}
           className="w-full"
         />
       ) : <span className="hidden md:block" />}
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-3">
           <ProjectIndex value={project.index} />
-          <StatusPill label={project.status.replaceAll("-", " ")} tone={statusTone[project.status]} />
+          <StatusPill label={t.status[project.status]} tone={statusTone[project.status]} />
         </div>
         <span className="mt-3 block text-[18px] font-semibold text-ink">{project.shortTitle}</span>
         <span className="mt-2 block max-w-2xl text-[14px] leading-relaxed text-ink-secondary">{project.oneLine}</span>
