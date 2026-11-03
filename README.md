@@ -4,7 +4,7 @@ Cinematic engineering portfolio — AI × Robotics × Hardware × Physical AI.
 
 > Building AI Systems That Enter the Physical World.
 
-The V1.6 UI/UX page layer is complete locally: Home is a fixed cinematic laboratory stage whose three videos are scrubbed directly by scroll position, Experiments is an editorial exhibit index, and project pages are engineering records with sticky chapter navigation. Production completion is tracked separately because real project Evidence, publication permission, the formal Blender V02 scene, portrait/real-project video assets, a production URL and online QA are still pending.
+The V1.6 UI/UX page layer is complete: Home is a fixed cinematic laboratory stage whose three videos are scrubbed directly by scroll position, Experiments is an editorial exhibit index, and project pages are engineering records with sticky chapter navigation. A Vercel production deployment exists, but production completion is tracked separately because real project Evidence, publication permission, the formal Blender V02 scene, portrait/real-project video assets, the final publicly reachable domain, analytics, and online QA are still pending.
 
 ## 运行
 
@@ -32,7 +32,7 @@ pnpm dev        # http://localhost:3000
 - `NEXT_PUBLIC_SITE_URL`：生产必填。未配置时，站点不会声明虚假 canonical/OG URL，`robots.txt` 会禁止抓取，`sitemap.xml` 保持为空。
 - `NEXT_PUBLIC_ANALYTICS_ENDPOINT`：只有在确定唯一接收端并完成事件验证后配置。
 - 未发布项目不会进入 sitemap；pending 项目详情会输出 `noindex, nofollow`。
-- 部署、production URL、线上分享卡和 Lighthouse 尚未完成，状态以 `docs/EXECUTION_STATUS.md` 的 C0–C10 为准。
+- Vercel production 已存在；最终可访问域名、生产环境变量复核、analytics、线上分享卡和 Lighthouse 尚未收口，状态以 `docs/DEPLOYMENT_STATUS.md` 与 `docs/EXECUTION_STATUS.md` 的 C0–C10 为准。
 
 ## 内容维护
 

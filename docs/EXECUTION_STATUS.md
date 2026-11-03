@@ -5,7 +5,34 @@
 
 > P0–P11 的 DONE 仅表示第一版脚手架/组件曾经完成，不能证明真实内容、正式资产、部署或生产交接完成。当前唯一生产收口依据是主计划第 13 节的 C0–C10。
 
-## V1.3 13-output Page Completion
+## V1.8 Current delivery gate (2026-10-22)
+
+> 用户已授权将本地项目素材用于个人网站展示。本地生产构建与下列 20 个公开输出均通过 smoke test；代码已推至 GitHub `master`（`a52b8fb`），但当前 Vercel 未自动触发部署且本机无 Vercel 登录凭据，线上版本仍待部署。
+
+| Output | 页面责任 | 页面状态 | Production 状态 |
+|---|---|---|---|
+| `/` | 视频滚动驱动空间、项目热点、Origin、Focus、Contact | PAGE_COMPLETE | V01 3D 仍为 fallback；自有域名待购置 |
+| `/origin` | 四阶段工程索引 | PAGE_COMPLETE | 年份/早期个人资料保持未知字段 |
+| `/experiments` | 10 项带媒体记录 + 全部 40 个公开仓库入口 | PAGE_COMPLETE | 仓库数不等同独立项目数；继续补齐其余目录归并 |
+| `/experiments/physical-link` | 概念氛围与研究档案 | PAGE_COMPLETE | 完整工程事实/实物 Evidence 未提供 |
+| `/experiments/ai-native-hardware-workspace` | 实际工作台图与档案 | PAGE_COMPLETE | 设备闭环视频及完整事实可后续补充 |
+| `/experiments/bci-dexterous-hand` | 实验台图与档案 | PAGE_COMPLETE | 连续真实演示视频未提供 |
+| `/experiments/capsule-surface-inspection` | 黑客松设备/界面画廊 | PAGE_COMPLETE | 未知角色、日期和量化结果不作推断 |
+| `/experiments/cozmio` | 软件界面档案 | PAGE_COMPLETE | 未知角色、日期和量化结果不作推断 |
+| `/experiments/turbo-editor` | HarmonyOS 界面档案 | PAGE_COMPLETE | 未知角色、日期和量化结果不作推断 |
+| `/experiments/youyuan-jingmeng` | 游戏与制作过程档案 | PAGE_COMPLETE | 未知角色、引擎和版权信息不作推断 |
+| `/experiments/emotional-habitat` | 应用界面与活动画廊 | PAGE_COMPLETE | 未知角色和量化结果不作推断 |
+| `/experiments/tripo-cgi-film` | CGI 作品与制作过程 | PAGE_COMPLETE | 已标注 CGI，不作为实物机器人证据 |
+| `/experiments/touchsight-tactile-vision` | 实物/概念媒体分层展示 | PAGE_COMPLETE | 概念图已明确标注，缺少补充项目事实 |
+| `/capabilities` | 能力与项目来源索引 | PAGE_COMPLETE | 具体 claim 保持保守 |
+| `/lab` | 现场与工程记录 | PAGE_COMPLETE | 仅显示有来源的记录 |
+| `/vision` | Now / Next / Long-term 与滚动视频 | PAGE_COMPLETE | 生成视频为 atmosphere |
+| `/about` | 身份短文与资料槽位 | PAGE_COMPLETE | portrait / contact 仍缺失 |
+| 404 | 品牌化索引恢复导航 | PAGE_COMPLETE | 不阻塞 |
+| `/robots.txt` | 当前 Vercel production URL | PAGE_COMPLETE | 自有域名注册后再切换 |
+| `/sitemap.xml` | 所有 10 项项目详情及公开页面 | PAGE_COMPLETE | Vercel production push 后复验 |
+
+## V1.3 13-output Baseline
 
 > 页面状态：`PAGE_COMPLETE` / `IN_PROGRESS` / `BLOCKED`。`PAGE_COMPLETE` 只证明本地页面与技术行为完成，不覆盖下方 C0–C10。
 
@@ -13,10 +40,10 @@
 |---|---|---|---|
 | `/` | 连续实验室时间轴、项目入口、Origin、Focus、Contact | PAGE_COMPLETE | C6/C7/C9 未完成 |
 | `/origin` | 四阶段工程索引、sticky 阶段导航、真实年份关卡 | PAGE_COMPLETE | C2/C6 未完成 |
-| `/experiments` | 三项大型展品记录、紧凑 Archive 状态 | PAGE_COMPLETE | C3–C6 未完成 |
-| `/experiments/physical-link` | 大媒体 Hero、sticky 章节索引、集中式 publication review | PAGE_COMPLETE | C1/C3 阻塞 |
-| `/experiments/ai-native-hardware-workspace` | 大媒体 Hero、sticky 章节索引、集中式 publication review | PAGE_COMPLETE | C1/C4 阻塞 |
-| `/experiments/bci-dexterous-hand` | 大媒体 Hero、sticky 章节索引、集中式 publication review | PAGE_COMPLETE | C1/C5 阻塞 |
+| `/experiments` | 三项旗舰展品 + 全部个人项目的完整索引；每项可显示事实核验状态 | PAGE_COMPLETE | C1/C3–C6 的长篇事实内容仍在扩充 |
+| `/experiments/physical-link` | 大媒体 Hero、sticky 章节索引、概念氛围档案 | PAGE_COMPLETE | C1/C3 事实内容仍待扩展 |
+| `/experiments/ai-native-hardware-workspace` | 大媒体 Hero、sticky 章节索引、实际界面档案 | PAGE_COMPLETE | C1/C4 事实内容仍待扩展 |
+| `/experiments/bci-dexterous-hand` | 大媒体 Hero、sticky 章节索引、实际实验图档案 | PAGE_COMPLETE | C1/C5 事实内容仍待扩展 |
 | `/capabilities` | 四组 proof matrix、verified-only 链接 | PAGE_COMPLETE | C6 阻塞 |
 | `/lab` | 工程日志索引、单条空状态、空分类隐藏 | PAGE_COMPLETE | C6 阻塞 |
 | `/vision` | Now / Next / Long-term 与独立 atmosphere 窗口 | PAGE_COMPLETE | 可选氛围视频不阻塞 |
@@ -30,16 +57,16 @@
 | Task | 内容 | 状态 | 当前阻塞 / 下一证明 |
 |---|---|---|---|
 | C0 | 文档真实性校准与唯一缺口编号 | DONE | 主计划第 13 节、当前审计和状态覆盖已建立 |
-| C1 | Profile、三项目事实包、Evidence manifest、公开许可 | BLOCKED_ASSET | 本地仓库与公开 GitHub 已完成首轮搜集并标准化；用户选择全部保持待确认 |
+| C1 | Profile、旗舰项目事实包、完整项目目录、Evidence manifest | IN_PROGRESS | 已展示 33 张静态素材及相关视频；Experiments 收录 10 个媒体项目页和账号公开的 40 个 GitHub 仓库链接。仍需将剩余仓库归并至独立项目，并补齐未知角色、日期、团队等公开事实 |
 | C2 | Profile / Origin / About 事实与真实 portrait | BLOCKED_ASSET | 联系方式、年份、早期证据、portrait、硬件近景 |
-| C3 | PhysicalLink 完整 Case Study | BLOCKED_ASSET | 候选研究边界已整理；用户选择资料保持待确认，公开正文和 Evidence 不发布 |
-| C4 | AI-Native Hardware Workspace 完整 Case Study | BLOCKED_ASSET | 候选界面、测试和失败记录已定位；用户选择资料保持待确认 |
-| C5 | BCI × Dexterous Hand 完整 Case Study | BLOCKED_ASSET | 候选校准、控制和失败日志已定位；用户选择资料保持待确认 |
+| C3 | PhysicalLink 完整 Case Study | BLOCKED_ASSET | 概念氛围已展示；尚无真实产品实现与对应实物媒体 |
+| C4 | AI-Native Hardware Workspace 完整 Case Study | BLOCKED_ASSET | 实际界面截图已展示；设备闭环演示及完整公开说明仍缺 |
+| C5 | BCI × Dexterous Hand 完整 Case Study | BLOCKED_ASSET | 实际实验照片已展示；连续真实演示视频仍缺 |
 | C6 | 跨页面 Evidence、Capabilities、Origin、Lab | BLOCKED_ASSET | 依赖 C2–C5 的稳定 Evidence ID 和真实日志 |
 | C7 | Blender 正式 3D、优化指标与最终派生图 | TODO | 需先启动可连接 Blender 环境；当前 V01 GLB 保留 |
-| C8 | 真实项目视频与氛围视频收口 | BLOCKED_ASSET | 3 条生成氛围视频已处理并接入；三个真实项目 Evidence 视频仍待用户提供 |
-| C9 | Production URL、metadata、analytics、Vercel 发布 | TODO | 依赖公开内容锁定、Git remote 和部署环境 |
-| C10 | clean-room、线上 Lighthouse、内容签字与文档交接 | TODO | 依赖 C1–C9 完成 |
+| C8 | 真实项目视频与氛围视频收口 | BLOCKED_ASSET | 3 条生成氛围视频已处理并接入；本地 BCI / tactile 成片均为生成或概念媒体，不能替代三个真实项目 Evidence 视频 |
+| C9 | Production URL、metadata、analytics、Vercel 发布 | IN_PROGRESS | 本轮 commit `a52b8fb` 已在 GitHub `master`，但没有检测到 Vercel Git deployment；`vercel whoami` 确认本机无凭据。需先 `vercel login` 或恢复 Git integration，再发布并在线复验。推荐自有域名 `morgandigitallab.com` 尚未注册/绑定 |
+| C10 | clean-room、线上 Lighthouse、内容签字与文档交接 | TODO | 本地 Gate 已通过；线上 Lighthouse、分享卡、外链、最终域名与内容签字仍待完成 |
 
 ### 已完成的生产基础设施（不覆盖上表的素材阻塞）
 
@@ -86,7 +113,7 @@ R3 的 V01 程序化模型、poster 和氛围图已完成，但正式 Blender V0
 |---|---|---|---|
 | V14-T01 | 三条根目录生成视频识别、裁切、静音、规范命名与 poster | DONE | `public/video/`、`public/posters/`、`docs/ASSET_GAPS.md` |
 | V14-T02 | Home 视频优先空间入口与三个设备热点 | DONE | `SpatialLabHero`；无视频时 poster/HTML 完整可用 |
-| V14-T03 | Experiments 空间底层 + 档案索引层 | DONE | `SpatialArchiveHero`；固定三项目顺序保持 |
+| V14-T03 | Experiments 空间底层 + 档案索引层 | IN_PROGRESS | `SpatialArchiveHero`；首页三项旗舰顺序保持，但完整个人项目目录尚未入库 |
 | V14-T04 | PhysicalLink / Vision 氛围视频接入 | DONE | `AtmosphereFrame` 支持生成视频并强制显示非 Evidence 标签 |
 | V14-T05 | INDEX 导航、Contact、Footer 去企业官网化 | DONE | 七项导航未变；深蓝大 Banner 已移除 |
 | V14-T06 | 移动端与 reduced-motion 降级 | DONE | Mobile netlog MP4 命中 0；poster、文字与链接可用 |

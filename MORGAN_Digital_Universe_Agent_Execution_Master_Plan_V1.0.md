@@ -2,6 +2,7 @@
 ## Agent Execution Master Plan V1.0
 
 > V1.1 remediation（2026-09-27）：保留本计划的产品、路由、技术栈和真实性规则；执行状态以 `docs/EXECUTION_STATUS.md` 的 R0–R8 为当前交付依据。V1.1 统一使用英文、内容优先的工业编辑视觉，并将生成氛围资产与真实 Evidence 类型隔离。
+> V1.7 全项目档案覆盖（2026-10-19）：`/experiments` 必须收录所有确认属于 Morgan 的独立项目，不设 Archive 数量上限；完整映射规则与待办见 `docs/DECISIONS_LOCKED.md` 和 `docs/ASSET_GAPS.md`。
 
 > 用途：直接交给 Coding Agent / Local Agent 执行。
 > 本文件不是概念稿，不允许执行 Agent 重新做产品定位、重新设计信息架构或重新选技术栈。
@@ -69,7 +70,7 @@ MORGAN DIGITAL UNIVERSE 是一个 **Cinematic Personal Portfolio / Narrative Por
 2. **AI-Native Hardware Workspace — Natural Language to Real Hardware**
 3. **BCI × Dexterous Hand — Intent to Physical Action**
 
-其他项目进入 Archive，不抢首页主叙事。
+其他项目进入 `/experiments` 的完整项目 Archive，不抢首页主叙事。所有真实个人项目都要有目录条目，不设数量上限；资料待确认的条目保留为内部 `PENDING`，归属及事实确认后再展示对应公开字段。多个仓库可归属于同一个项目，工具、fork、参考库和发布镜像按真实关系注明，不能因此漏掉任何独立项目。
 
 ---
 
@@ -1705,7 +1706,7 @@ C2–C5 可在事实包分别确认后并行编辑，但 C6 必须等三个项�
 
 ### C6-T03 — Archive
 
-如果 Digital / Intelligence 阶段需要早期项目支撑，新增经确认的 Archive 项目；如果用户不允许公开，则保留阶段事实文本并记录不公开原因，不创建虚构项目。
+完整盘点所有本地与 GitHub 项目，把每一个确认属于 Morgan 的独立项目加入 Experiments Archive，不设数量上限。资料未齐时保留项目目录条目并标记 pending；归属或公开许可未确认时只保留在内部清单，确认后再公开对应内容。多个仓库可归并到同一项目，工具、fork、参考库和发布镜像按真实关系注明；不得为缩减数量而遗漏独立项目，也不得编造事实。
 
 **Gate C6**：Capabilities、Origin、首页 Evidence 和 Lab 的每条 proof 都能落到真实材料；无循环自证。
 
@@ -1974,3 +1975,34 @@ Home 8 秒和 Vision 6 秒视频由用户按现有提示词生成后交回；实
 - Mobile、tablet、reduced motion 与 no-JS 继续使用 V1.5 的 poster + 自然内容路径，不加载 scrub MP4。
 
 实施记录（2026-09-29）：三个 scrub 文件完成并接入。生产模式实测 PhysicalLink 在前进滚动后由 1.95s 反向回到 0.57s，停止 800ms 的时间差为 0；Signal / Origin 在 70% 总进度停在约 2.0s。Desktop 创建 3 个 scrub video，390px、768px 与 reduced motion 创建 0 个 video 且 MP4 请求为 0。`pnpm check:build` 通过，完整记录见 `docs/QA_V1.6.md`。
+
+---
+
+# 18. V1.8 素材接入、全项目入口与上线
+
+> 生效日期：2026-10-22。用户明确确认 `项目图片` 批次中的材料真实并授权用于个人网站展示，要求按完整项目方向整理并上线。该授权覆盖材料展示，不代表允许补写未提供的履历或性能事实。
+
+## 18.1 素材交付
+
+- 将 33 张静态图从本地素材批次生成网页 WebP 衍生版本；原始项目文件留在 `项目图片`，不改名、不覆盖、不推送。
+- 将三段生成氛围视频分别处理为网页播放版、scroll-scrub 版和 poster；将 Tripo CGI 短片单独压缩并标注 CGI。原始视频保留。
+- 将媒体按项目组展示在首页、Experiments、项目详情和 Lab；不再显示素材真实性/许可待办挡住用户提供的媒体。
+- 生成式视频、概念海报和 CGI 成片继续明确标记为概念媒体，不包装成真实硬件测试。
+
+## 18.2 全项目导航
+
+- Experiments 提供 10 个带图片或视频的项目档案页；保留三个旗舰项目作为首页主线。
+- 同一索引提供该 GitHub 账号当时全部 40 个公开仓库的直接入口，避免将仓库数误写成独立项目数。
+- 后续确认新独立项目时，添加记录与对应源码，不要求用户先筛选、重命名或逐张挑选材料。
+
+## 18.3 品牌域名与部署
+
+- 网站公开品牌锁定为 `MORGAN / DIGITAL LAB`；首选域名 `morgandigitallab.com`，无连字符、易口述且匹配品牌。`morgan-digital-lab.com` 为备选。
+- RDAP 当前无注册记录不保证域名仍可购买，也不代表已归用户所有；只在用户本人购买/控制后，才能把它设为 canonical 并绑定 Vercel。
+- 当前代码发布沿用现有 GitHub 仓库和 Vercel 项目，不新建站、不改框架。commit `a52b8fb` 已推送 GitHub `master`，只包含网站代码及优化后的公开媒体；未包含原始素材目录或本轮内部文档。
+- GitHub push 未触发 Vercel deployment；本地 `vercel whoami` 返回无凭据。因此生产发布需用户先在此环境登录 Vercel，或恢复 GitHub → Vercel integration；不可把“GitHub 已更新”误报成“网站已上线”。
+- 发布后检查生产构建、全部公开路由、媒体与 metadata。未取得域名所有权时，继续使用已配置的 Vercel production URL，不写入虚假域名。
+
+## 18.4 实施状态
+
+本地生产构建 `pnpm check:build` 通过；10 个项目详情页、其余核心页面和 robots/sitemap 均通过生产服务 smoke test。390px 首页不请求 MP4，控制台无错误/警告。GitHub `master` 已包含 commit `a52b8fb`；Vercel 尚未部署此 commit（本机 CLI 无登录凭据且 Git integration 未触发），待恢复发布权限后完成线上回归；完整交接见 `docs/EXECUTION_STATUS.md` 与 `docs/ASSET_GAPS.md`。

@@ -1,0 +1,40 @@
+# Vercel 上传忽略清单
+# 注意：Vercel 不读 .gitignore，这里必须单独声明
+# 目标：不把本地开发产物 / 日志 / 缓存传到线上，缩小上传体积、加快构建
+
+# 依赖与构建产物（Vercel 侧自行安装和构建）
+node_modules
+.next
+out
+build
+dist
+
+# 本地工具产物
+.playwright-mcp
+logs
+artifacts
+
+# 本地环境与密钥
+.env
+.env.*
+!.env.example
+
+# 版本控制与编辑器
+.git
+.gitignore
+.vscode
+.idea
+
+# Vercel 自身
+.vercel
+
+# 本地原始素材库（网页用的是 public/ 下的压缩派生副本，原始件不参与构建）
+项目图片
+
+# 文档与杂项（不参与构建）
+*.md
+!README.md
+*.docx
+*.log
+.DS_Store
+Thumbs.db

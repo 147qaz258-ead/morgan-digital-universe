@@ -46,3 +46,7 @@ next-env.d.ts
 
 # raw source video working files (rendered assets live in public/video/)
 /*.mp4
+
+# raw project media library — optimized/versioned derivatives live in public/images/projects/
+# kept local by design (see docs/PROJECT_IMAGE_INTAKE_2026-10-22.md); never commit 50MB+ originals
+/项目图片/
