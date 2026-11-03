@@ -5,7 +5,21 @@
 
 > P0–P11 的 DONE 仅表示第一版脚手架/组件曾经完成，不能证明真实内容、正式资产、部署或生产交接完成。当前唯一生产收口依据是主计划第 13 节的 C0–C10。
 
-## V1.8 Current delivery gate (2026-10-22)
+## V1.9 Project case content (2026-11-03)
+
+> 触发原因：实测十个项目详情页可见正文仅 676–913 字符，`problem` / `insight` / `solution` / `build` / `myRole` / `stack` 在 `src/content/projects.ts` 中 10/10 为空，页面按条件渲染导致整段正文被跳过，点进项目页只有标题、图注和导航。
+
+| Task | 内容 | 状态 |
+|---|---|---|
+| V19-T01 | 10 个项目补齐 problem / insight / solution / build / myRole / stack / failures / result.summary / lessons / next | DONE |
+| V19-T02 | AI-Native Hardware Workspace 标题由 "Natural Language to Real Hardware" 降级为 "Auditable Circuit Authoring"（遵循 `LOCAL_PROJECT_SOURCE_AUDIT` 的发布边界） | DONE |
+| V19-T03 | 十个详情页正文由 676–913 字符提升至 3,386–4,735 字符，章节 02–10 全部渲染 | DONE |
+| V19-T04 | Tripo 30 秒 CGI 视频确认落在 gallery 内渲染（`media.video` 字段无渲染出口） | DONE |
+| V19-T05 | `pnpm check:build` 通过：22 个静态页，10 个项目详情全部 SSG | DONE |
+
+写作边界：只写入 `docs/LOCAL_PROJECT_SOURCE_AUDIT.md` 与 `docs/PROJECT_IMAGE_INTAKE_2026-10-22.md` 已核实的内容，以及图片本身可见的事实。年份、团队、贡献者、量化指标继续为 `null`；PhysicalLink 保持研究阶段定位，其 hero 为生成氛围图（`AtmosphereFrame` 强制标注），不作为 Evidence。**C1 仍为 IN_PROGRESS**——真实 Evidence（连续输入到动作视频、PCB 实拍、portrait）仍未提供。
+
+## V1.8 Delivery gate (2026-10-22)
 
 > 用户已授权将本地项目素材用于个人网站展示。本地生产构建与下列 20 个公开输出均通过 smoke test；代码已推至 GitHub `master`（`a52b8fb`），但当前 Vercel 未自动触发部署且本机无 Vercel 登录凭据，线上版本仍待部署。
 
