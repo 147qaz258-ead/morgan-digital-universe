@@ -57,6 +57,14 @@ export function AmbientVideo({
   const [visible, setVisible] = useState(eagerLoad);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
+  // 影片比海报重一到两个数量级。等海报落地再挂载 video，让首屏先出画面，
+  // 否则 scrub 影片的字节会和海报抢带宽，LCP 被自己的背景片拖慢。
+  const [posterSettled, setPosterSettled] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setPosterSettled(true), 1800);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (!viewportLoad || eagerLoad || inRange) return;
@@ -100,7 +108,13 @@ export function AmbientVideo({
   }, [active, playbackMode, reducedMotion, visible, ready]);
 
   const controlledLoad = loadPolicy === "controlled" && loadWhen;
-  const shouldLoadVideo = Boolean(src) && isDesktop && !reducedMotion && (inRange || controlledLoad) && !failed;
+  const shouldLoadVideo =
+    Boolean(src) &&
+    isDesktop &&
+    !reducedMotion &&
+    (inRange || controlledLoad) &&
+    !failed &&
+    (playbackMode !== "scrub" || posterSettled);
 
   return (
     <div ref={rootRef} className={`overflow-hidden ${className}`}>
@@ -111,6 +125,7 @@ export function AmbientVideo({
         loading={priority ? "eager" : undefined}
         fetchPriority={priority ? "high" : undefined}
         sizes={sizes}
+        onLoad={() => setPosterSettled(true)}
         className={`object-cover ${mediaClassName}`}
       />
       {shouldLoadVideo ? (

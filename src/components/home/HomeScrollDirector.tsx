@@ -386,10 +386,14 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
 
       <div className="home-natural-experience bg-bg lg:hidden">
         <div className="relative min-h-[760px] overflow-hidden text-white sm:min-h-[820px]">
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${motionAtmosphere.homeLab.poster ?? ""})` }}
+          <Image
+            src={motionAtmosphere.homeLab.poster ?? ""}
+            alt=""
+            fill
+            sizes="100vw"
+            loading="eager"
+            fetchPriority="high"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,27,42,.04),rgba(13,27,42,.88))]" />
           <div className="absolute inset-x-0 bottom-0 px-5 pb-9">

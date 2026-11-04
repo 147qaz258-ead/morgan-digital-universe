@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
     // unmatched URLs need a full-document 404 that bypasses the layout.
     globalNotFound: true,
   },
+  images: {
+    // 首屏 LCP 元素就是一张海报，AVIF 比 WebP 再省约 40%；不支持的客户端回落到 WebP。
+    formats: ["image/avif", "image/webp"],
+  },
   async redirects() {
     return [
       { source: "/", destination: "/en", permanent: false },
