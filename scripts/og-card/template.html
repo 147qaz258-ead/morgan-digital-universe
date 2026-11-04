@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: Geist;
+        src: url("Geist-Regular.woff2") format("woff2");
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: Geist;
+        src: url("Geist-SemiBold.woff2") format("woff2");
+        font-weight: 600;
+      }
+      @font-face {
+        font-family: GeistMono;
+        src: url("GeistMono-Medium.woff2") format("woff2");
+        font-weight: 500;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: #f6f7f5;
+        color: #0d1b2a;
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .card {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        padding: 64px 72px 56px;
+        display: flex;
+        flex-direction: column;
+      }
+      .grid {
+        position: absolute;
+        inset: 0 0 0 auto;
+        width: 420px;
+        pointer-events: none;
+        background-image: linear-gradient(90deg, rgba(13, 27, 42, 0.07) 1px, transparent 1px),
+          linear-gradient(180deg, rgba(13, 27, 42, 0.07) 1px, transparent 1px);
+        background-size: 52px 52px;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+        mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+      }
+      .top {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .body,
+      .foot {
+        position: relative;
+      }
+      .mark {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-family: GeistMono, monospace;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .square {
+        width: 14px;
+        height: 14px;
+        background: #e66a21;
+      }
+      .tag {
+        font-family: GeistMono, monospace;
+        font-size: 13px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #5a6673;
+      }
+      .rule {
+        margin-top: 26px;
+        height: 1px;
+        background: #d5dbd4;
+      }
+      .body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-bottom: 8px;
+      }
+      .kicker {
+        font-family: GeistMono, monospace;
+        font-size: 13px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #b84a0b;
+        margin-bottom: 26px;
+      }
+      h1 {
+        font-size: 86px;
+        line-height: 0.94;
+        letter-spacing: -0.045em;
+        font-weight: 600;
+        max-width: 20ch;
+      }
+      h1.zh {
+        font-size: 78px;
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+        max-width: 15ch;
+        font-family: "Microsoft YaHei", "PingFang SC", Geist, sans-serif;
+      }
+      .support {
+        margin-top: 30px;
+        font-size: 24px;
+        line-height: 1.45;
+        color: #45525f;
+        max-width: 46ch;
+      }
+      .foot {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        border-top: 1px solid #d5dbd4;
+        padding-top: 22px;
+      }
+      .who {
+        font-family: GeistMono, monospace;
+        font-size: 14px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .who span {
+        color: #5a6673;
+      }
+      .url {
+        font-family: GeistMono, monospace;
+        font-size: 14px;
+        letter-spacing: 0.06em;
+        color: #153e75;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="grid"></div>
+      <div class="top">
+        <div class="mark"><span class="square"></span>MORGAN / DIGITAL LAB</div>
+        <div class="tag">AI × ROBOTICS × HARDWARE</div>
+      </div>
+      <div class="rule"></div>
+      <div class="body">
+        <div class="kicker">{{KICKER}}</div>
+        <h1 class="{{CLASS}}">{{HEADLINE}}</h1>
+        <p class="support">{{SUPPORT}}</p>
+      </div>
+      <div class="foot">
+        <div class="who">WU JINHONG <span>/ CLAUDIAN</span></div>
+        <div class="url">morgan-digital-universe.vercel.app</div>
+      </div>
+    </div>
+  </body>
+</html>

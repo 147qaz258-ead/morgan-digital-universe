@@ -4,7 +4,6 @@ import type { RouteMetadataEntry } from "@/content/metadata";
 import { getRouteMetadata } from "@/content/metadata";
 import type { Locale } from "@/i18n/config";
 import { localeMeta, localePath } from "@/i18n/config";
-import { siteUrl } from "@/lib/site-url";
 
 function languageAlternates(path: string) {
   return {
@@ -20,7 +19,7 @@ export function createPageMetadata(locale: Locale, entry: RouteMetadataEntry): M
     title: entry.title,
     description: entry.description,
     alternates: {
-      ...(siteUrl ? { canonical } : {}),
+      canonical,
       languages: languageAlternates(entry.route),
     },
     openGraph: {
@@ -28,14 +27,14 @@ export function createPageMetadata(locale: Locale, entry: RouteMetadataEntry): M
       description: entry.description,
       type: "website",
       locale: localeMeta[locale].ogLocale,
-      url: siteUrl ? canonical : undefined,
-      images: siteUrl ? [{ url: entry.ogImage, width: 1200, height: 630 }] : undefined,
+      url: canonical,
+      images: [{ url: entry.ogImage, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title: entry.title,
       description: entry.description,
-      images: siteUrl ? [entry.ogImage] : undefined,
+      images: [entry.ogImage],
     },
   };
 }

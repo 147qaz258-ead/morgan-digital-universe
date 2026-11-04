@@ -16,8 +16,6 @@ function alternates(route: string) {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  if (!siteUrl) return [];
-
   const staticRoutes = getStaticRouteMetadata("en");
   const publishedProjects = getProjects("en").filter((project) => project.publicationStatus === "published");
 

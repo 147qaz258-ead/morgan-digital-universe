@@ -28,14 +28,14 @@ export async function generateMetadata({
   const home = getRouteMetadata(locale).home;
   const profile = getProfile(locale);
   return {
-    metadataBase: siteUrl ? new URL(siteUrl) : undefined,
+    metadataBase: new URL(siteUrl),
     title: {
       default: home.title,
       template: "%s — MORGAN / DIGITAL LAB",
     },
     description: home.description,
     alternates: {
-      ...(siteUrl ? { canonical: `/${locale}` } : {}),
+      canonical: `/${locale}`,
       languages: { en: "/en", "zh-CN": "/zh", "x-default": "/en" },
     },
     openGraph: {
@@ -43,10 +43,10 @@ export async function generateMetadata({
       description: profile.headline,
       type: "website",
       locale: localeMeta[locale].ogLocale,
-      url: siteUrl ? `/${locale}` : undefined,
-      images: siteUrl ? [{ url: home.ogImage, width: 1200, height: 630 }] : undefined,
+      url: `/${locale}`,
+      images: [{ url: home.ogImage, width: 1200, height: 630 }],
     },
-    twitter: { card: "summary_large_image", images: siteUrl ? [home.ogImage] : undefined },
+    twitter: { card: "summary_large_image", images: [home.ogImage] },
   };
 }
 
@@ -70,13 +70,14 @@ export default async function RootLayout({
       {
         "@type": "Person",
         name: profile.displayName,
-        ...(siteUrl ? { url: siteUrl } : {}),
+        url: siteUrl,
         description: profile.headline,
       },
       {
         "@type": "WebSite",
         name: profile.brandName,
-        ...(siteUrl ? { url: siteUrl, inLanguage: localeMeta[locale].htmlLang } : {}),
+        url: siteUrl,
+        inLanguage: localeMeta[locale].htmlLang,
       },
     ],
   };
