@@ -20,7 +20,7 @@ export function Button({
   children: ReactNode;
   external?: boolean;
 }) {
-  const cls = `inline-flex min-h-12 items-center gap-3 border border-transparent px-5 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.08em] transition-colors duration-200 ${styles[variant]}`;
+  const cls = `inline-flex min-h-12 items-center gap-3 border border-transparent px-5 py-3 font-mono text-xs font-semibold uppercase tracking-[0.08em] transition-colors duration-300 ease-lab active:translate-y-px ${styles[variant]}`;
   if (external) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
@@ -39,7 +39,7 @@ export function TextLink({ href, children }: { href: string; children: ReactNode
   return (
     <Link
       href={href}
-      className="inline-flex items-center gap-2 border-b border-accent/30 pb-1 font-mono text-[12px] font-semibold uppercase tracking-[0.08em] text-accent transition-colors duration-200 hover:border-accent"
+      className="inline-flex items-center gap-2 border-b border-accent/30 pb-1 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-accent transition-colors duration-300 ease-lab hover:border-accent active:translate-y-px"
     >
       {children}
     </Link>

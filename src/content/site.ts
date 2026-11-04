@@ -1,35 +1,42 @@
 import type { Locale } from "@/i18n/config";
 
+export interface NavItem {
+  label: string;
+  href: string;
+  /** 首页单页滚动时的锚点；`/about` 这类独立页面不需要 */
+  anchor?: string;
+}
+
 const en = {
   brandName: "MORGAN / DIGITAL LAB",
   mission: "Building AI systems that enter the physical world.",
   contactCta: "Build something real.",
-  contactBody: "AI × Robotics × Hardware. Contact details will appear after they are confirmed for publication.",
+  contactBody: "AI × Robotics × Hardware. GitHub is the fastest channel right now; email is added once it is cleared for public listing.",
   contactPending: "Contact — available on request",
   nav: [
     { label: "HOME", href: "/" },
-    { label: "ORIGIN", href: "/origin" },
-    { label: "EXPERIMENTS", href: "/experiments" },
-    { label: "CAPABILITIES", href: "/capabilities" },
-    { label: "LAB", href: "/lab" },
-    { label: "VISION", href: "/vision" },
+    { label: "EXPERIMENTS", href: "/experiments", anchor: "index" },
+    { label: "ORIGIN", href: "/origin", anchor: "origin" },
+    { label: "CAPABILITIES", href: "/capabilities", anchor: "capabilities" },
+    { label: "LAB", href: "/lab", anchor: "lab" },
+    { label: "VISION", href: "/vision", anchor: "vision" },
     { label: "ABOUT", href: "/about" },
-  ],
+  ] as NavItem[],
 };
 
 const zh: typeof en = {
   brandName: "MORGAN / DIGITAL LAB",
   mission: "造能进入物理世界的 AI 系统。",
   contactCta: "做点真的。",
-  contactBody: "AI × 机器人 × 硬件。联系方式确认可公开后再补上。",
+  contactBody: "AI × 机器人 × 硬件。现在最快的通道是 GitHub；邮箱等确认可公开后再补上。",
   contactPending: "联系方式 — 按需提供",
   nav: [
     { label: "首页", href: "/" },
-    { label: "来源", href: "/origin" },
-    { label: "项目", href: "/experiments" },
-    { label: "能力", href: "/capabilities" },
-    { label: "实验室", href: "/lab" },
-    { label: "愿景", href: "/vision" },
+    { label: "项目", href: "/experiments", anchor: "index" },
+    { label: "来源", href: "/origin", anchor: "origin" },
+    { label: "能力", href: "/capabilities", anchor: "capabilities" },
+    { label: "实验室", href: "/lab", anchor: "lab" },
+    { label: "愿景", href: "/vision", anchor: "vision" },
     { label: "关于", href: "/about" },
   ],
 };

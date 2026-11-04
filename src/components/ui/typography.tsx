@@ -1,48 +1,56 @@
 import type { ReactNode } from "react";
 
-export function Display({ children, className = "" }: { children: ReactNode; className?: string }) {
+/**
+ * 排版组件 = 类型阶梯的唯一出口。
+ * 只允许 Tailwind 档位与 tokens.css 里的两个项目档（text-2xs / text-display），
+ * 组件内不再写任意字号。
+ */
+
+type TextProps = { children: ReactNode; className?: string; id?: string };
+
+export function Display({ children, className = "", id }: TextProps) {
   return (
-    <h1 className={`text-[44px] font-semibold leading-[0.92] tracking-[-0.045em] md:text-[64px] lg:text-[72px] ${className}`}>
+    <h1 id={id} className={`text-5xl font-semibold leading-none tracking-tighter text-balance md:text-6xl lg:text-7xl ${className}`}>
       {children}
     </h1>
   );
 }
 
-export function H1({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function H1({ children, className = "", id }: TextProps) {
   return (
-    <h1 className={`text-[38px] font-semibold leading-[0.98] tracking-[-0.04em] md:text-[56px] ${className}`}>
+    <h1 id={id} className={`text-4xl font-semibold leading-none tracking-tighter text-balance md:text-6xl ${className}`}>
       {children}
     </h1>
   );
 }
 
-export function H2({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function H2({ children, className = "", id }: TextProps) {
   return (
-    <h2 className={`text-[30px] font-semibold leading-[1.02] tracking-[-0.03em] md:text-[40px] ${className}`}>
+    <h2 id={id} className={`text-3xl font-semibold leading-tight tracking-tight text-balance md:text-4xl ${className}`}>
       {children}
     </h2>
   );
 }
 
-export function H3({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function H3({ children, className = "", id }: TextProps) {
   return (
-    <h3 className={`text-[24px] font-semibold leading-[1.08] tracking-[-0.02em] md:text-[28px] ${className}`}>
+    <h3 id={id} className={`text-2xl font-semibold leading-snug tracking-tight text-balance md:text-3xl ${className}`}>
       {children}
     </h3>
   );
 }
 
-export function BodyLarge({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <p className={`text-[18px] leading-[1.55] md:text-[20px] ${className}`}>{children}</p>;
+export function BodyLarge({ children, className = "" }: TextProps) {
+  return <p className={`text-lg leading-relaxed text-pretty md:text-xl ${className}`}>{children}</p>;
 }
 
-export function Body({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <p className={`text-[16px] leading-[1.6] ${className}`}>{children}</p>;
+export function Body({ children, className = "" }: TextProps) {
+  return <p className={`text-base leading-relaxed text-pretty ${className}`}>{children}</p>;
 }
 
-export function Meta({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function Meta({ children, className = "" }: TextProps) {
   return (
-    <span className={`font-mono text-[11px] uppercase tracking-[0.14em] md:text-[12px] ${className}`}>
+    <span className={`font-mono text-2xs uppercase tracking-[0.14em] tabular-nums md:text-xs ${className}`}>
       {children}
     </span>
   );

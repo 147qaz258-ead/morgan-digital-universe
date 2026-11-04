@@ -51,9 +51,9 @@ export function SpatialLabHero() {
 
       <div className="absolute left-5 top-24 z-10 flex items-center gap-3 md:left-8 lg:left-16 lg:top-28">
         <span className="h-2 w-2 bg-signal-bright shadow-[0_0_0_5px_rgba(255,107,44,.14)]" aria-hidden />
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink">Private lab / online</span>
+        <span className="font-mono text-2xs uppercase tracking-[0.18em] text-ink">Private lab / online</span>
       </div>
-      <div className="absolute right-8 top-28 z-10 hidden border-l border-ink/20 pl-3 font-mono text-[9px] uppercase tracking-[0.14em] text-ink-secondary md:block lg:right-16">
+      <div className="absolute right-8 top-28 z-10 hidden border-l border-ink/20 pl-3 font-mono text-2xs uppercase tracking-[0.14em] text-ink-secondary md:block lg:right-16">
         Concept space / generated atmosphere
       </div>
 
@@ -70,9 +70,9 @@ export function SpatialLabHero() {
             </span>
             <span className="max-w-0 overflow-hidden border-l border-transparent bg-white/72 px-0 py-2 opacity-0 backdrop-blur-md transition-all duration-500 group-hover:max-w-64 group-hover:border-white/70 group-hover:px-3 group-hover:opacity-100 group-focus-visible:max-w-64 group-focus-visible:border-white/70 group-focus-visible:px-3 group-focus-visible:opacity-100">
               <span className="block min-w-52 whitespace-nowrap">
-                <span className="block font-mono text-[10px] tracking-[0.14em] text-signal">EXP {hotspot.index}</span>
-                <span className="mt-1 block font-mono text-[11px] font-semibold tracking-[0.1em]">{hotspot.label}</span>
-                <span className="mt-1 block font-mono text-[9px] tracking-[0.1em] text-ink-secondary">{hotspot.meta}</span>
+                <span className="block font-mono text-2xs tracking-[0.14em] text-signal">EXP {hotspot.index}</span>
+                <span className="mt-1 block font-mono text-2xs font-semibold tracking-[0.1em]">{hotspot.label}</span>
+                <span className="mt-1 block font-mono text-2xs tracking-[0.1em] text-ink-secondary">{hotspot.meta}</span>
               </span>
             </span>
           </Link>
@@ -82,19 +82,19 @@ export function SpatialLabHero() {
       <div className="absolute inset-x-0 bottom-0 z-20">
         <div className="mx-auto grid min-w-0 w-full max-w-[1440px] gap-7 px-5 pb-8 md:px-8 md:pb-10 lg:grid-cols-12 lg:px-16 lg:pb-12">
           <div className="min-w-0 lg:col-span-7">
-            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/68">Morgan / digital lab / index 2026</p>
-            <h1 id="home-title" className="mt-4 max-w-[340px] text-[36px] font-semibold leading-[.94] tracking-[-0.045em] text-white sm:max-w-[520px] sm:text-[44px] md:max-w-[700px] md:text-[58px] lg:max-w-[780px] lg:text-[70px]">
+            <p className="font-mono text-2xs uppercase tracking-[0.16em] text-white/68">Morgan / digital lab / index 2026</p>
+            <h1 id="home-title" className="mt-4 max-w-[340px] text-4xl font-semibold leading-[.94] tracking-[-0.045em] text-white sm:max-w-[520px] sm:text-5xl md:max-w-[700px] md:text-6xl lg:max-w-[780px] lg:text-7xl">
               {pageCopy.home.headline}
             </h1>
-            <p className="mt-5 max-w-[310px] break-words text-[15px] leading-relaxed text-white/72 sm:max-w-xl md:text-[17px]">{pageCopy.home.supporting}</p>
+            <p className="mt-5 max-w-[310px] break-words text-sm leading-relaxed text-white/72 sm:max-w-xl md:text-base">{pageCopy.home.supporting}</p>
           </div>
 
           <div className="min-w-0 self-end lg:col-span-3 lg:col-start-10">
-            <div className="border-l border-white/30 pl-4 font-mono text-[10px] uppercase tracking-[0.14em] text-white/65">
+            <div className="border-l border-white/30 pl-4 font-mono text-2xs uppercase tracking-[0.14em] text-white/65">
               <p>AI / Robotics / Hardware</p>
               <p className="mt-2 text-white">Currently building 03 systems</p>
             </div>
-            <Link href="/experiments" className="mt-5 inline-flex items-center gap-3 border-b border-white/45 pb-2 font-mono text-[11px] uppercase tracking-[0.12em] text-white transition-colors hover:border-signal-bright hover:text-signal-bright">
+            <Link href="/experiments" className="mt-5 inline-flex items-center gap-3 border-b border-white/45 pb-2 font-mono text-2xs uppercase tracking-[0.12em] text-white transition-colors hover:border-signal-bright hover:text-signal-bright">
               Enter experiment index <ArrowUpRight size={14} aria-hidden />
             </Link>
           </div>
@@ -102,8 +102,8 @@ export function SpatialLabHero() {
           <div className="grid min-w-0 grid-cols-3 border-t border-white/25 pt-4 lg:hidden">
             {hotspots.map((hotspot) => (
               <Link key={hotspot.href} href={hotspot.href} className="min-w-0 overflow-hidden border-r border-white/20 pr-2 last:border-r-0 last:pl-2">
-                <span className="block font-mono text-[9px] tracking-[0.12em] text-signal-bright">{hotspot.index}</span>
-                <span className="mt-1 block truncate text-[9px] font-medium leading-tight text-white sm:text-[10px]">{hotspot.label}</span>
+                <span className="block font-mono text-2xs tracking-[0.12em] text-signal-bright">{hotspot.index}</span>
+                <span className="mt-1 block truncate text-2xs font-medium leading-tight text-white sm:text-2xs">{hotspot.label}</span>
               </Link>
             ))}
           </div>
@@ -111,7 +111,7 @@ export function SpatialLabHero() {
       </div>
 
       <a href="#experiments" className="absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/60 lg:flex">
-        <span className="font-mono text-[9px] uppercase tracking-[0.16em]">Inspect</span>
+        <span className="font-mono text-2xs uppercase tracking-[0.16em]">Inspect</span>
         <ArrowDown size={15} aria-hidden />
       </a>
     </section>

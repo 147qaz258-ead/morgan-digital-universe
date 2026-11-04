@@ -35,7 +35,7 @@ export function ProjectSignalPlate({
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 border-t border-line bg-bg/88 px-4 py-3 backdrop-blur-sm md:px-5">
         <div>
           <Meta className="text-signal">Field / {project.index}</Meta>
-          <p className="mt-1 text-[12px] font-medium text-ink">{project.shortTitle}</p>
+          <p className="mt-1 text-xs font-medium text-ink">{project.shortTitle}</p>
         </div>
         <Meta className="text-right text-ink-secondary">{t.indexVisual}<br />{t.notEvidence}</Meta>
       </div>

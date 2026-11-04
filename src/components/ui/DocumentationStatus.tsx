@@ -22,8 +22,8 @@ export function DocumentationStatus({
       <div className="grid gap-4 lg:grid-cols-[220px_1fr] lg:gap-8">
         <Meta className="text-signal">{resolvedLabel}</Meta>
         <div>
-          <p className="text-[15px] font-semibold text-ink">{title}</p>
-          <Body className="mt-2 max-w-2xl text-[14px] text-ink-secondary">{body}</Body>
+          <p className="text-sm font-semibold text-ink">{title}</p>
+          <Body className="mt-2 max-w-2xl text-sm text-ink-secondary">{body}</Body>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@ export function PendingEvidenceList({ evidence, locale = "en" }: { evidence: Evi
         >
           <Meta className="text-signal">{String(index + 1).padStart(2, "0")}</Meta>
           <div>
-            <p className="text-[14px] font-medium text-ink">{item.title}</p>
+            <p className="text-sm font-medium text-ink">{item.title}</p>
             <Meta className="mt-1 block text-ink-secondary">{item.type}</Meta>
           </div>
           <Meta className="text-ink-secondary">{t.pending}</Meta>

@@ -14,7 +14,7 @@ export function SystemDiagram({ diagram }: { diagram: SystemDiagramData }) {
   return (
     <figure aria-labelledby={`${diagram.id}-title`} className="border-y border-line">
       <figcaption className="flex items-center justify-between gap-4 border-b border-line py-4">
-        <span id={`${diagram.id}-title`} className="text-[15px] font-semibold text-ink">
+        <span id={`${diagram.id}-title`} className="text-sm font-semibold text-ink">
           {diagram.title}
         </span>
         <Meta className="text-accent">Confirmed system map</Meta>
@@ -27,8 +27,8 @@ export function SystemDiagram({ diagram }: { diagram: SystemDiagramData }) {
               <Meta className="text-signal">{String(index + 1).padStart(2, "0")}</Meta>
               <Meta className="text-ink-secondary">{nodeLabels[node.kind]}</Meta>
             </div>
-            <p className="mt-6 text-[17px] font-semibold text-ink">{node.label}</p>
-            {node.detail ? <Body className="mt-2 text-[13px] text-ink-secondary">{node.detail}</Body> : null}
+            <p className="mt-6 text-base font-semibold text-ink">{node.label}</p>
+            {node.detail ? <Body className="mt-2 text-xs text-ink-secondary">{node.detail}</Body> : null}
           </div>
         ))}
       </div>
@@ -43,11 +43,11 @@ export function SystemDiagram({ diagram }: { diagram: SystemDiagramData }) {
               className="grid gap-3 border-b border-line py-4 last:border-b-0 md:grid-cols-[48px_1fr_1fr_1fr] md:items-center"
             >
               <Meta className="text-signal">C{String(index + 1).padStart(2, "0")}</Meta>
-              <span className="text-[13px] font-medium text-ink">{from?.label}</span>
-              <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-ink-secondary">
+              <span className="text-xs font-medium text-ink">{from?.label}</span>
+              <span className="font-mono text-2xs uppercase tracking-[0.08em] text-ink-secondary">
                 {connection.direction === "bidirectional" ? "↔" : "→"} {connection.protocol ?? connection.label ?? "Confirmed flow"}
               </span>
-              <span className="text-[13px] font-medium text-ink">{to?.label}</span>
+              <span className="text-xs font-medium text-ink">{to?.label}</span>
             </div>
           );
         })}
@@ -56,7 +56,7 @@ export function SystemDiagram({ diagram }: { diagram: SystemDiagramData }) {
       {diagram.boundaryNotes.length > 0 ? (
         <div className="border-t border-line py-4">
           {diagram.boundaryNotes.map((note) => (
-            <Body key={note} className="text-[13px] text-ink-secondary">{note}</Body>
+            <Body key={note} className="text-xs text-ink-secondary">{note}</Body>
           ))}
         </div>
       ) : null}

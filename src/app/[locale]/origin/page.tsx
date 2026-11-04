@@ -66,7 +66,7 @@ export default async function OriginPage({ params }: { params: Promise<{ locale:
                 <div className="grid gap-8 md:grid-cols-[1fr_1.05fr] md:items-center">
                   <div>
                     <Meta className="text-signal">{t.stageLabel} {stage.label}</Meta>
-                    <H2 className="mt-4 !text-[30px]">{stage.title}</H2>
+                    <H2 className="mt-4 !text-3xl">{stage.title}</H2>
                     <Body className="mt-4 font-medium text-ink">{stage.oneLine}</Body>
                     <Body className="mt-4 text-ink-secondary">{stage.narrative}</Body>
                     <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 border-t border-line pt-4">
@@ -75,7 +75,7 @@ export default async function OriginPage({ params }: { params: Promise<{ locale:
                     {publishedProjectsFor(stage).length > 0 ? (
                       <div className="mt-6 flex flex-col items-start gap-2">
                         {publishedProjectsFor(stage).map((project) => project ? (
-                            <Link key={project.slug} href={localePath(locale, `/experiments/${project.slug}`)} className="inline-flex items-center gap-2 border-b border-accent/30 pb-1 text-[13px] font-medium text-accent hover:border-accent">
+                            <Link key={project.slug} href={localePath(locale, `/experiments/${project.slug}`)} className="inline-flex items-center gap-2 border-b border-accent/30 pb-1 text-xs font-medium text-accent hover:border-accent">
                               {project.shortTitle}<ArrowUpRight size={14} aria-hidden />
                             </Link>
                           ) : null)}
@@ -89,7 +89,7 @@ export default async function OriginPage({ params }: { params: Promise<{ locale:
                         {stage.evidenceRefs.map((id) => {
                           const record = getEvidenceRecord(locale, id);
                           return record && isVerifiedEvidence(record.evidence) ? (
-                            <Link key={id} href={evidenceHref(locale, record.project.slug, id)} className="inline-flex items-center gap-2 text-[12px] font-medium text-accent">
+                            <Link key={id} href={evidenceHref(locale, record.project.slug, id)} className="inline-flex items-center gap-2 text-xs font-medium text-accent">
                               {t.verifiedEvidence}: {record.evidence.title}<ArrowUpRight size={13} aria-hidden />
                             </Link>
                           ) : null;
@@ -117,7 +117,7 @@ export default async function OriginPage({ params }: { params: Promise<{ locale:
         <div className="grid gap-10 md:grid-cols-12 md:items-center">
           <div className="md:col-span-5">
             <Meta className="text-signal">{t.turningPoint}</Meta>
-            <H2 className="mt-5 !text-[38px] md:!text-[52px]">“{turningPoint.line}”</H2>
+            <H2 className="mt-5 !text-4xl md:!text-5xl">“{turningPoint.line}”</H2>
           </div>
           <div className="md:col-span-6 md:col-start-7">
             <PendingAsset className="aspect-[16/9] w-full" label={t.closeupPending} />
@@ -132,7 +132,7 @@ export default async function OriginPage({ params }: { params: Promise<{ locale:
             {originStages.filter((stage) => stage.yearRange).map((stage) => (
               <div key={stage.id} className="border-r border-line px-4 py-6 last:border-r-0 md:px-6">
                 <Meta className="text-signal">{stage.label}</Meta>
-                <p className="mt-3 text-[14px] font-semibold text-ink">{stage.title}</p>
+                <p className="mt-3 text-sm font-semibold text-ink">{stage.title}</p>
                 <Meta className="mt-2 block text-ink-secondary">{stage.yearRange}</Meta>
               </div>
             ))}

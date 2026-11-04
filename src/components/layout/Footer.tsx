@@ -17,8 +17,8 @@ export function Footer({ locale }: { locale: Locale }) {
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <Meta className="font-semibold text-ink">{site.brandName}</Meta>
-            <p className="mt-3 max-w-md text-[14px] leading-relaxed text-ink-secondary">{site.mission}</p>
-            <p className="mt-2 max-w-md text-[12px] leading-relaxed text-ink-secondary">{t.footer.legal}</p>
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-secondary">{site.mission}</p>
+            <p className="mt-2 max-w-md text-xs leading-relaxed text-ink-secondary">{t.footer.legal}</p>
           </div>
           <div className="flex items-center gap-4">
             {profile.github ? (
@@ -26,7 +26,7 @@ export function Footer({ locale }: { locale: Locale }) {
                 href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-mono text-[12px] tracking-[0.08em] text-ink-secondary transition-colors hover:text-ink"
+                className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.08em] text-ink-secondary transition-colors duration-300 ease-lab hover:text-ink"
               >
                 GITHUB <ArrowUpRight size={14} aria-hidden />
               </a>
@@ -35,7 +35,7 @@ export function Footer({ locale }: { locale: Locale }) {
               <a
                 href={`mailto:${profile.email}`}
                 aria-label={t.contact.email}
-                className="flex h-10 w-10 items-center justify-center border border-line text-ink-secondary transition-colors hover:border-ink/30 hover:text-ink"
+                className="flex h-10 w-10 items-center justify-center border border-line text-ink-secondary transition-colors duration-300 ease-lab hover:border-ink/30 hover:text-ink"
               >
                 <Mail size={17} />
               </a>

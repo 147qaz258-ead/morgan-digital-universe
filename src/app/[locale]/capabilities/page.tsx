@@ -51,9 +51,9 @@ export default async function CapabilitiesPage({ params }: { params: Promise<{ l
                 const verified = record && isVerifiedEvidence(record.evidence) ? record : null;
                 return (
                   <div key={item.name} className="grid gap-3 border-b border-line py-6 md:grid-cols-[1fr_auto] md:items-center">
-                    <p className="text-[17px] font-semibold text-ink">{item.name}</p>
+                    <p className="text-base font-semibold text-ink">{item.name}</p>
                     {verified ? (
-                      <Link href={evidenceHref(locale, verified.project.slug, verified.evidence.id)} className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.08em] text-accent">
+                      <Link href={evidenceHref(locale, verified.project.slug, verified.evidence.id)} className="inline-flex items-center gap-2 font-mono text-2xs uppercase tracking-[0.08em] text-accent">
                         {item.proofLabel}<ArrowUpRight size={14} aria-hidden />
                       </Link>
                     ) : <Meta className="text-ink-secondary">{t.evidencePending}</Meta>}

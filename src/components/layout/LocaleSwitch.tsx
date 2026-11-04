@@ -20,7 +20,7 @@ export function LocaleSwitch({ locale }: { locale: Locale }) {
             href={switchLocaleInPath(current, code)}
             hrefLang={localeMeta[code].htmlLang}
             aria-current={active ? "true" : undefined}
-            className={`flex min-h-11 items-center px-2 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors ${
+            className={`flex min-h-11 items-center px-2 font-mono text-2xs uppercase tracking-[0.14em] transition-colors ${
               active ? "text-signal" : "text-ink-secondary hover:text-ink"
             }`}
           >

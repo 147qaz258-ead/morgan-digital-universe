@@ -53,7 +53,7 @@ function SectionBlock({ id, no, title, children }: { id: string; no: string; tit
       <div className="grid gap-7 md:grid-cols-[150px_1fr]">
         <div>
         <Meta className="text-signal">{no}</Meta>
-        <H2 className="mt-4 !text-[28px] md:!text-[32px]">{title}</H2>
+        <H2 className="mt-4 !text-3xl md:!text-3xl">{title}</H2>
         </div>
         <div>{children}</div>
       </div>
@@ -143,14 +143,14 @@ export default async function ProjectDetailPage({
               />
               {isPublished && project.dateRange ? <Meta className="text-ink-secondary">{project.dateRange}</Meta> : null}
             </div>
-            <H1 className="mt-6 max-w-5xl !text-[46px] !leading-[0.94] !tracking-[-0.05em] md:!text-[72px]">{project.title}</H1>
+            <H1 className="mt-6 max-w-5xl !text-5xl !leading-[0.94] !tracking-[-0.05em] md:!text-7xl">{project.title}</H1>
             <BodyLarge className="mt-6 max-w-2xl text-ink-secondary">{project.oneLine}</BodyLarge>
           </div>
           <dl className="border-t border-line lg:col-span-3 lg:col-start-10">
             {metadataRows.map(([label, value]) => (
               <div key={label} className="grid grid-cols-[84px_1fr] gap-4 border-b border-line py-4">
                 <dt><Meta className="text-ink-secondary">{label}</Meta></dt>
-                <dd className="text-[13px] font-medium leading-relaxed text-ink">{value}</dd>
+                <dd className="text-xs font-medium leading-relaxed text-ink">{value}</dd>
               </div>
             ))}
           </dl>
@@ -277,7 +277,7 @@ export default async function ProjectDetailPage({
               <div key={failure.what} className="grid gap-4 border-b border-line py-6 md:grid-cols-[48px_1fr]">
                 <Meta className="text-signal">F-{String(index + 1).padStart(2, "0")}</Meta>
                 <div>
-                  <H3 className="!text-[20px]">{failure.what}</H3>
+                  <H3 className="!text-xl">{failure.what}</H3>
                   <Body className="mt-3 text-ink-secondary">{t.whyLabel} {failure.why}</Body>
                   {failure.change ? <Body className="mt-2 text-ink-secondary">{t.changedLabel} {failure.change}</Body> : null}
                   {failure.lesson ? <Body className="mt-2 text-ink">{t.learnedLabel} {failure.lesson}</Body> : null}
@@ -316,7 +316,7 @@ export default async function ProjectDetailPage({
         {project.links.length > 0 ? (
           <div className="mb-8 flex flex-wrap gap-x-8 gap-y-4">
             {project.links.map((item) => (
-              <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center gap-2 border-b border-line font-mono text-[11px] uppercase tracking-[0.1em] text-accent hover:border-accent">
+              <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center gap-2 border-b border-line font-mono text-2xs uppercase tracking-[0.1em] text-accent hover:border-accent">
                 {item.label} <ArrowUpRight size={14} aria-hidden />
               </a>
             ))}
@@ -329,7 +329,7 @@ export default async function ProjectDetailPage({
               <span><Meta className="block text-ink-secondary">{t.previous}</Meta><span className="font-semibold">{prev.shortTitle}</span></span>
             </Link>
           ) : <span />}
-          <Link href={localePath(locale, "/experiments")} className="text-left font-mono text-[11px] uppercase tracking-[0.1em] text-accent hover:underline md:text-center">{t.returnToIndex}</Link>
+          <Link href={localePath(locale, "/experiments")} className="text-left font-mono text-2xs uppercase tracking-[0.1em] text-accent hover:underline md:text-center">{t.returnToIndex}</Link>
           {next ? (
             <Link href={localePath(locale, `/experiments/${next.slug}`)} className="inline-flex items-center gap-3 text-ink-secondary transition-colors hover:text-ink md:justify-end md:text-right">
               <span><Meta className="block text-ink-secondary">{t.next}</Meta><span className="font-semibold">{next.shortTitle}</span></span>

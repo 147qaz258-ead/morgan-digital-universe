@@ -199,6 +199,18 @@ const en = {
     mobileArchiveNote:
       "Ten project records are open in the full index, with the public code archive linked below them.",
     sectionAria: "Morgan Digital Lab introduction",
+    sections: {
+      now: "Now",
+      index: "Index",
+      origin: "Origin",
+      capabilities: "Capabilities",
+      lab: "Lab",
+      vision: "Vision",
+      contact: "Contact",
+    },
+    railAria: "Page sections",
+    sectionIndexLabel: "Section",
+    sectionOpen: "Read full section",
   },
   notFound: {
     backHome: "Back to home",
@@ -411,6 +423,18 @@ const zh: Dictionary = {
     originChain: "数字 → 智能 → 硬件 → 物理 AI",
     mobileArchiveNote: "完整索引里有十条项目记录，公开代码档案列在下方。",
     sectionAria: "Morgan Digital Lab 介绍",
+    sections: {
+      now: "现在",
+      index: "索引",
+      origin: "来源",
+      capabilities: "能力",
+      lab: "实验室",
+      vision: "愿景",
+      contact: "联系",
+    },
+    railAria: "页面章节",
+    sectionIndexLabel: "章节",
+    sectionOpen: "查看完整章节",
   },
   notFound: {
     backHome: "返回首页",

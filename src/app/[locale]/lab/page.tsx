@@ -71,11 +71,11 @@ export default async function LabPage({ params }: { params: Promise<{ locale: st
                   <Meta className="hidden text-ink-secondary md:block">{item.date ?? "—"}</Meta>
                   <div>
                     <p className="font-semibold text-ink">{item.title}</p>
-                    <Body className="mt-2 text-[14px] text-ink-secondary">{item.summary}</Body>
+                    <Body className="mt-2 text-sm text-ink-secondary">{item.summary}</Body>
                     {item.media ? (
                       <MediaFrame media={item.media} alt={item.media.alt} aspect="16/9" locale={locale} className="mt-5 max-w-2xl" />
                     ) : null}
-                    {item.relatedProject ? <Link className="mt-3 inline-block text-[12px] font-medium text-accent" href={localePath(locale, `/experiments/${item.relatedProject}`)}>{t.relatedExperiment}</Link> : null}
+                    {item.relatedProject ? <Link className="mt-3 inline-block text-xs font-medium text-accent" href={localePath(locale, `/experiments/${item.relatedProject}`)}>{t.relatedExperiment}</Link> : null}
                   </div>
                   <Meta className="text-right text-ink-secondary">{item.status ?? t.openState}</Meta>
                 </div>

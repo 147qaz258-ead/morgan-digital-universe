@@ -42,7 +42,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
               <div key={section.label} className="grid gap-5 border-b border-line py-8 first:pt-0 md:grid-cols-[72px_1fr]">
                 <Meta className="text-signal">0{index + 1}</Meta>
                 <div>
-                  <p className="text-[22px] font-semibold tracking-[-0.02em] text-ink">{section.label}</p>
+                  <p className="text-xl font-semibold tracking-[-0.02em] text-ink">{section.label}</p>
                   <Body className="mt-3 max-w-xl text-ink-secondary">{section.body}</Body>
                 </div>
               </div>
@@ -68,7 +68,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                 ].map(([label, value]) => (
                   <div key={label} className="grid grid-cols-[90px_1fr] gap-4 border-b border-line py-4">
                     <dt><Meta className="text-ink-secondary">{label}</Meta></dt>
-                    <dd className="text-[13px] font-medium text-ink">{value}</dd>
+                    <dd className="text-xs font-medium text-ink">{value}</dd>
                   </div>
                 ))}
               </dl>

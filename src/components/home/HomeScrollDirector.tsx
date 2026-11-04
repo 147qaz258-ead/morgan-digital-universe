@@ -25,7 +25,7 @@ const VIDEO_PREFETCH_PROGRESS = { physical: 0.08, signal: 0.48 } as const;
 
 function ConceptMark({ label, note }: { label: string; note: string }) {
   return (
-    <span className="absolute bottom-4 left-4 z-20 bg-bg/92 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-ink-secondary">
+    <span className="absolute bottom-4 left-4 z-20 bg-bg/92 px-3 py-2 font-mono text-2xs uppercase tracking-[0.14em] text-ink-secondary">
       {label} <span className="ml-2 text-signal">{note}</span>
     </span>
   );
@@ -216,7 +216,7 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
   }, [chapters, locale]);
 
   return (
-    <section ref={rootRef} className="relative bg-ink lg:h-[640svh]" aria-label={t.sectionAria}>
+    <section ref={rootRef} data-home-film className="relative bg-ink lg:h-[640svh]" aria-label={t.sectionAria}>
       <noscript>
         <style>{`.home-desktop-experience{display:none!important}.home-natural-experience{display:block!important}`}</style>
       </noscript>
@@ -278,23 +278,23 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
         </div>
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(246,247,245,.10)_0%,rgba(13,27,42,.03)_42%,rgba(13,27,42,.88)_100%)]" />
         <div className="pointer-events-none absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,.2)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.2)_1px,transparent_1px)] [background-size:8vw_8vw] [mask-image:linear-gradient(to_bottom,transparent_16%,black_58%,black)]" />
-        <div className="pointer-events-none absolute left-[var(--page-gutter)] top-24 z-30 font-mono text-[9px] uppercase tracking-[0.16em] text-white/58">
+        <div className="pointer-events-none absolute left-[var(--page-gutter)] top-24 z-30 font-mono text-2xs uppercase tracking-[0.16em] text-white/58">
           {t.scrollHint}
         </div>
-        <div className="pointer-events-none absolute right-[var(--page-gutter)] top-24 z-30 font-mono text-[9px] uppercase tracking-[0.16em] text-white/58">
+        <div className="pointer-events-none absolute right-[var(--page-gutter)] top-24 z-30 font-mono text-2xs uppercase tracking-[0.16em] text-white/58">
           {mediaContextLabel}
         </div>
 
         <div data-home-entry className="absolute inset-x-0 bottom-0 z-10 mx-auto grid w-full max-w-[1440px] grid-cols-12 gap-6 px-[var(--page-gutter)] pb-12 text-white">
           <div className="col-span-8">
             <p className="lab-kicker text-white/62">{t.entryKicker}</p>
-            <h1 className="mt-5 max-w-[850px] text-[clamp(64px,6.6vw,104px)] font-semibold leading-[0.88] tracking-[-0.06em]">
+            <h1 className="mt-5 max-w-[850px] text-balance text-display font-semibold leading-[0.88] tracking-[-0.06em]">
               {pageCopy.home.headline}
             </h1>
-            <p className="mt-6 max-w-xl text-[18px] leading-relaxed text-white/70">{pageCopy.home.supporting}</p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">{pageCopy.home.supporting}</p>
           </div>
           <div className="col-span-3 col-start-10 self-end">
-            <div className="space-y-3 border-l border-white/30 pl-4 font-mono text-[10px] uppercase tracking-[0.14em] text-white/72">
+            <div className="space-y-3 border-l border-white/30 pl-4 font-mono text-2xs uppercase tracking-[0.14em] text-white/72">
               <p>{t.focusLine}</p>
               <p>{t.statusLine}</p>
               <p>{t.indexLine}</p>
@@ -306,8 +306,8 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
         <div data-home-identity className="pointer-events-none absolute inset-x-0 top-[20%] z-10 mx-auto grid w-full max-w-[1440px] grid-cols-12 px-[var(--page-gutter)] text-white">
           <div className="col-span-5 col-start-2 border-l border-white/30 pl-6">
             <p className="lab-kicker text-signal-bright">{t.identityLabel}</p>
-            <p className="mt-4 text-[34px] font-semibold leading-tight tracking-[-0.035em]">{t.identityTitle}</p>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/66">{t.identityBody}</p>
+            <p className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em]">{t.identityTitle}</p>
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-white/66">{t.identityBody}</p>
           </div>
         </div>
 
@@ -323,9 +323,9 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
             >
               <div className={`col-span-4 border-l border-white/34 bg-ink/64 p-7 ${index % 2 === 1 ? "col-start-2" : "col-start-9"}`}>
                 <p className="lab-kicker text-signal-bright">EXP.{project.index} / {project.category}</p>
-                <h2 className="mt-5 text-[48px] font-semibold leading-[0.92] tracking-[-0.055em]">{project.shortTitle}</h2>
-                <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-white/68">{project.oneLine}</p>
-                <div className="mt-7 grid grid-cols-[82px_1fr] border-y border-white/18 py-3 font-mono text-[9px] uppercase tracking-[0.14em] text-white/54">
+                <h2 className="mt-5 text-balance text-5xl font-semibold leading-[0.92] tracking-[-0.055em]">{project.shortTitle}</h2>
+                <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/68">{project.oneLine}</p>
+                <div className="mt-7 grid grid-cols-[82px_1fr] border-y border-white/18 py-3 font-mono text-2xs uppercase tracking-[0.14em] text-white/54">
                   <span>{t.mediaRowLabel}</span>
                   <span>{movingScene ? t.mediaConceptFilm : project.media.hero ? t.mediaProjectCapture : t.mediaConceptStill}</span>
                 </div>
@@ -333,7 +333,7 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
                   href={localePath(locale, `/experiments/${project.slug}`)}
                   transitionTypes={["project-forward"]}
                   tabIndex={active ? 0 : -1}
-                  className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-white/45 font-mono text-[11px] uppercase tracking-[0.13em] text-white transition-colors hover:border-signal-bright hover:text-signal-bright"
+                  className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-white/45 font-mono text-2xs uppercase tracking-[0.13em] text-white transition-colors hover:border-signal-bright hover:text-signal-bright"
                 >
                   {t.openCase} <ArrowUpRight size={15} aria-hidden />
                 </Link>
@@ -349,8 +349,8 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
         >
           <div className="col-span-4">
             <p className="lab-kicker text-signal-bright">{t.originLabel}</p>
-            <h2 className="mt-5 text-[48px] font-semibold leading-[0.94] tracking-[-0.05em]">{t.originTitle}</h2>
-            <Link href={localePath(locale, "/origin")} tabIndex={activeChapter === "origin-evidence" ? 0 : -1} className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-white/40 font-mono text-[11px] uppercase tracking-[0.12em] hover:text-signal-bright">
+            <h2 className="mt-5 text-balance text-5xl font-semibold leading-[0.94] tracking-[-0.05em]">{t.originTitle}</h2>
+            <Link href={localePath(locale, "/origin")} tabIndex={activeChapter === "origin-evidence" ? 0 : -1} className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-white/40 font-mono text-2xs uppercase tracking-[0.12em] hover:text-signal-bright">
               {t.viewOrigin} <ArrowUpRight size={15} aria-hidden />
             </Link>
           </div>
@@ -358,19 +358,19 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
             {originStages.map((stage) => (
               <div key={stage.id} className="grid grid-cols-[64px_1fr_auto] items-center gap-5 border-b border-white/16 px-5 py-5 last:border-b-0">
                 <span className="lab-kicker text-signal-bright">{stage.label}</span>
-                <span className="text-[16px] font-medium">{stage.title}</span>
+                <span className="text-base font-medium">{stage.title}</span>
                 <span className="lab-kicker text-white/48">{stage.yearRange ?? t.openYear}</span>
               </div>
             ))}
             <div className="grid grid-cols-[64px_1fr] gap-5 border-t border-white/24 px-5 py-5">
               <span className="lab-kicker text-signal-bright">{t.docLabel}</span>
-              <span className="text-[13px] leading-relaxed text-white/62">{t.docBody}</span>
+              <span className="text-xs leading-relaxed text-white/62">{t.docBody}</span>
             </div>
           </div>
         </div>
 
         <div className="absolute bottom-7 left-[var(--page-gutter)] z-30 w-[min(44vw,520px)] text-white/58">
-          <div className="mb-3 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.14em]">
+          <div className="mb-3 flex items-center justify-between font-mono text-2xs uppercase tracking-[0.14em]">
             <span>{chapters.find((item) => item.id === activeChapter)?.label ?? t.scrollLabel}</span>
             <span>{t.sceneTime}</span>
           </div>
@@ -379,7 +379,7 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
           </span>
           <div className="mt-3"><ProgressRail label={t.fullSequence} /></div>
         </div>
-        <a href="#now" className="absolute bottom-7 right-[var(--page-gutter)] z-30 flex min-h-11 items-center gap-3 font-mono text-[9px] uppercase tracking-[0.14em] text-white/58 hover:text-white">
+        <a href="#now" className="absolute bottom-7 right-[var(--page-gutter)] z-30 flex min-h-11 items-center gap-3 font-mono text-2xs uppercase tracking-[0.14em] text-white/58 hover:text-white">
           {t.continueLabel} <ArrowDown size={14} aria-hidden />
         </a>
       </div>
@@ -394,8 +394,8 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,27,42,.04),rgba(13,27,42,.88))]" />
           <div className="absolute inset-x-0 bottom-0 px-5 pb-9">
             <p className="lab-kicker text-signal-bright">{t.entryKicker}</p>
-            <h1 className="mt-5 text-[44px] font-semibold leading-[0.91] tracking-[-0.055em]">{pageCopy.home.headline}</h1>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/70">{pageCopy.home.supporting}</p>
+            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[0.91] tracking-[-0.055em]">{pageCopy.home.headline}</h1>
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-white/70">{pageCopy.home.supporting}</p>
             <div className="mt-8 text-white/60"><ProgressRail label={t.scrollLabel} /></div>
           </div>
         </div>
@@ -411,9 +411,9 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
                   {isConcept ? <ConceptMark label={t.conceptFilm} note={t.conceptNote} /> : null}
                 </MediaWindow>
                 <p className="lab-kicker mt-5 text-signal">EXP.{project.index} / {project.category}</p>
-                <h2 className="mt-3 text-[30px] font-semibold leading-tight tracking-[-0.035em] text-ink">{project.shortTitle}</h2>
-                <p className="mt-4 text-[15px] leading-relaxed text-ink-secondary">{project.oneLine}</p>
-                <Link href={localePath(locale, `/experiments/${project.slug}`)} transitionTypes={["project-forward"]} className="mt-6 inline-flex min-h-11 items-center gap-3 border-b border-ink/30 font-mono text-[11px] uppercase tracking-[0.12em] text-ink">
+                <h2 className="mt-3 text-balance text-3xl font-semibold leading-tight tracking-[-0.035em] text-ink">{project.shortTitle}</h2>
+                <p className="mt-4 text-sm leading-relaxed text-ink-secondary">{project.oneLine}</p>
+                <Link href={localePath(locale, `/experiments/${project.slug}`)} transitionTypes={["project-forward"]} className="mt-6 inline-flex min-h-11 items-center gap-3 border-b border-ink/30 font-mono text-2xs uppercase tracking-[0.12em] text-ink">
                   {t.openCase} <ArrowUpRight size={14} aria-hidden />
                 </Link>
               </article>
@@ -421,8 +421,8 @@ export function HomeScrollDirector({ locale }: { locale: Locale }) {
           })}
           <div className="border-y border-line py-8">
             <p className="lab-kicker text-signal">{t.mobileOriginLabel}</p>
-            <p className="mt-4 text-[24px] font-semibold tracking-[-0.03em] text-ink">{t.originChain}</p>
-            <p className="mt-4 text-[14px] leading-relaxed text-ink-secondary">{t.mobileArchiveNote}</p>
+            <p className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-ink">{t.originChain}</p>
+            <p className="mt-4 text-sm leading-relaxed text-ink-secondary">{t.mobileArchiveNote}</p>
           </div>
         </div>
       </div>

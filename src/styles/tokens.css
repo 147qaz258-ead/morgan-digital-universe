@@ -26,4 +26,9 @@
 
   --shadow-card: 0 18px 50px rgba(21, 62, 117, 0.06);
   --shadow-media: 0 34px 80px rgba(21, 62, 117, 0.11);
+
+  /* 动效：全站唯一缓动曲线，禁止组件内另写 cubic-bezier */
+  --lab-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-ui: 300ms;
+  --duration-move: 500ms;
 }

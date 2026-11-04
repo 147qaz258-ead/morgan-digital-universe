@@ -8,7 +8,7 @@ const en: Profile = {
   subheadline: "Moving intelligence from screens into the physical world.",
   location: null,
   email: null,
-  github: null,
+  github: "https://github.com/147qaz258-ead",
   portrait: null,
   socialLinks: [],
   currentFocus: [
@@ -25,7 +25,7 @@ const zh: Profile = {
   subheadline: "把智能从屏幕里挪进物理世界。",
   location: null,
   email: null,
-  github: null,
+  github: "https://github.com/147qaz258-ead",
   portrait: null,
   socialLinks: [],
   currentFocus: [

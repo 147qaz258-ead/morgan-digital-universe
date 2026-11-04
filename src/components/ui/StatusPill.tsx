@@ -29,7 +29,7 @@ export function Divider({ className = "" }: { className?: string }) {
 
 export function ProjectIndex({ value, className = "" }: { value: string; className?: string }) {
   return (
-    <span className={`font-mono text-[13px] tracking-[0.08em] text-signal ${className}`}>
+    <span className={`font-mono text-xs tracking-[0.08em] text-signal ${className}`}>
       EXP.{value}
     </span>
   );

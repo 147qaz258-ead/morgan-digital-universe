@@ -56,7 +56,7 @@ export function FeaturedProjectCard({ locale, project }: { locale: Locale; proje
         <Link
           href={localePath(locale, `/experiments/${project.slug}`)}
           transitionTypes={["project-forward"]}
-          className="mt-8 inline-flex items-center gap-2 border-b border-accent/30 pb-1 font-mono text-[12px] font-semibold uppercase tracking-[0.08em] text-accent transition-colors hover:border-accent"
+          className="mt-8 inline-flex items-center gap-2 border-b border-accent/30 pb-1 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-accent transition-colors duration-300 ease-lab hover:border-accent"
         >
           {t.experiments.openCase}
           <ArrowRight size={15} aria-hidden />
@@ -72,7 +72,7 @@ export function ArchiveProjectRow({ locale, project }: { locale: Locale; project
   return (
     <Link
       href={localePath(locale, `/experiments/${project.slug}`)}
-      className="group grid min-w-0 gap-5 border-b border-line py-6 transition-colors duration-200 hover:bg-surface/60 md:grid-cols-[140px_minmax(0,1fr)] md:items-center md:gap-6 md:px-4"
+      className="group grid min-w-0 gap-5 border-b border-line py-6 transition-colors duration-300 ease-lab hover:bg-surface/60 md:grid-cols-[140px_minmax(0,1fr)] md:items-center md:gap-6 md:px-4"
     >
       {project.media.hero ? (
         <MediaFrame
@@ -89,8 +89,8 @@ export function ArchiveProjectRow({ locale, project }: { locale: Locale; project
           <ProjectIndex value={project.index} />
           <StatusPill label={t.status[project.status]} tone={statusTone[project.status]} />
         </div>
-        <span className="mt-3 block text-[18px] font-semibold text-ink">{project.shortTitle}</span>
-        <span className="mt-2 block max-w-2xl text-[14px] leading-relaxed text-ink-secondary">{project.oneLine}</span>
+        <span className="mt-3 block text-lg font-semibold text-ink">{project.shortTitle}</span>
+        <span className="mt-2 block max-w-2xl text-sm leading-relaxed text-ink-secondary">{project.oneLine}</span>
       </div>
     </Link>
   );

@@ -91,9 +91,9 @@ export function HeroViewport() {
           className={`absolute hidden items-center gap-2 border border-white/35 bg-brand/82 px-3 py-2 text-left text-white backdrop-blur-md transition-colors hover:border-white/70 xl:flex ${className}`}
         >
           <Icon size={13} aria-hidden />
-          <span className="font-mono text-[10px] uppercase tracking-[0.1em]">{label}</span>
+          <span className="font-mono text-2xs uppercase tracking-[0.1em]">{label}</span>
           {activeHotspot === label ? (
-            <span className="absolute left-0 top-full mt-2 w-56 border border-line bg-surface p-3 font-sans text-[12px] normal-case leading-relaxed tracking-normal text-ink shadow-[var(--shadow-card)]">
+            <span className="absolute left-0 top-full mt-2 w-56 border border-line bg-surface p-3 font-sans text-xs normal-case leading-relaxed tracking-normal text-ink shadow-[var(--shadow-card)]">
               {detail}
             </span>
           ) : null}
@@ -104,7 +104,7 @@ export function HeroViewport() {
         <button
           type="button"
           onClick={() => setForceLoad(true)}
-          className="absolute bottom-4 right-4 border border-white/35 bg-brand px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-white"
+          className="absolute bottom-4 right-4 border border-white/35 bg-brand px-4 py-3 font-mono text-2xs font-semibold uppercase tracking-[0.1em] text-white"
         >
           View 3D
         </button>

@@ -23,12 +23,12 @@ export function LabPageHeader({
     <header className={`grid gap-10 pb-16 pt-32 md:grid-cols-12 md:items-end md:pb-24 md:pt-40 ${className}`}>
       <div className="md:col-span-8">
         <p className="lab-kicker text-signal">{eyebrow}</p>
-        <h1 className="mt-5 max-w-5xl text-[48px] font-semibold leading-[0.92] tracking-[-0.055em] text-ink md:text-[76px] lg:text-[92px]">
+        <h1 className="mt-5 max-w-5xl text-balance text-5xl font-semibold leading-[0.92] tracking-[-0.055em] text-ink md:text-7xl lg:text-8xl">
           {title}
         </h1>
       </div>
       <div className="md:col-span-4">
-        {intro ? <div className="max-w-md text-[17px] leading-[1.65] text-ink-secondary md:text-[19px]">{intro}</div> : null}
+        {intro ? <div className="max-w-md text-base leading-[1.65] text-ink-secondary md:text-lg">{intro}</div> : null}
         {meta ? <div className="mt-7 border-t border-line pt-4">{meta}</div> : null}
       </div>
     </header>
@@ -41,7 +41,7 @@ export function SectionIndex({ items, label = "Section index" }: { items: Sectio
       {items.map((item) => (
         <a key={item.id} href={`#${item.id}`} className="group grid grid-cols-[42px_1fr] gap-3 border-b border-line py-4">
           <span className="lab-kicker text-signal">{item.number}</span>
-          <span className="text-[13px] font-medium text-ink-secondary transition-colors group-hover:text-ink">{item.label}</span>
+          <span className="text-xs font-medium text-ink-secondary transition-colors group-hover:text-ink">{item.label}</span>
         </a>
       ))}
     </nav>
@@ -63,7 +63,7 @@ export function ProjectLabel({ number, title, role }: { number: string; title: s
   return (
     <div className="grid gap-3 border-y border-line py-4 sm:grid-cols-[74px_1fr_auto] sm:items-center">
       <span className="lab-kicker text-signal">{number}</span>
-      <span className="text-[16px] font-semibold text-ink">{title}</span>
+      <span className="text-base font-semibold text-ink">{title}</span>
       <span className="lab-kicker text-ink-secondary">{role}</span>
     </div>
   );
