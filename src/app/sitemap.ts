@@ -2,17 +2,20 @@ import type { MetadataRoute } from "next";
 import { getProjects } from "@/content/projects";
 import { siteUrl } from "@/lib/site-url";
 import { getStaticRouteMetadata } from "@/content/metadata";
-import { locales, type Locale } from "@/i18n/config";
+import { locales, localeMeta, type Locale } from "@/i18n/config";
 
 function localizedUrl(locale: Locale, route: string): string {
   const path = route === "/" ? "" : route;
   return `${siteUrl}/${locale}${path}`;
 }
 
+/**
+ * hreflang 用的是语言码（en / zh-CN），不是路由段（en / zh）—— 页面里的
+ * alternates 就是这么写的，两处必须一致，否则 Google 会当成两套标注。
+ */
 function alternates(route: string) {
-  return {
-    languages: Object.fromEntries(locales.map((locale) => [locale, localizedUrl(locale, route)])) as Record<string, string>,
-  };
+  const languages = Object.fromEntries(locales.map((locale) => [localeMeta[locale].htmlLang, localizedUrl(locale, route)]));
+  return { languages: { ...languages, "x-default": localizedUrl("en", route) } };
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
