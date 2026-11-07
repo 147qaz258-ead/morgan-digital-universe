@@ -5,6 +5,23 @@
 
 > P0–P11 的 DONE 仅表示第一版脚手架/组件曾经完成，不能证明真实内容、正式资产、部署或生产交接完成。当前唯一生产收口依据是主计划第 13 节的 C0–C10。
 
+## V2.0 视觉重设计与完整项目墙（2026-11-07）
+
+> 用户要求视觉与完整项目墙同等重要，采用指定设计 skill 重做。本轮本地实现不代表已推送、部署或取得用户视觉验收。
+
+| Task | 内容 | 状态 |
+|---|---|---|
+| V20-T01 | 全新首页视觉、原创雕塑、自然滚动、Origin / Capabilities / Lab / Now / Vision / Contact 版式 | DONE |
+| V20-T02 | 首页与 Experiments 共用完整项目墙，10 项默认展开，分类计数 10 / 4 / 4 / 2 | DONE |
+| V20-T03 | 原创 Blender Signal Engine：1600px透明 WebP、GLB、源文件与可复现脚本 | DONE |
+| V20-T04 | 点击后加载 Three.js、拖拽/键盘、Escape、局部错误边界、静态回退和资源清理 | DONE |
+| V20-T05 | 1440px / 390px、中英路由、筛选、移动菜单、reduced-motion 与3D失败路径 | DONE |
+| V20-T06 | `pnpm check:build`、生产模式路由 smoke test、资源预算与最终差异检查 | DONE |
+
+验证记录见 `docs/QA_V2_VISUAL_2026-11-07.md`。代码仍在本地工作区，未推送或生产部署，用户视觉验收待预览。
+
+内容边界：9 项已有真实项目图片，PhysicalLink 使用明确标记的概念图。竖屏界面完整展示，Tripo 使用 CGI 成片封面；新雕塑为 `self-authored-3d / concept`，不替代任何 Evidence。所有 10 个项目的阶段、摘要、详情与已授权媒体保留。
+
 ## V1.9 Project case content (2026-11-03)
 
 > 触发原因：实测十个项目详情页可见正文仅 676–913 字符，`problem` / `insight` / `solution` / `build` / `myRole` / `stack` 在 `src/content/projects.ts` 中 10/10 为空，页面按条件渲染导致整段正文被跳过，点进项目页只有标题、图注和导航。

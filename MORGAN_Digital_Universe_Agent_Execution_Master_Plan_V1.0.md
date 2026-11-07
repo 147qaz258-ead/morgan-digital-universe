@@ -2006,3 +2006,16 @@ Home 8 秒和 Vision 6 秒视频由用户按现有提示词生成后交回；实
 ## 18.4 实施状态
 
 本地生产构建 `pnpm check:build` 通过；10 个项目详情页、其余核心页面和 robots/sitemap 均通过生产服务 smoke test。390px 首页不请求 MP4，控制台无错误/警告。GitHub `master` 已包含 commit `a52b8fb`；Vercel 尚未部署此 commit（本机 CLI 无登录凭据且 Git integration 未触发），待恢复发布权限后完成线上回归；完整交接见 `docs/EXECUTION_STATUS.md` 与 `docs/ASSET_GAPS.md`。
+
+---
+
+# 19. V2.0 视觉重设计与完整项目墙
+
+> 生效日期：2026-11-07。用户明确将视觉与完整项目墙作为同等核心，要求使用指定 skill 重新设计，并优先自行获取或制作 3D / 视频。本节覆盖第 16–17 节强制视频舞台的要求，以及旧首页标题与展示顺序；保留产品、路由、技术栈和真实性边界。
+
+1. 用 `landing-page-design` 与现有网站诊断完成视觉重设计，采用原创工业概念雕塑、层次明确的排版、直接可见的项目导航和自然滚动。
+2. 首页与 Experiments 共用完整项目墙：全部 10 项默认以图文展开，分类只筛选现有项目；硬件、软件、竖屏、游戏与 CGI 按媒体性质独立呈现。
+3. 原创 Signal Engine 在独立 Blender 场景制作，交付透明 WebP、GLB、源文件与可复现脚本。概念资源明确标识，不能替代真实项目证据。
+4. 首屏静态图先行，Three.js 与 GLB 只在点击后加载；支持拖拽、键盘、关闭、失败回退和完整清理，手机与 reduced-motion 默认不产生 WebGL。
+5. Origin、Capabilities、Lab、Now、Vision、Contact 采用不同视觉节奏；公共导航、联系区和独立页面风格同步。保留原双语与项目详情，不新增一级导航或虚构内容。
+6. Phase Gate 为 `pnpm check:build`，额外浏览器验证 1440px / 390px、双语路由、全部项目、筛选、导航、3D 正常/失败路径与 reduced-motion。代码完成不等于生产已部署或用户视觉验收。

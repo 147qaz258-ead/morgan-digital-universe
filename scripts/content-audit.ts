@@ -9,8 +9,10 @@ import { getProfile } from "../src/content/profile";
 import { getEvidenceRecord, getProjects } from "../src/content/projects";
 import type { MediaAsset, SystemDiagram } from "../src/content/types";
 import { generatedAtmosphereAssets } from "../src/content/atmosphere";
+import { getProjectWallItems } from "../src/content/project-wall";
+import { signalEngine } from "../src/content/showcase";
 import { dictionary } from "../src/i18n/dictionary";
-import { locales, type Locale } from "../src/i18n/config";
+import { locales } from "../src/i18n/config";
 
 const repoRoot = process.cwd();
 const failures: string[] = [];
@@ -261,6 +263,26 @@ generatedAtmosphereAssets.forEach((media) => {
 });
 
 const metadataRoutes = new Set<string>();
+for (const locale of locales) {
+  const wall = getProjectWallItems(locale);
+  const slugs = new Set(wall.map((item) => item.slug));
+  if (wall.length !== slugs.size || wall.length !== getProjects(locale).length) {
+    fail(`${locale}: the project wall must represent every project exactly once.`);
+  }
+  for (const item of wall) {
+    if (!item.cover) {
+      fail(`${locale}/${item.slug}: project wall cover configuration is missing.`);
+      continue;
+    }
+    for (const src of [item.cover.src, item.cover.secondarySrc].filter(Boolean)) {
+      if (!publicFileExists(src!)) fail(`${locale}/${item.slug}: project wall cover does not exist: ${src}`);
+    }
+  }
+}
+for (const src of [signalEngine.poster, signalEngine.model]) {
+  if (!publicFileExists(src)) fail(`Signal engine resource is missing: ${src}`);
+}
+
 for (const locale of locales) {
   const routesForLocale = new Set<string>();
   for (const entry of getStaticRouteMetadata(locale)) {

@@ -140,3 +140,14 @@
 - 用户提供的实际照片与软件截图在页面中作为项目媒体/过程素材呈现；生成视频、概念图、CGI 成片仍须标记为 concept/atmosphere，不伪装成硬件运行证据。
 - 视觉材料的展示不等待 `Evidence.isVerified`。该字段继续只用于某项材料是否支持一条具体、完整且不超出来源的公开 claim；不影响用户已授权素材正常展示。
 - 品牌名称锁定为 `MORGAN / DIGITAL LAB`。首选域名为 `morgandigitallab.com`；注册归属确认前不把它写入 canonical、robots 或 sitemap，也不代用户购买。
+
+## V2.0 视觉重设计与完整项目墙（2026-11-07）
+
+- 用户明确要求重新设计，而非局部排版调整；网站视觉与完整项目墙同等重要。允许重新生成视频或使用新 3D 资源，优先由 agent 制作，不沿用低质量的旧视频作为必需主视觉。
+- 本条覆盖 V1.4–V1.6 的视频先行、首页强制 scroll-scrub，以及旧首屏标题和首页展示顺序要求；保留原产品、技术栈、七项导航、已有路由和真实内容边界。
+- 使用 `elayadesign/ai-design-skills` 的 `landing-page-design`，参考 companion `redesign-existing-projects`。视觉保留 Lab White / Ink Navy / Signal Orange、Geist Sans / Geist Mono 与 Lucide，覆盖 skill 中冲突的图标、渐变和营销页面建议。
+- 新首页以原创 Signal Engine 概念雕塑、精简主标题、自然滚动和可直接进入的完整项目墙组成。全部 10 项现有项目默认展开展示，首页与 Experiments 共用分类筛选画廊；保留项目实际摘要和阶段，不编造事实或将仓库数当项目数。
+- Signal Engine 由独立 Blender 场景原创制作，提供透明 WebP、GLB 与源文件，标为 `self-authored-3d / concept / not project evidence`。首屏默认轻量静态图；用户点击后才加载 Three.js 与 GLB，手机同样默认不加载 WebGL。
+- 3D 提供拖动、方向键、Escape、错误回退和显式资源释放。reduced-motion 不自动移动模型；下方文字进入动效可关闭。原氛围视频文件保留，真实项目作品视频按原来源呈现。
+- 所有十个项目的图片都有对应展示策略：完整软件界面、竖屏组合、硬件实拍、CGI 成片封面；PhysicalLink 的生成概念图明确标注，不能成为实物 Evidence。
+- 中英双语、详情页、源码归档和现有 metadata 保留；本地实现、生产部署、真实 Evidence 和用户审美验收分别记录。

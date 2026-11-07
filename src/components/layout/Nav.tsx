@@ -15,7 +15,6 @@ export function Nav({ locale }: { locale: Locale }) {
   const t = getDictionary(locale).nav;
   const [open, setOpen] = useState(false);
   const [compact, setCompact] = useState(false);
-  const [chapter, setChapter] = useState(t.idleChapter);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [sectionRank, setSectionRank] = useState<{ index: number; total: number; label: string } | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -38,7 +37,6 @@ export function Nav({ locale }: { locale: Locale }) {
   const rank = isHome && sectionRank
     ? sectionRank
     : { index: Math.max(activeIndex + 1, 1), total: site.nav.length };
-  const readout = isHome ? sectionRank?.label ?? chapter : site.nav[Math.max(activeIndex, 0)]?.label ?? t.indexLabel;
 
   useEffect(() => {
     const update = () => {
@@ -46,15 +44,22 @@ export function Nav({ locale }: { locale: Locale }) {
       setCompact((current) => (current === next ? current : next));
     };
     update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        update();
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   useEffect(() => {
-    const updateChapter = (event: Event) => {
-      const detail = (event as CustomEvent<{ label?: string }>).detail;
-      if (detail?.label) setChapter(detail.label);
-    };
     const updateSection = (event: Event) => {
       const detail = (event as CustomEvent<{ id?: string | null; label?: string; index?: number; total?: number }>).detail;
       setActiveSection(detail?.id ?? null);
@@ -64,10 +69,8 @@ export function Nav({ locale }: { locale: Locale }) {
           : null,
       );
     };
-    window.addEventListener("lab:chapter", updateChapter);
     window.addEventListener("lab:section", updateSection);
     return () => {
-      window.removeEventListener("lab:chapter", updateChapter);
       window.removeEventListener("lab:section", updateSection);
     };
   }, []);
@@ -105,25 +108,24 @@ export function Nav({ locale }: { locale: Locale }) {
   }, [open]);
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
-      <div className={`pointer-events-none absolute inset-x-0 top-0 border-b transition-all duration-300 ease-lab ${compact || open ? "h-12 border-line bg-bg" : "h-24 border-transparent bg-gradient-to-b from-bg/92 to-transparent"}`} />
-      <div className={`pointer-events-auto relative z-50 mx-auto flex w-full max-w-[1440px] items-center justify-between px-5 transition-[height] duration-300 ease-lab md:px-8 lg:px-[var(--page-gutter)] ${compact ? "h-12" : "h-16"}`}>
-        <Link href={homePath} onClick={() => setOpen(false)} className="group flex min-h-11 items-center gap-3 font-mono text-2xs font-semibold tracking-[0.18em] text-ink">
-          <span className="h-2 w-2 bg-signal-bright transition-transform duration-300 ease-lab group-hover:rotate-45" aria-hidden />
+    <header className="pointer-events-none fixed inset-x-0 top-4 z-50 px-3 md:px-8 lg:px-[var(--page-gutter)]">
+      <div className={`pointer-events-auto relative z-50 mx-auto flex min-h-16 w-full max-w-[1296px] items-center justify-between gap-3 rounded-2xl border border-line bg-bg/95 px-4 backdrop-blur-xl transition-transform duration-500 ease-lab md:px-6 ${compact && !open ? "-translate-y-1" : "translate-y-0"}`}>
+        <Link href={homePath} onClick={() => setOpen(false)} className="group flex min-h-11 items-center gap-3 font-mono text-xs font-semibold tracking-[0.08em] text-ink">
+          <span className="flex h-6 w-6 items-center justify-center bg-ink text-surface" aria-hidden><span className="h-2 w-2 bg-signal-bright transition-transform duration-500 ease-lab group-hover:rotate-45" /></span>
           <span className="hidden sm:inline">{t.brandFull}</span>
           <span className="sm:hidden">{t.brandShort}</span>
         </Link>
 
+        <nav aria-label={t.primaryAria} className="hidden items-center gap-5 xl:flex">
+          {site.nav.map((item) => <Link key={item.href} href={isHome && item.anchor ? `#${item.anchor}` : routeHref(item)} aria-current={isActive(item) ? "true" : undefined} className={`inline-flex min-h-11 items-center text-xs font-medium transition-colors duration-300 ease-lab hover:text-signal ${isActive(item) ? "text-signal" : "text-ink-secondary"}`}>{item.label}</Link>)}
+        </nav>
+
         <div className="flex items-center gap-2 md:gap-4">
-          <span className="hidden items-center gap-2 font-mono text-2xs uppercase tracking-[0.14em] text-ink-secondary sm:flex" aria-live="polite">
-            <span className="h-1.5 w-1.5 bg-signal-bright" aria-hidden />
-            {readout}
-          </span>
           <LocaleSwitch locale={locale} />
           <button
             ref={triggerRef}
             type="button"
-            className="flex min-h-11 items-center gap-3 border-l border-ink/20 pl-4 font-mono text-2xs uppercase tracking-[0.14em] text-ink transition-colors duration-300 ease-lab hover:text-signal active:translate-y-px"
+            className="flex min-h-11 items-center gap-3 border-l border-ink/20 pl-4 font-mono text-2xs uppercase tracking-[0.14em] text-ink transition-colors duration-300 ease-lab hover:text-signal active:translate-y-px xl:hidden"
             aria-expanded={open}
             aria-controls="site-index"
             aria-label={open ? t.menuClose : t.menuOpen}
@@ -131,7 +133,10 @@ export function Nav({ locale }: { locale: Locale }) {
           >
             <span className="hidden sm:inline">{t.indexLabel} {String(rank.index).padStart(2, "0")} / {String(rank.total).padStart(2, "0")}</span>
             <span className="sm:hidden">{t.indexLabel}</span>
-            {open ? <X size={16} aria-hidden /> : <Menu size={16} aria-hidden />}
+            <span className="relative flex h-4 w-4 items-center justify-center" aria-hidden>
+              <Menu size={16} className={`absolute transition-[opacity,transform] duration-300 ease-lab ${open ? "rotate-90 scale-75 opacity-0" : "rotate-0 scale-100 opacity-100"}`} />
+              <X size={16} className={`absolute transition-[opacity,transform] duration-300 ease-lab ${open ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-75 opacity-0"}`} />
+            </span>
           </button>
         </div>
       </div>
@@ -158,7 +163,12 @@ export function Nav({ locale }: { locale: Locale }) {
                         const id = item.anchor;
                         setOpen(false);
                         requestAnimationFrame(() => {
-                          document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                          const target = document.getElementById(id);
+                          target?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
+                          if (target) {
+                            target.setAttribute("tabindex", "-1");
+                            target.focus({ preventScroll: true });
+                          }
                         });
                         return;
                       }

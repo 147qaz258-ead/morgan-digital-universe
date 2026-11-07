@@ -4,6 +4,14 @@
 
 Status: `PENDING` / `PROVIDED` / `VERIFIED`. A real Evidence asset reaches VERIFIED only after file, caption, capture date, provenance, publication permission, redaction and claim mapping have all been checked.
 
+## 当前视觉资源状态（2026-11-07）
+
+- 本轮完整项目墙已覆盖当前内容源中的全部10个项目。9项有真实项目图片，PhysicalLink沿用明确标识的概念图；不以生成图补做真实Evidence。
+- 新首页主视觉由agent自行在Blender制作：Signal Engine透明WebP与交互GLB已交付，源文件留在本地；来源与运行方式见 `docs/3D_ASSET_MANIFEST.md`。
+- 原视频文件保留，本轮首页无需等待用户重新生成视频；新3D与原视频都不作为实物运行证据。
+- portrait、真实连续测试视频和未确认的项目事实仍按原缺口处理，本轮视觉设计不会改变它们的证据状态。
+- 下方2026-10基线是历史快照，不能用其“零公开用户素材”等数字描述当前项目墙。
+
 ## Production resource snapshot — baseline 2026-10-08, media intake updated 2026-10-22
 
 Most page structures are implemented, but the full `/experiments` project directory and portfolio content layer are not complete. The current repository contains **20 public media files**: 17 generated-atmosphere assets/derivatives and 3 V01 self-authored 3D assets/posters. It contains **zero public USER_EVIDENCE files**.

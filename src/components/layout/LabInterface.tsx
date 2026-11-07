@@ -23,7 +23,7 @@ export function LabPageHeader({
     <header className={`grid gap-10 pb-16 pt-32 md:grid-cols-12 md:items-end md:pb-24 md:pt-40 ${className}`}>
       <div className="md:col-span-8">
         <p className="lab-kicker text-signal">{eyebrow}</p>
-        <h1 className="mt-5 max-w-5xl text-balance text-5xl font-semibold leading-[0.92] tracking-[-0.055em] text-ink md:text-7xl lg:text-8xl">
+        <h1 className="heading-1 mt-6 max-w-3xl text-ink">
           {title}
         </h1>
       </div>

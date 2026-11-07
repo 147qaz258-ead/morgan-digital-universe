@@ -28,7 +28,7 @@ export function FeaturedProjectCard({ locale, project }: { locale: Locale; proje
     <EvidenceComposition
       reverse={Number(project.index) % 2 === 0}
       index={(
-        <div className="flex items-start justify-between gap-4 md:flex-col">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <ProjectIndex value={project.index} />
           <StatusPill
             label={isPublished ? t.status[project.status] : t.status["publication-review"]}

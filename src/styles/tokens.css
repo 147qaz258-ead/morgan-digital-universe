@@ -21,7 +21,7 @@
 
   --max-content: 1296px;
   --page-gutter: clamp(20px, 5vw, 72px);
-  --section-space: clamp(96px, 11vw, 176px);
+  --section-space: clamp(64px, 8vw, 96px);
   --hairline: 1px;
 
   --shadow-card: 0 18px 50px rgba(21, 62, 117, 0.06);

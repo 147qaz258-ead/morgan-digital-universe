@@ -79,6 +79,7 @@ export function RevealOnScroll({ children, className = "" }: { children: ReactNo
   return (
     <div
       ref={ref}
+      data-scroll-reveal
       className={`${className} transition-[opacity,transform] duration-700 ease-lab ${
         phase === "hidden" ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100"
       }`}

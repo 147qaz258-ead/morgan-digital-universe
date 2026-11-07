@@ -2,7 +2,23 @@
 
 > Every production 3D asset must have a traceable source, license, size and use. Third-party branded models are prohibited.
 
-## Current development asset — V01
+## 当前首页原创资产 — Signal Engine（2026-11-07）
+
+| 资源 | 来源 | 规格 / 大小 | 用途 |
+|---|---|---|---|
+| `public/images/lab-signal-engine-01.webp` | 原创 Blender 场景 / Cycles GPU 渲染 | 1600×1600 RGBA / 89,162 bytes | 默认首屏海报，低于350KB预算 |
+| `public/models/lab-signal-engine-01.glb` | 同一原创雕塑导出 | 1,641,380 bytes；6 meshes / 6 materials / 6 draw calls / 37,348 triangles；无外部纹理或解码依赖 | 用户点击后加载的旋转视图 |
+| `artifacts/lab-signal-engine.blend` | 本地原生工程，保留材质、相机与灯光 | 原始源文件，本地保存 | 后续调整与重新渲染 |
+| `scripts/generate-signal-engine.py` | 可复现 Blender Python 脚本 | 从项目根生成独立场景与相同公开资源 | 资产再生成 |
+
+- 来源：`self-authored-3d`；展示性质：原创概念雕塑，明确 `concept / not project evidence`，无第三方品牌模型或授权依赖。
+- 造型：陶瓷与磨砂铝框的爆炸分层智能模块、深蓝计算核心、橙色环形电缆、螺丝、散热片和接点。
+- 建模始终使用独立场景，未清空或覆盖用户原场景；完成后恢复原 Scene。
+- 默认桌面、手机和 reduced-motion 均只显示海报，未点击不请求 GLB，不加载 WebGL。Three.js 由独立动态模块加载。
+- 支持拖拽、左右方向键和 Escape，加载后进入视口焦点，关闭后回到按钮；失败回退海报，卸载释放材质、几何体、环境、renderer 和 WebGL context。
+- 本资产只服务本轮首页概念主视觉，不表示历史完整实验室 V02、用户实物 Evidence 或全站生产验收已经完成。
+
+## 历史开发资产 — V01（当前首页未引用）
 
 | asset | source | license | file size | textures | materials | use | attribution |
 |---|---|---|---:|---|---:|---|---|
