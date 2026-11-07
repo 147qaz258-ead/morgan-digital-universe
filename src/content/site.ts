@@ -11,7 +11,7 @@ const en = {
   brandName: "MORGAN / DIGITAL LAB",
   mission: "Building AI systems that enter the physical world.",
   contactCta: "Build something real.",
-  contactBody: "AI × Robotics × Hardware. GitHub is the fastest channel right now; email is added once it is cleared for public listing.",
+  contactBody: "AI × Robotics × Hardware. Email or GitHub — whichever fits what you are building.",
   contactPending: "Contact — available on request",
   nav: [
     { label: "HOME", href: "/" },
@@ -28,7 +28,7 @@ const zh: typeof en = {
   brandName: "MORGAN / DIGITAL LAB",
   mission: "造能进入物理世界的 AI 系统。",
   contactCta: "做点真的。",
-  contactBody: "AI × 机器人 × 硬件。现在最快的通道是 GitHub；邮箱等确认可公开后再补上。",
+  contactBody: "AI × 机器人 × 硬件。邮件或 GitHub，哪条顺手走哪条。",
   contactPending: "联系方式 — 按需提供",
   nav: [
     { label: "首页", href: "/" },

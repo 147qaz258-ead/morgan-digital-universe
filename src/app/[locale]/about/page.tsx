@@ -4,8 +4,6 @@ import { getProfile } from "@/content/profile";
 import { getPageCopy } from "@/content/pages";
 import { PageContainer, Section } from "@/components/layout/PageContainer";
 import { Body, Meta } from "@/components/ui/typography";
-import { MediaFrame } from "@/components/ui/MediaFrame";
-import { DocumentationStatus } from "@/components/ui/DocumentationStatus";
 import { ContactCta } from "@/components/layout/ContactCta";
 import { getRouteMetadata } from "@/content/metadata";
 import { createPageMetadata } from "@/lib/metadata";
@@ -50,21 +48,13 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           </div>
           <aside className="md:col-span-4 md:col-start-9">
             <div className="sticky top-28">
-              {profile.portrait?.status === "verified" ? (
-                <MediaFrame media={profile.portrait} alt={profile.portrait.alt} aspect="3/4" large locale={locale} />
-              ) : (
-                <DocumentationStatus
-                  locale={locale}
-                  label={t.portraitLabel}
-                  title={t.portraitTitle}
-                  body={t.portraitBody}
-                />
-              )}
-              <dl className="mt-6 border-t border-line">
+              <dl className="border-t border-line">
                 {[
                   [t.rowLocation, profile.location ?? t.valuePrivate],
                   [t.rowContact, profile.email ? t.valueAvailable : t.valueOnRequest],
                   [t.rowFocus, t.valueFocus],
+                  [t.rowTimezone, t.valueTimezone],
+                  [t.rowLanguages, t.valueLanguages],
                 ].map(([label, value]) => (
                   <div key={label} className="grid grid-cols-[90px_1fr] gap-4 border-b border-line py-4">
                     <dt><Meta className="text-ink-secondary">{label}</Meta></dt>
@@ -72,6 +62,14 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                   </div>
                 ))}
               </dl>
+              {profile.email ? (
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="mt-4 inline-flex min-h-11 items-center font-mono text-2xs tracking-[0.06em] text-signal transition-colors duration-300 ease-lab hover:text-ink"
+                >
+                  {profile.email}
+                </a>
+              ) : null}
             </div>
           </aside>
         </div>
