@@ -108,7 +108,7 @@ export function Nav({ locale }: { locale: Locale }) {
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
       <div className={`pointer-events-none absolute inset-x-0 top-0 border-b transition-all duration-300 ease-lab ${compact || open ? "h-12 border-line bg-bg" : "h-24 border-transparent bg-gradient-to-b from-bg/92 to-transparent"}`} />
       <div className={`pointer-events-auto relative z-50 mx-auto flex w-full max-w-[1440px] items-center justify-between px-5 transition-[height] duration-300 ease-lab md:px-8 lg:px-[var(--page-gutter)] ${compact ? "h-12" : "h-16"}`}>
-        <Link href={homePath} onClick={() => setOpen(false)} className="group flex items-center gap-3 font-mono text-2xs font-semibold tracking-[0.18em] text-ink">
+        <Link href={homePath} onClick={() => setOpen(false)} className="group flex min-h-11 items-center gap-3 font-mono text-2xs font-semibold tracking-[0.18em] text-ink">
           <span className="h-2 w-2 bg-signal-bright transition-transform duration-300 ease-lab group-hover:rotate-45" aria-hidden />
           <span className="hidden sm:inline">{t.brandFull}</span>
           <span className="sm:hidden">{t.brandShort}</span>
