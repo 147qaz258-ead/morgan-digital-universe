@@ -5,7 +5,52 @@
 
 ---
 
-## 0. 当前状态（2026-10-17 复验）
+## 最新部署（2026-11-15，Neubrutalism V3.0）
+
+> 本节全部为当日实测。下方第 0 节起为 2026-10-17 的历史记录，保留备查。
+
+| 检查项 | 状态 | 证据 |
+|---|---|---|
+| 部署 ID | **READY** | `dpl_J5f3Kb9318gCyyp6FpwaMqcGqABN`，target `production` |
+| 内容版本 | **Neubrutalism V3.0** | 线上 HTML 含 `archivo_black_400` + `space_grotesk_400/500/700` preload，圆角规则零残留 |
+| 别名 | **已指向新部署** | `morgan-digital-universe.vercel.app` + `morgan-digital-universe-oneday1.vercel.app` |
+| 路由复验 | **34/34 全部 200** | 遍历 sitemap 全部 `<loc>` |
+| 构建产物 | **正常挂载** | 日志含 `Build Completed in /vercel/output` + `Deploying outputs...`；未加 `--archive=tgz` |
+| SEO 域名 | **洁净域名** | canonical、`robots.txt` 的 `Host`/`Sitemap`、sitemap 34 条全部为 `morgan-digital-universe.vercel.app` |
+| 移动端横向溢出 | **无** | 390px 视口下 `scrollWidth === clientWidth === 390` |
+
+### 本次新增的环境结论（下次排查直接用）
+
+本机有两套代理，只有一个能到 `*.vercel.app`：
+
+| 通路 | 结果 |
+|---|---|
+| 直连（`--noproxy '*'`，含 `--resolve` 指向 `64.29.17.131` / `216.198.79.131`） | `000`，SNI 被重置 |
+| 环境变量代理 `127.0.0.1:60873`（Proxypilot） | `502` / `000`，该目标不通 |
+| **系统代理 `127.0.0.1:7897`** | **可用**，全部路由 200 |
+
+验证线上状态的正确姿势：
+
+```bash
+curl -x http://127.0.0.1:7897 -s -o /dev/null -w "%{http_code}\n" https://morgan-digital-universe.vercel.app/en
+```
+
+获取真实 IP 只能用加密 DoH（`https://doh.pub/dns-query?name=...&type=A`）；`8.8.8.8` 与阿里 DNS 均返回被污染的 Twitter 段 IP，**不可作为域名存活的判据**。
+
+### 部署方式仍是手动
+
+仓库**没有**接 Vercel Git 集成（GitHub `deployments` 为空、commit status `total_count: 0`），push 不会触发构建。上线必须手动执行：
+
+```bash
+cd "E:\C_Projects\个人网站"
+"C:\Users\29913\AppData\Roaming\npm\vercel.cmd" deploy --prod --yes --force --scope oneday1
+```
+
+登录态已在 `~/.vercel`，不需要再传 `--token`。
+
+---
+
+## 0. 历史状态（2026-10-17 复验）
 
 | 检查项 | 状态 | 证据 |
 |---|---|---|
