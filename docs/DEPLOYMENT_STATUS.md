@@ -37,16 +37,29 @@ curl -x http://127.0.0.1:7897 -s -o /dev/null -w "%{http_code}\n" https://morgan
 
 获取真实 IP 只能用加密 DoH（`https://doh.pub/dns-query?name=...&type=A`）；`8.8.8.8` 与阿里 DNS 均返回被污染的 Twitter 段 IP，**不可作为域名存活的判据**。
 
-### 部署方式仍是手动
+### 部署方式：2026-11-15 17:07 起改为 Git 自动部署
 
-仓库**没有**接 Vercel Git 集成（GitHub `deployments` 为空、commit status `total_count: 0`），push 不会触发构建。上线必须手动执行：
+项目已连接 Git 仓库（Settings → Git → `147qaz258-ead/morgan-digital-universe`），Production Branch = `master`。**push 即上线，不再需要手动执行命令。**
+
+实测验证（2026-11-15 17:10）：
+
+| 检查 | 结果 |
+|---|---|
+| 触发方式 | `git push` 提交 `228387a` |
+| 自动部署 | `morgan-digital-universe-b9imkl0n1`，`Ready`，**Production**，21s |
+| GitHub 回写 | `context: Vercel`，`state: success`，`description: Deployment has completed` |
+| 线上 | `/en` 200、`/zh` 200、根路径 307 |
+
+接入前 push 不触发构建（GitHub `deployments` 为空、commit status `total_count: 0`）；那时只能手动部署。手动命令保留作兜底——自动构建因平台问题失败时仍可用：
 
 ```bash
 cd "E:\C_Projects\个人网站"
 "C:\Users\29913\AppData\Roaming\npm\vercel.cmd" deploy --prod --yes --force --scope oneday1
 ```
 
-登录态已在 `~/.vercel`，不需要再传 `--token`。
+登录态已在 `~/.vercel`，不需要再传 `--token`。**不要加 `--archive=tgz`。**
+
+Git 侧建议保持开启：`Commit Status`（push 后在提交页显示部署结果）、`deployment_status Events`。`Commit Comments` 可关，不影响部署。
 
 ---
 
