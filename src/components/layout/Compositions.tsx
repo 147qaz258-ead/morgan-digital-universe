@@ -31,7 +31,7 @@ export function EvidenceComposition({
   className?: string;
 }) {
   return (
-    <article className={`grid grid-cols-1 gap-7 border-t border-line py-10 md:grid-cols-12 md:gap-6 lg:py-14 ${className}`}>
+    <article className={`grid grid-cols-1 gap-7 border-t-[3px] border-ink py-10 md:grid-cols-12 md:gap-6 lg:py-14 ${className}`}>
       <div className="md:col-span-12">{index}</div>
       <div className={`md:col-span-7 ${reverse ? "md:order-3" : "md:order-2"}`}>{media}</div>
       <div className={`md:col-span-5 ${reverse ? "md:order-2 md:pr-8" : "md:order-3 md:pl-8"}`}>{content}</div>

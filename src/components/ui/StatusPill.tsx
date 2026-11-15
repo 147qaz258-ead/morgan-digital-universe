@@ -1,13 +1,12 @@
-import { Meta } from "./typography";
-
 type Tone = "signal" | "accent" | "neutral";
 
-const dot: Record<Tone, string> = {
-  signal: "bg-signal-bright",
-  accent: "bg-accent",
-  neutral: "bg-ink-secondary",
+const toneClass: Record<Tone, string> = {
+  signal: "sticker--signal",
+  accent: "sticker--ink",
+  neutral: "sticker--paper",
 };
 
+/** 状态 = 贴纸。实色块 + 2px 黑边 + 硬阴影，取代旧的「左边细线 + 圆点」。 */
 export function StatusPill({
   label,
   tone = "neutral",
@@ -16,20 +15,20 @@ export function StatusPill({
   tone?: Tone;
 }) {
   return (
-    <span className="inline-flex items-center gap-2 border-l border-line pl-3">
-      <span className={`h-1.5 w-1.5 rounded-full ${dot[tone]}`} aria-hidden />
-      <Meta className="text-ink">{label}</Meta>
+    <span className={`sticker ${toneClass[tone]}`}>
+      <span className="h-1.5 w-1.5 bg-current" aria-hidden />
+      {label}
     </span>
   );
 }
 
 export function Divider({ className = "" }: { className?: string }) {
-  return <hr className={`border-0 border-t border-line ${className}`} aria-hidden />;
+  return <hr className={`border-0 border-t-[2px] border-line ${className}`} aria-hidden />;
 }
 
 export function ProjectIndex({ value, className = "" }: { value: string; className?: string }) {
   return (
-    <span className={`font-mono text-xs tracking-[0.08em] text-signal ${className}`}>
+    <span className={`sticker sticker--ink ${className}`}>
       EXP.{value}
     </span>
   );

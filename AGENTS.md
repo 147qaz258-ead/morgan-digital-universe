@@ -52,7 +52,8 @@ docs/                   # 执行状态与资产清单
 - 动态路由 `params` / `searchParams` 是 Promise，必须 `await`（Next 16）。
 - 内容一律来自 `src/content/`，页面内不硬编码长文案；缺失字段为 `null`，不虚构。
 - 视觉禁区、色彩、字号、动画时长见 `docs/DECISIONS_LOCKED.md`，组件内禁止散落随机 hex。
-- 图标仅 Lucide React；字体仅 Geist Sans / Geist Mono。
+- 图标仅 Lucide React；字体仅 Archivo Black（Display）/ Space Grotesk（正文、UI）/ Geist Mono（编号、标签），禁止第四套字体。
+- 野兽派结构规则（见 `docs/DECISIONS_LOCKED.md` V3.0）：零圆角、完整边框 3px 纯黑、分隔线 2px 纯黑、硬偏移阴影无模糊；颜色只在 `src/styles/tokens.css` 定义。
 - GSAP ScrollTrigger 只用于计划列出的四类场景；Framer Motion 不与 GSAP 抢同一元素。
 - 素材缺失：用 `*_PENDING` 占位 + 中性灰白占位 UI（`Evidence pending`），记录到 `docs/ASSET_GAPS.md`，继续开发不停顿。禁止用 AI 图冒充真实项目证据。
 - 3D 不进首屏 blocking bundle；移动端默认 poster 替代 WebGL。

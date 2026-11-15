@@ -20,7 +20,7 @@ export function SystemDiagram({ diagram }: { diagram: SystemDiagramData }) {
         <Meta className="text-accent">Confirmed system map</Meta>
       </figcaption>
 
-      <div className="grid gap-px bg-line md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-[3px] bg-ink md:grid-cols-2 xl:grid-cols-3">
         {diagram.nodes.map((node, index) => (
           <div key={node.id} className="min-h-36 bg-bg p-5">
             <div className="flex items-center justify-between gap-4">

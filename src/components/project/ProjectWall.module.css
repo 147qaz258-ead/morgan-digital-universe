@@ -5,6 +5,12 @@
   color: var(--ink);
 }
 
+/* 独立路由页已有 LabPageHeader 撑开顶部留白，项目墙不要再叠一层 96px */
+.sectionFlush {
+  padding-top: 0;
+  scroll-margin-top: 96px;
+}
+
 .container {
   width: min(100%, 1440px);
   padding-inline: var(--page-gutter);
@@ -16,41 +22,50 @@
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
   align-items: end;
   gap: 48px;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
 }
 
 .eyebrow {
-  display: flex;
+  display: inline-flex;
+  max-width: 100%;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  color: var(--ink-secondary);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 12px;
-  line-height: 16px;
+  gap: 10px;
+  padding: 5px 9px;
+  border: 2px solid var(--ink);
+  background: var(--sticker);
+  box-shadow: 3px 3px 0 var(--ink);
+  font: 700 12px/1.2 var(--font-geist-mono), monospace;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .eyebrow > span {
   width: 8px;
   height: 8px;
-  background: var(--signal);
+  background: var(--ink);
 }
 
 .heading {
-  margin-top: 24px;
-  max-width: 680px;
-  font-size: 48px;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.055em;
+  margin-top: 20px;
+  max-width: 760px;
+  font-family: var(--font-archivo), "Arial Black", sans-serif;
+  font-size: clamp(34px, 4.4vw, 62px);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
 .subtitle {
   max-width: 360px;
   justify-self: end;
+  border-left: 3px solid var(--ink);
+  padding-left: 16px;
   color: var(--ink-secondary);
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.65;
   text-wrap: pretty;
 }
 
@@ -59,7 +74,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
+  padding-block: 12px;
+  border-block: 3px solid var(--ink);
 }
 
 .filters {
@@ -70,60 +87,63 @@
 
 .filter {
   display: inline-flex;
-  min-height: 44px;
+  min-height: 40px;
   align-items: center;
-  gap: 12px;
-  padding: 8px 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--ink-secondary);
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
+  gap: 10px;
+  padding: 6px 12px;
+  border: 2px solid var(--ink);
+  background: var(--surface);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+  font: 700 12px/1 var(--font-geist-mono), monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 300ms var(--lab-ease), color 300ms var(--lab-ease), transform 300ms var(--lab-ease);
+  transition:
+    transform 140ms var(--lab-ease),
+    box-shadow 140ms var(--lab-ease),
+    background-color 140ms var(--lab-ease),
+    color 140ms var(--lab-ease);
 }
 
 .filter > span {
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 12px;
   font-variant-numeric: tabular-nums;
-  opacity: 0.65;
+  opacity: 0.8;
 }
 
 .filter:hover {
-  background: var(--surface-muted);
-  color: var(--ink);
+  background: var(--sticker);
 }
 
 .filter[aria-pressed="true"] {
-  border-color: var(--ink);
   background: var(--ink);
-  color: var(--surface);
+  color: var(--sticker);
+  box-shadow: 2px 2px 0 var(--signal);
 }
 
 .filter:active {
-  transform: translateY(1px);
+  transform: translate(2px, 2px);
+  box-shadow: none;
 }
 
 .filter:focus-visible,
 .link:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 6px;
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
 }
 
 .count {
   flex-shrink: 0;
-  color: var(--ink-secondary);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 12px;
-  line-height: 16px;
+  color: var(--ink);
+  font: 700 12px/1 var(--font-geist-mono), monospace;
+  letter-spacing: 0.08em;
   font-variant-numeric: tabular-nums;
 }
 
 .count > span {
   margin-left: 8px;
+  color: var(--ink-secondary);
+  font-weight: 500;
 }
 
 .grid {
@@ -144,7 +164,6 @@
 
 .link {
   display: block;
-  border-radius: 24px;
   text-decoration: none;
 }
 
@@ -160,8 +179,13 @@
   min-width: 0;
   overflow: hidden;
   aspect-ratio: 4 / 3;
-  border-radius: 24px;
+  border: 3px solid var(--ink);
+  background: var(--surface-muted);
+  box-shadow: var(--shadow-card);
   isolation: isolate;
+  transition:
+    transform 140ms var(--lab-ease),
+    box-shadow 140ms var(--lab-ease);
 }
 
 .light {
@@ -175,7 +199,7 @@
 .imageGroup {
   position: absolute;
   inset: 0;
-  transition: transform 500ms var(--lab-ease);
+  transition: transform 220ms var(--lab-ease);
 }
 
 .primaryImage {
@@ -231,22 +255,26 @@
   object-fit: contain;
 }
 
+/* 来源标签：贴在媒体框左下角的实色贴纸 */
 .provenance {
   position: absolute;
-  bottom: 16px;
-  left: 16px;
+  bottom: 12px;
+  left: 12px;
   z-index: 2;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: var(--bg);
-  color: var(--ink-secondary);
-  font-size: 12px;
-  line-height: 16px;
+  max-width: calc(100% - 24px);
+  padding: 5px 8px;
+  border: 2px solid var(--ink);
+  background: var(--surface);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+  font: 700 11px/1.2 var(--font-geist-mono), monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .conceptLabel {
-  color: var(--signal-ink);
-  font-weight: 600;
+  background: var(--signal);
+  color: var(--ink);
 }
 
 .play {
@@ -258,8 +286,9 @@
   width: 64px;
   height: 64px;
   place-items: center;
-  border-radius: 999px;
-  background: var(--bg);
+  border: 3px solid var(--ink);
+  background: var(--sticker);
+  box-shadow: var(--shadow-sm);
   color: var(--ink);
   transform: translate(-50%, -50%);
 }
@@ -272,33 +301,40 @@
   display: grid;
   height: 100%;
   place-items: center;
-  color: var(--steel);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 48px;
+  color: var(--ink);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 72px;
+  line-height: 1;
 }
 
 .body {
-  padding-top: 24px;
+  padding-top: 20px;
 }
 
 .wide .body {
-  padding: 24px 0;
+  padding: 20px 0;
 }
 
 .meta {
   display: flex;
-  align-items: baseline;
-  gap: 16px;
-  color: var(--ink-secondary);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 12px;
-  line-height: 1.5;
+  align-items: center;
+  gap: 10px;
+  font: 700 12px/1 var(--font-geist-mono), monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .meta > span:first-child {
   flex-shrink: 0;
-  color: var(--signal-ink);
+  padding: 4px 6px;
+  border: 2px solid var(--ink);
+  background: var(--sticker);
+  box-shadow: 2px 2px 0 var(--ink);
   font-variant-numeric: tabular-nums;
+}
+
+.meta > span:last-child {
+  color: var(--ink-secondary);
 }
 
 .titleRow {
@@ -306,34 +342,37 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-top: 16px;
+  margin-top: 18px;
 }
 
 .titleRow h3 {
   font-size: 30px;
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.04em;
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
 .wide .titleRow h3 {
-  font-size: 48px;
-  line-height: 1;
+  font-family: var(--font-archivo), "Arial Black", sans-serif;
+  font-size: clamp(34px, 3.6vw, 54px);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
 }
 
 .arrow {
   flex-shrink: 0;
   margin-top: 4px;
-  transition: transform 500ms var(--lab-ease), color 300ms var(--lab-ease);
+  transition: transform 140ms var(--lab-ease), color 140ms var(--lab-ease);
 }
 
 .summary {
-  margin-top: 16px;
+  margin-top: 14px;
   max-width: 60ch;
   color: var(--ink-secondary);
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.65;
   text-wrap: pretty;
 }
 
@@ -342,10 +381,13 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-top: 24px;
-  font-size: 12px;
-  line-height: 16px;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 2px solid var(--ink);
+  font: 700 11px/1.2 var(--font-geist-mono), monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .status {
@@ -356,19 +398,28 @@
 }
 
 .status > span {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
+  width: 8px;
+  height: 8px;
   background: var(--signal);
 }
 
 .open {
-  color: var(--signal-ink);
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
-.link:hover .imageGroup,
-.link:focus-visible .imageGroup {
-  transform: scale(1.025);
+/* hover 用「抬起 + 阴影变长」，不用缩放 —— 缩放是柔光时代的语言 */
+.link:hover .media,
+.link:focus-visible .media {
+  transform: translate(-4px, -4px);
+  box-shadow: 12px 12px 0 var(--ink);
+}
+
+.link:active .media {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .link:hover .arrow,
@@ -394,7 +445,6 @@
   }
   .wide .titleRow h3 {
     font-size: 36px;
-    line-height: 40px;
   }
   .screen .primaryImage {
     inset: 24px 16px 48px;
@@ -408,23 +458,21 @@
   .header {
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
   }
   .heading {
     margin-top: 16px;
-    font-size: 30px;
-    line-height: 36px;
+    font-size: 32px;
   }
   .subtitle {
     justify-self: start;
   }
   .toolbar {
-    gap: 16px;
-    margin-bottom: 32px;
+    gap: 12px;
+    margin-bottom: 28px;
   }
   .filter {
-    gap: 8px;
-    padding-inline: 12px;
+    padding-inline: 10px;
   }
   .grid {
     grid-template-columns: minmax(0, 1fr);
@@ -437,33 +485,42 @@
     margin-bottom: 0;
   }
   .wide .body {
-    padding: 24px 0 0;
+    padding: 20px 0 0;
   }
   .titleRow h3,
   .wide .titleRow h3 {
     font-size: 24px;
-    line-height: 32px;
+    letter-spacing: -0.025em;
   }
   .phones .imageGroup {
     inset: 24px 16px 48px;
   }
   .meta {
-    gap: 12px;
+    gap: 8px;
+  }
+  .link:hover .media,
+  .link:focus-visible .media,
+  .link:active .media {
+    transform: none;
+    box-shadow: var(--shadow-card);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .imageGroup,
   .arrow,
-  .filter {
-    transition: opacity 150ms var(--lab-ease), color 150ms var(--lab-ease), background-color 150ms var(--lab-ease);
+  .filter,
+  .media {
+    transition: none;
   }
-  .link:hover .imageGroup,
-  .link:focus-visible .imageGroup,
+  .link:hover .media,
+  .link:focus-visible .media,
+  .link:active .media,
   .link:hover .arrow,
   .link:focus-visible .arrow,
   .link:active .arrow,
   .filter:active {
     transform: none;
+    box-shadow: var(--shadow-card);
   }
 }

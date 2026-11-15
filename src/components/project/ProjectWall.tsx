@@ -20,7 +20,7 @@ export function ProjectWall({ locale, heading = true }: { locale: Locale; headin
   const visibleItems = filter === "all" ? items : items.filter((item) => item.cover?.group === filter);
 
   return (
-    <section id="index" aria-label={copy.eyebrow} className={styles.section}>
+    <section id="index" aria-label={copy.eyebrow} className={`${styles.section} ${heading ? "" : styles.sectionFlush}`}>
       <div className={styles.container}>
         {heading ? (
           <header className={styles.header}>

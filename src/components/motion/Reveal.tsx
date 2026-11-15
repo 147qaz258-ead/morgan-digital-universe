@@ -25,13 +25,13 @@ export function Reveal({
     const ctx = gsap.context(() => {
       gsap.fromTo(
         el,
-        { opacity: 0, y: 32 },
+        { opacity: 0, y: 20 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.9,
+          duration: 0.5,
           delay,
-          ease: "power3.out",
+          ease: "power2.out",
           scrollTrigger: { trigger: el, start: "top 85%", once: true },
         }
       );
@@ -80,7 +80,7 @@ export function RevealOnScroll({ children, className = "" }: { children: ReactNo
     <div
       ref={ref}
       data-scroll-reveal
-      className={`${className} transition-[opacity,transform] duration-700 ease-lab ${
+      className={`${className} transition-[opacity,transform] duration-300 ease-lab ${
         phase === "hidden" ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100"
       }`}
     >

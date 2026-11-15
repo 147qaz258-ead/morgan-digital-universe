@@ -39,13 +39,13 @@ export default async function CapabilitiesPage({ params }: { params: Promise<{ l
 
       <Section className="border-t border-line !pt-0">
         {capabilityGroups.map((group, groupIndex) => (
-          <section key={group.id} className="grid gap-8 border-b border-line py-14 md:grid-cols-12 md:py-20">
-            <div className="md:col-span-4">
+          <section key={group.id} className="grid gap-8 border-b-[3px] border-ink py-10 md:grid-cols-12 md:py-14">
+            <div className="border-[3px] border-ink bg-surface p-5 shadow-[var(--shadow-card)] md:col-span-4">
               <Meta className="text-signal">{String(groupIndex + 1).padStart(2, "0")}</Meta>
               <H2 className="mt-4">{group.title}</H2>
               <Meta className="mt-3 block text-ink-secondary">{group.subtitle}</Meta>
             </div>
-            <div className="border-t border-line md:col-span-7 md:col-start-6">
+            <div className="md:col-span-7 md:col-start-6">
               {group.items.map((item) => {
                 const record = item.proofEvidenceId ? getEvidenceRecord(locale, item.proofEvidenceId) : null;
                 const verified = record && isVerifiedEvidence(record.evidence) ? record : null;

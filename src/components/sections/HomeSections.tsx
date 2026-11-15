@@ -48,7 +48,7 @@ function SectionShell({
             {href && linkLabel ? (
               <Link
                 href={href}
-                className="mt-6 inline-flex min-h-11 items-center gap-2 border-b border-line pb-1 font-mono text-2xs uppercase tracking-[0.12em] text-ink-secondary transition-colors duration-300 ease-lab hover:border-accent hover:text-accent active:translate-y-px"
+                className="mt-6 inline-flex min-h-11 items-center gap-2 border-b-[3px] border-ink pb-1 font-mono text-2xs font-bold uppercase tracking-[0.12em] text-ink transition-colors duration-150 ease-lab hover:bg-sticker"
               >
                 {linkLabel}
                 <ArrowUpRight size={14} aria-hidden />
@@ -81,7 +81,7 @@ export function ProjectIndexSection({ locale }: { locale: Locale }) {
           <Link
             key={project.slug}
             href={localePath(locale, `/experiments/${project.slug}`)}
-            className="group grid grid-cols-[32px_minmax(0,1fr)] items-baseline gap-3 border-b border-line py-5 transition-colors duration-300 ease-lab hover:bg-surface/70 md:grid-cols-[48px_minmax(0,1fr)_auto] md:gap-5"
+            className="group grid grid-cols-[32px_minmax(0,1fr)] items-baseline gap-3 border-b-[2px] border-ink py-5 transition-colors duration-150 ease-lab hover:bg-sticker md:grid-cols-[48px_minmax(0,1fr)_auto] md:gap-5"
           >
             <Meta className="text-signal tabular-nums">{project.index}</Meta>
             <span className="min-w-0">

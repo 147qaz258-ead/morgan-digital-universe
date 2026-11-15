@@ -18,11 +18,11 @@ export function DocumentationStatus({
 }) {
   const resolvedLabel = label ?? getDictionary(locale).project.documentationPending;
   return (
-    <div className={`relative border-y border-line py-7 ${className}`}>
+    <div className={`relative border-y-[3px] border-ink py-6 ${className}`}>
       <div className="grid gap-4 lg:grid-cols-[220px_1fr] lg:gap-8">
-        <Meta className="text-signal">{resolvedLabel}</Meta>
+        <span className="sticker sticker--signal justify-self-start self-start">{resolvedLabel}</span>
         <div>
-          <p className="text-sm font-semibold text-ink">{title}</p>
+          <p className="text-sm font-bold text-ink">{title}</p>
           <Body className="mt-2 max-w-2xl text-sm text-ink-secondary">{body}</Body>
         </div>
       </div>
@@ -34,12 +34,12 @@ export function PendingEvidenceList({ evidence, locale = "en" }: { evidence: Evi
   if (evidence.length === 0) return null;
   const t = getDictionary(locale).project;
   return (
-    <div className="border-t border-line" aria-label={t.pendingEvidenceList}>
+    <div className="border-t-[3px] border-ink" aria-label={t.pendingEvidenceList}>
       {evidence.map((item, index) => (
         <div
           id={item.id}
           key={item.id}
-          className="scroll-mt-28 grid grid-cols-[44px_1fr_auto] items-center gap-4 border-b border-line py-4"
+          className="scroll-mt-28 grid grid-cols-[44px_1fr_auto] items-center gap-4 border-b-[2px] border-ink py-4"
         >
           <Meta className="text-signal">{String(index + 1).padStart(2, "0")}</Meta>
           <div>

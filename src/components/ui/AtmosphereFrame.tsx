@@ -2,7 +2,6 @@ import Image from "next/image";
 import { ViewTransition } from "react";
 import type { GeneratedAtmosphereAsset } from "@/content/types";
 import { AmbientVideo } from "@/components/media/AmbientVideo";
-import { Meta } from "./typography";
 import { getDictionary } from "@/i18n/dictionary";
 import type { Locale } from "@/i18n/config";
 
@@ -26,11 +25,11 @@ export function AtmosphereFrame({
   transitionName?: string;
 }) {
   const t = getDictionary(locale).media;
-  const radius = large ? "rounded-[24px]" : "rounded-[16px]";
+  const shadow = large ? "shadow-[var(--shadow-media)]" : "shadow-[var(--shadow-card)]";
   const frame = (
     <figure className={className}>
       <div
-        className={`coordinate-corner relative w-full overflow-hidden border border-line bg-surface ${radius}`}
+        className={`coordinate-corner relative w-full overflow-hidden border-[3px] border-ink bg-surface ${shadow}`}
         style={{ aspectRatio: aspect ?? media.aspectRatio }}
       >
         {media.kind === "video" && media.src && media.poster ? (
@@ -52,9 +51,10 @@ export function AtmosphereFrame({
             className="object-cover"
           />
         )}
-        <div className="absolute bottom-3 left-3 flex min-w-0 flex-col items-start gap-1 border-l border-signal-bright bg-bg/92 px-3 py-2 text-ink md:bottom-4 md:left-4 md:flex-row md:items-center md:gap-3">
-          <Meta className="text-ink-secondary">{t.conceptAtmosphere}</Meta>
-          <Meta className="text-signal">{t.generatedNote}</Meta>
+        {/* 概念素材标识：黄底黑字贴纸，压在画面左下角 */}
+        <div className="absolute bottom-3 left-3 flex min-w-0 flex-col items-start gap-1 md:bottom-4 md:left-4 md:flex-row md:items-center md:gap-2">
+          <span className="sticker sticker--paper">{t.conceptAtmosphere}</span>
+          <span className="sticker sticker--signal">{t.generatedNote}</span>
         </div>
       </div>
     </figure>

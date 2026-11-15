@@ -80,13 +80,13 @@ export function SectionRail({ locale, items }: { locale: Locale; items: RailSect
                 aria-label={item.label}
                 className="group relative flex h-7 items-center justify-end pr-1"
               >
-                <span className="pointer-events-none absolute right-7 whitespace-nowrap border border-line bg-bg px-2 py-1 font-mono text-2xs uppercase tracking-[0.14em] text-ink opacity-0 transition-opacity duration-300 ease-lab group-hover:opacity-100 group-focus-visible:opacity-100">
+                <span className="pointer-events-none absolute right-8 whitespace-nowrap border-[2px] border-ink bg-surface px-2 py-1 font-mono text-2xs font-bold uppercase tracking-[0.14em] text-ink shadow-[3px_3px_0_var(--ink)] opacity-0 transition-opacity duration-150 ease-lab group-hover:opacity-100 group-focus-visible:opacity-100">
                   {String(index + 1).padStart(2, "0")} {item.label}
                 </span>
                 <span
                   aria-hidden
-                  className={`block h-px transition-all duration-300 ease-lab ${
-                    isActive ? "w-6 bg-signal" : "w-3 bg-ink/25 group-hover:w-5 group-hover:bg-ink/45"
+                  className={`block h-1 border-[2px] border-ink transition-all duration-150 ease-lab ${
+                    isActive ? "w-7 bg-signal" : "w-3.5 bg-surface group-hover:w-5 group-hover:bg-sticker"
                   }`}
                 />
               </a>

@@ -22,7 +22,7 @@ export function ProjectSignalPlate({
   const path = routes[project.index as keyof typeof routes] ?? routes["01"];
   return (
     <div
-      className={`project-signal-field coordinate-corner relative overflow-hidden border border-line bg-surface ${compact ? "min-h-40" : "min-h-64"}`}
+      className={`project-signal-field coordinate-corner relative overflow-hidden border-[3px] border-ink bg-surface shadow-[var(--shadow-card)] ${compact ? "min-h-40" : "min-h-64"}`}
       role="img"
       aria-label={`${t.indexVisual} / ${project.shortTitle} — ${t.notEvidence}`}
     >
@@ -32,10 +32,10 @@ export function ProjectSignalPlate({
           <circle key={x} cx={x} cy={index % 2 === 0 ? 66 : 104} r={index === 4 ? 5 : 3} className={index === 4 ? "project-signal-node-active" : "project-signal-node"} />
         ))}
       </svg>
-      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 border-t border-line bg-bg/88 px-4 py-3 backdrop-blur-sm md:px-5">
+      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 border-t-[3px] border-ink bg-surface px-4 py-3 md:px-5">
         <div>
-          <Meta className="text-signal">Field / {project.index}</Meta>
-          <p className="mt-1 text-xs font-medium text-ink">{project.shortTitle}</p>
+          <span className="sticker sticker--ink">Field / {project.index}</span>
+          <p className="mt-2 text-xs font-bold text-ink">{project.shortTitle}</p>
         </div>
         <Meta className="text-right text-ink-secondary">{t.indexVisual}<br />{t.notEvidence}</Meta>
       </div>

@@ -49,11 +49,11 @@ export async function generateMetadata({
 
 function SectionBlock({ id, no, title, children }: { id: string; no: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="scroll-mt-28 border-t border-line py-12 md:py-16">
-      <div className="grid gap-7 md:grid-cols-[150px_1fr]">
+    <section id={id} className="scroll-mt-28 border-t-[3px] border-ink py-12 md:py-16">
+      <div className="grid gap-7 md:grid-cols-[190px_1fr]">
         <div>
         <Meta className="text-signal">{no}</Meta>
-        <H2 className="mt-4 !text-3xl md:!text-3xl">{title}</H2>
+        <H2 className="mt-4 !text-2xl leading-[0.95] md:!text-3xl">{title}</H2>
         </div>
         <div>{children}</div>
       </div>

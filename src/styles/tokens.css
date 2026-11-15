@@ -1,34 +1,48 @@
 /* Design tokens — 唯一色彩/版式来源，组件内禁止散落随机 hex。
-   详见 docs/DECISIONS_LOCKED.md */
+   详见 docs/DECISIONS_LOCKED.md V3.0（Neubrutalism 视觉覆盖）。
+
+   野兽派的四条硬规则：
+   1. 零圆角。没有 16/24/999，所有角是直角。
+   2. 边框是结构，不是装饰。完整边框 3px 纯黑，分隔线 2px 纯黑。
+   3. 阴影无模糊。硬偏移块阴影（x y 0），永远不用半透明弥散阴影。
+   4. 颜色是信号，不是渐变。米白纸 / 纯黑结构 / 橙（主）/ 电蓝（链接）/ 亮黄（标签）。 */
 
 :root {
-  --bg: #f6f7f5;
-  --bg-deep: #e2e5e3;
+  --bg: #fbf7ec;
+  --bg-deep: #ece4d2;
   --surface: #ffffff;
-  --surface-muted: #eef0ef;
-  --ink: #0d1b2a;
-  --ink-secondary: #52606d;
-  --brand: #153e75;
-  --accent: #153e75;
-  --steel: #8f97a2;
-  --signal: #e66a21;
-  --signal-ink: #b84a0b;
-  --line: rgba(13, 27, 42, 0.13);
+  --surface-muted: #f1e9d8;
+  --ink: #0a0a0a;
+  --ink-secondary: #242424;
+  --brand: #0a0a0a;
+  --accent: #2a2aff;
+  --steel: #6f6a5f;
+  --signal: #ff4d00;
+  --signal-ink: #c93a00;
+  --sticker: #ffd60a;
+  --line: #0a0a0a;
 
-  --radius-card: 16px;
-  --radius-media: 24px;
-  --radius-pill: 999px;
+  /* 结构：完整边框 3px，分隔线 2px */
+  --bw: 3px;
+  --bw-thin: 2px;
+  --hairline: 2px;
+
+  --radius-card: 0px;
+  --radius-media: 0px;
+  --radius-pill: 0px;
 
   --max-content: 1296px;
   --page-gutter: clamp(20px, 5vw, 72px);
   --section-space: clamp(64px, 8vw, 96px);
-  --hairline: 1px;
 
-  --shadow-card: 0 18px 50px rgba(21, 62, 117, 0.06);
-  --shadow-media: 0 34px 80px rgba(21, 62, 117, 0.11);
+  /* 硬阴影：x y 0，无模糊、无颜色透明 */
+  --shadow-sm: 3px 3px 0 var(--ink);
+  --shadow-card: 6px 6px 0 var(--ink);
+  --shadow-media: 10px 10px 0 var(--ink);
+  --shadow-lift: 9px 9px 0 var(--ink);
 
-  /* 动效：全站唯一缓动曲线，禁止组件内另写 cubic-bezier */
-  --lab-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-ui: 300ms;
-  --duration-move: 500ms;
+  /* 动效：全站唯一缓动曲线，硬切入，禁止组件内另写 cubic-bezier */
+  --lab-ease: cubic-bezier(0.2, 0, 0, 1);
+  --duration-ui: 140ms;
+  --duration-move: 220ms;
 }

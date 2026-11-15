@@ -1,7 +1,7 @@
 import "./globals.css";
-import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import type { Metadata } from "next";
+import { archivoBlack, spaceGrotesk } from "@/lib/fonts";
 import { localeMeta, locales, localePath } from "@/i18n/config";
 
 export const metadata: Metadata = {
@@ -18,25 +18,33 @@ export const metadata: Metadata = {
  */
 export default function GlobalNotFound() {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html
+      lang="en"
+      className={`${spaceGrotesk.variable} ${archivoBlack.variable} ${GeistMono.variable}`}
+    >
       <body className="bg-bg text-ink font-sans antialiased">
-        <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col items-start justify-center gap-8 px-6 py-24">
-          <p className="font-mono text-xs tracking-[0.22em] text-ink-secondary uppercase">
-            Error 404
+        <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-start justify-center gap-7 px-6 py-24">
+          <span className="sticker sticker--signal">Error 404</span>
+          <p
+            className="font-display leading-[0.78] tracking-[-0.05em]"
+            style={{ fontSize: "clamp(96px, 20vw, 200px)" }}
+            aria-hidden
+          >
+            404
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-balance md:text-5xl">
+          <h1 className="font-display text-3xl leading-[0.95] tracking-[-0.03em] text-balance md:text-5xl">
             This page does not exist.
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-ink-secondary">
+          <p className="max-w-xl border-l-[3px] border-ink pl-4 text-base leading-relaxed text-ink-secondary">
             The address may be outdated, or the page has moved. Try one of the
             language roots below.
           </p>
-          <nav className="flex flex-wrap gap-3">
+          <nav className="mt-2 flex flex-wrap gap-3">
             {locales.map((locale) => (
               <a
                 key={locale}
                 href={localePath(locale, "/")}
-                className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-brand hover:text-brand"
+                className="brut-lift inline-flex min-h-12 items-center border-[3px] border-ink bg-surface px-5 font-mono text-xs font-bold uppercase tracking-[0.1em] text-ink shadow-[var(--shadow-card)]"
               >
                 {localeMeta[locale].label}
               </a>

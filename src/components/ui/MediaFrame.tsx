@@ -27,7 +27,7 @@ export function MediaFrame({
   aspect?: Aspect;
   caption?: string | null;
   preload?: boolean;
-  /** 重点媒体卡：24px 圆角 */
+  /** 重点媒体卡：更大的硬阴影，圆角仍为 0 */
   large?: boolean;
   fit?: "cover" | "contain";
   pendingLabel?: string;
@@ -36,7 +36,7 @@ export function MediaFrame({
   transitionName?: string;
 }) {
   const resolvedPendingLabel = pendingLabel ?? getDictionary(locale).media.pendingLabel;
-  const radius = large ? "rounded-[24px]" : "rounded-[16px]";
+  const shadow = large ? "shadow-[var(--shadow-media)]" : "shadow-[var(--shadow-card)]";
   const resolvedAspect = aspect ?? media?.aspectRatio ?? "16/9";
   const resolvedFit = fit ?? (media && media.height > media.width ? "contain" : "cover");
   const fitClass = resolvedFit === "contain" ? "object-contain" : "object-cover";
@@ -44,7 +44,7 @@ export function MediaFrame({
   const frame = (
     <figure className={className}>
       <div
-        className={`relative w-full overflow-hidden border border-line bg-surface ${radius}`}
+        className={`relative w-full overflow-hidden border-[3px] border-ink bg-surface ${shadow}`}
         style={{ aspectRatio: resolvedAspect }}
       >
         {media?.src ? (
@@ -70,8 +70,8 @@ export function MediaFrame({
         )}
       </div>
       {resolvedCaption ? (
-        <figcaption className="mt-3">
-          <Meta className="normal-case tracking-normal text-ink-secondary">{resolvedCaption}</Meta>
+        <figcaption className="mt-3 border-l-[3px] border-ink pl-3">
+          <Meta className="normal-case tracking-[0.04em] text-ink-secondary">{resolvedCaption}</Meta>
         </figcaption>
       ) : null}
     </figure>

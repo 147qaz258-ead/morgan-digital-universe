@@ -3,6 +3,7 @@
 
 @theme inline {
   --color-bg: var(--bg);
+  --color-bg-deep: var(--bg-deep);
   --color-surface: var(--surface);
   --color-surface-muted: var(--surface-muted);
   --color-ink: var(--ink);
@@ -11,9 +12,11 @@
   --color-accent: var(--accent);
   --color-signal: var(--signal-ink);
   --color-signal-bright: var(--signal);
+  --color-sticker: var(--sticker);
   --color-line: var(--line);
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-archivo), "Arial Black", Impact, "PingFang SC", "Microsoft YaHei", sans-serif;
 
   /* 类型阶梯：Tailwind 默认档位 + 两个项目必需档（微标签 / 流体大标题）。
      站点内禁止再出现 text-[19px] 这类任意字号。 */
@@ -33,11 +36,35 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
+  /* Space Grotesk 的斜体轴缺失，禁止浏览器伪斜体 */
+  font-synthesis-style: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-h1, h2, h3 {
+/* 标题字体：只有 h1/h2 上 Archivo Black。h3 级别用正文粗体，
+   否则 300 字重的 Archivo 在 18–24px 会显得笨重。 */
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+/* 中文由系统字体兜底（Archivo Black / Space Grotesk 无中文字形）。
+   中文标题必须显式加粗，并把行高从 0.9 拉回 1.04：
+   0.88 的英文行高会让中文两行粘在一起。 */
+html[lang="zh-CN"] h1,
+html[lang="zh-CN"] h2,
+html[lang="zh-CN"] .font-display {
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+h1,
+h2,
+h3 {
   text-wrap: balance;
 }
 
@@ -51,23 +78,104 @@ p {
   z-index: 1;
   touch-action: pan-y;
   cursor: grab;
+  background: var(--surface);
 }
 
 .signal-webgl:active { cursor: grabbing; }
 .signal-webgl canvas { display: block; width: 100%; height: 100%; }
 
+/* ------------------------------------------------------------------ *
+ * 野兽派工具层
+ * 这些类是「结构语言」的唯一出口：粗边、硬阴影、贴纸标签。
+ * 组件里不要另写 border-radius / box-shadow。
+ * ------------------------------------------------------------------ */
+
+.brut-box {
+  border: var(--bw) solid var(--ink);
+  background: var(--surface);
+}
+
+.brut-card {
+  border: var(--bw) solid var(--ink);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.brut-lift {
+  transition:
+    transform var(--duration-ui) var(--lab-ease),
+    box-shadow var(--duration-ui) var(--lab-ease),
+    background-color var(--duration-ui) var(--lab-ease),
+    color var(--duration-ui) var(--lab-ease);
+}
+
+.brut-lift:hover,
+.brut-lift:focus-visible {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-lift);
+}
+
+.brut-lift:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.sticker {
+  display: inline-flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.55rem;
+  border: var(--bw-thin) solid var(--ink);
+  background: var(--sticker);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.sticker--signal {
+  background: var(--signal);
+  color: var(--ink);
+}
+
+.sticker--ink {
+  background: var(--ink);
+  color: var(--sticker);
+}
+
+.sticker--paper {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* 坐标纸：只在 hero / 空状态这类大面积留白里使用 */
+.grid-paper {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--ink) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--ink) 12%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
 @layer components {
   .heading-1 {
-    @apply text-5xl font-semibold leading-none tracking-tighter text-balance md:text-6xl lg:text-7xl;
+    @apply font-display text-5xl leading-[0.88] tracking-[-0.03em] text-balance md:text-6xl lg:text-7xl;
   }
   .heading-2 {
-    @apply text-3xl font-semibold leading-tight tracking-tight text-balance md:text-5xl;
+    @apply font-display text-3xl leading-[0.92] tracking-[-0.025em] text-balance md:text-5xl;
   }
   .heading-3 {
-    @apply text-2xl font-semibold leading-tight tracking-tight text-balance md:text-3xl;
+    @apply text-2xl font-bold leading-[1.05] tracking-tight text-balance md:text-3xl;
   }
   .title-4 {
-    @apply text-sm font-medium;
+    @apply text-sm font-bold;
   }
   .body-3 {
     @apply text-base font-normal leading-relaxed text-pretty;
@@ -76,10 +184,37 @@ p {
     @apply text-sm font-normal leading-relaxed text-pretty;
   }
   .button-md {
-    @apply text-base font-semibold;
+    @apply text-base font-bold;
   }
   .caption-4 {
     @apply text-xs font-medium leading-relaxed;
+  }
+}
+
+/* 边框宽度统一：完整边框 3px，分隔线 2px。
+   全站 85 处 border-line 靠这条规则一次性升级，组件里不用逐行改宽度。 */
+@layer utilities {
+  .border.border-line { border-width: var(--bw); }
+  .border-t.border-line { border-top-width: var(--bw-thin); }
+  .border-b.border-line { border-bottom-width: var(--bw-thin); }
+  .border-y.border-line { border-top-width: var(--bw-thin); border-bottom-width: var(--bw-thin); }
+  .border-l.border-line { border-left-width: var(--bw-thin); }
+  .border-r.border-line { border-right-width: var(--bw-thin); }
+
+  /* 圆角一律归零。兜底所有 rounded-* 档位，防止旧组件漏网。 */
+  .rounded-none,
+  .rounded-sm,
+  .rounded,
+  .rounded-md,
+  .rounded-lg,
+  .rounded-xl,
+  .rounded-2xl,
+  .rounded-3xl,
+  .rounded-full,
+  .rounded-\[8px\],
+  .rounded-\[16px\],
+  .rounded-\[24px\] {
+    border-radius: 0;
   }
 }
 
@@ -89,18 +224,17 @@ p {
 }
 
 .hero-media-enter {
-  animation: hero-media-enter 1100ms 280ms ease-out both;
+  animation: hero-media-enter 700ms 200ms var(--lab-ease) both;
 }
 
 a,
 button {
   -webkit-tap-highlight-color: transparent;
-  /* 全站唯一缓动曲线，见 tokens.css --lab-ease */
   transition-timing-function: var(--lab-ease);
 }
 
 .technical-rule {
-  border-top: 1px solid var(--line);
+  border-top: var(--bw-thin) solid var(--line);
 }
 
 .lab-page-shell {
@@ -111,23 +245,26 @@ button {
 
 .lab-section {
   padding-block: var(--section-space);
-  border-top: 1px solid var(--line);
+  border-top: var(--bw-thin) solid var(--line);
 }
 
 .lab-kicker {
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-size: 0.75rem;
   line-height: 1.333333;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
 
 .media-window {
   position: relative;
   overflow: hidden;
+  border: var(--bw) solid var(--line);
   border-radius: var(--radius-media);
   background: var(--surface-muted);
+  box-shadow: var(--shadow-media);
 }
 
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
@@ -139,8 +276,8 @@ button {
 }
 
 ::view-transition-group(.lab-media-morph) {
-  animation-duration: 560ms;
-  animation-timing-function: cubic-bezier(.22, 1, .36, 1);
+  animation-duration: 260ms;
+  animation-timing-function: cubic-bezier(.2, 0, 0, 1);
 }
 
 ::view-transition-image-pair(.lab-media-morph) {
@@ -154,63 +291,68 @@ button {
 }
 
 .project-signal-field {
+  background-color: var(--surface-muted);
   background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px),
-    radial-gradient(circle at 78% 24%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 35%);
-  background-size: 38px 38px, 38px 38px, 100% 100%;
+    linear-gradient(color-mix(in srgb, var(--ink) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 22%, transparent) 1px, transparent 1px);
+  background-size: 38px 38px, 38px 38px;
 }
 
 .project-signal-route {
   fill: none;
-  stroke: var(--brand);
-  stroke-width: 1.5;
+  stroke: var(--ink);
+  stroke-width: 3;
   vector-effect: non-scaling-stroke;
 }
 
 .project-signal-node {
-  fill: var(--accent);
+  fill: var(--ink);
 }
 
 .project-signal-node-active {
   fill: var(--signal);
+  stroke: var(--ink);
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
 }
 
+/* 四角对位标：从 1px 细线改成 3px 黑块角 */
 .coordinate-corner::before,
 .coordinate-corner::after {
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   pointer-events: none;
   content: "";
+  z-index: 2;
 }
 
 .coordinate-corner::before {
-  top: -1px;
-  left: -1px;
-  border-top: 1px solid var(--signal);
-  border-left: 1px solid var(--signal);
+  top: 0;
+  left: 0;
+  border-top: var(--bw) solid var(--ink);
+  border-left: var(--bw) solid var(--ink);
 }
 
 .coordinate-corner::after {
-  right: -1px;
-  bottom: -1px;
-  border-right: 1px solid var(--signal);
-  border-bottom: 1px solid var(--signal);
+  right: 0;
+  bottom: 0;
+  border-right: var(--bw) solid var(--ink);
+  border-bottom: var(--bw) solid var(--ink);
 }
 
 ::selection {
-  background: var(--brand);
-  color: #fff;
+  background: var(--sticker);
+  color: var(--ink);
 }
 
-/* 焦点环：深蓝 outline 负责浅色底，外圈近白晕负责深色影片/照片底。
-   首页 hero 与卡片叠在视频上有 7 个可聚焦元素，单靠 --accent 在深色上对比不足。 */
+/* 焦点环：3px 黑 outline + 黄底圈，取代旧的柔和蓝色光晕。
+   首页 hero 与卡片叠在深色照片上时，黄色比深蓝更容易看见。 */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: var(--bw) solid var(--ink);
   outline-offset: 2px;
-  border-radius: 4px;
-  box-shadow: 0 0 0 5px rgba(246, 247, 245, 0.92);
+  border-radius: 0;
+  box-shadow: 0 0 0 6px var(--sticker);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -244,9 +386,13 @@ button {
     display: block !important;
   }
 
-  /* 关闭动效后没有滚动影片，容器不再需要 640svh 的高度，
-     否则会在第一节之前留下几屏空白。 */
   [data-home-film] {
     height: auto !important;
+  }
+
+  .brut-lift:hover,
+  .brut-lift:focus-visible,
+  .brut-lift:active {
+    transform: none;
   }
 }

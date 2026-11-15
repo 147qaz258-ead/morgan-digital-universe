@@ -1,5 +1,5 @@
-import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import { archivoBlack, spaceGrotesk } from "@/lib/fonts";
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import "../globals.css";
@@ -83,7 +83,7 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang={localeMeta[locale].htmlLang} data-scroll-behavior="smooth" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang={localeMeta[locale].htmlLang} data-scroll-behavior="smooth" className={`${spaceGrotesk.variable} ${archivoBlack.variable} ${GeistMono.variable}`}>
       <body>
         <script
           type="application/ld+json"
@@ -91,7 +91,7 @@ export default async function RootLayout({
         />
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-ink focus:px-4 focus:py-2 focus:text-surface"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:border-[3px] focus:border-ink focus:bg-sticker focus:px-4 focus:py-2 focus:text-ink"
         >
           {t.skipToContent}
         </a>

@@ -108,48 +108,70 @@ export function Nav({ locale }: { locale: Locale }) {
   }, [open]);
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-4 z-50 px-3 md:px-8 lg:px-[var(--page-gutter)]">
-      <div className={`pointer-events-auto relative z-50 mx-auto flex min-h-16 w-full max-w-[1296px] items-center justify-between gap-3 rounded-2xl border border-line bg-bg/95 px-4 backdrop-blur-xl transition-transform duration-500 ease-lab md:px-6 ${compact && !open ? "-translate-y-1" : "translate-y-0"}`}>
-        <Link href={homePath} onClick={() => setOpen(false)} className="group flex min-h-11 items-center gap-3 font-mono text-xs font-semibold tracking-[0.08em] text-ink">
-          <span className="flex h-6 w-6 items-center justify-center bg-ink text-surface" aria-hidden><span className="h-2 w-2 bg-signal-bright transition-transform duration-500 ease-lab group-hover:rotate-45" /></span>
-          <span className="hidden sm:inline">{t.brandFull}</span>
-          <span className="sm:hidden">{t.brandShort}</span>
-        </Link>
-
-        <nav aria-label={t.primaryAria} className="hidden items-center gap-5 xl:flex">
-          {site.nav.map((item) => <Link key={item.href} href={isHome && item.anchor ? `#${item.anchor}` : routeHref(item)} aria-current={isActive(item) ? "true" : undefined} className={`inline-flex min-h-11 items-center text-xs font-medium transition-colors duration-300 ease-lab hover:text-signal ${isActive(item) ? "text-signal" : "text-ink-secondary"}`}>{item.label}</Link>)}
-        </nav>
-
-        <div className="flex items-center gap-2 md:gap-4">
-          <LocaleSwitch locale={locale} />
-          <button
-            ref={triggerRef}
-            type="button"
-            className="flex min-h-11 items-center gap-3 border-l border-ink/20 pl-4 font-mono text-2xs uppercase tracking-[0.14em] text-ink transition-colors duration-300 ease-lab hover:text-signal active:translate-y-px xl:hidden"
-            aria-expanded={open}
-            aria-controls="site-index"
-            aria-label={open ? t.menuClose : t.menuOpen}
-            onClick={() => setOpen((value) => !value)}
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+      <div className="pointer-events-auto relative z-50 border-b-[3px] border-ink bg-bg">
+        <div className={`mx-auto flex w-full max-w-[1440px] items-center justify-between gap-3 px-4 transition-[min-height] duration-150 ease-lab md:px-8 lg:px-[var(--page-gutter)] ${compact && !open ? "min-h-14" : "min-h-16"}`}>
+          <Link
+            href={homePath}
+            onClick={() => setOpen(false)}
+            className="group flex min-h-11 items-center gap-3 font-mono text-xs font-bold uppercase tracking-[0.1em] text-ink"
           >
-            <span className="hidden sm:inline">{t.indexLabel} {String(rank.index).padStart(2, "0")} / {String(rank.total).padStart(2, "0")}</span>
-            <span className="sm:hidden">{t.indexLabel}</span>
-            <span className="relative flex h-4 w-4 items-center justify-center" aria-hidden>
-              <Menu size={16} className={`absolute transition-[opacity,transform] duration-300 ease-lab ${open ? "rotate-90 scale-75 opacity-0" : "rotate-0 scale-100 opacity-100"}`} />
-              <X size={16} className={`absolute transition-[opacity,transform] duration-300 ease-lab ${open ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-75 opacity-0"}`} />
+            <span className="flex h-7 items-center gap-1 border-[3px] border-ink bg-ink px-1.5" aria-hidden>
+              <span className="h-3 w-3 bg-signal transition-transform duration-150 ease-lab group-hover:rotate-45" />
+              <span className="h-3 w-3 bg-sticker" />
             </span>
-          </button>
+            <span className="hidden sm:inline">{t.brandFull}</span>
+            <span className="sm:hidden">{t.brandShort}</span>
+          </Link>
+
+          <nav aria-label={t.primaryAria} className="hidden items-center gap-1 xl:flex">
+            {site.nav.map((item) => (
+              <Link
+                key={item.href}
+                href={isHome && item.anchor ? `#${item.anchor}` : routeHref(item)}
+                aria-current={isActive(item) ? "true" : undefined}
+                className={`inline-flex min-h-11 items-center border-[2px] px-2.5 font-mono text-2xs font-bold uppercase tracking-[0.1em] transition-colors duration-150 ease-lab ${
+                  isActive(item)
+                    ? "border-ink bg-ink text-sticker"
+                    : "border-transparent text-ink hover:border-ink hover:bg-sticker"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2 md:gap-3">
+            <LocaleSwitch locale={locale} />
+            <button
+              ref={triggerRef}
+              type="button"
+              className="brut-lift flex min-h-11 items-center gap-3 border-[3px] border-ink bg-surface px-3 font-mono text-2xs font-bold uppercase tracking-[0.12em] text-ink shadow-[var(--shadow-sm)] hover:bg-sticker xl:hidden"
+              aria-expanded={open}
+              aria-controls="site-index"
+              aria-label={open ? t.menuClose : t.menuOpen}
+              onClick={() => setOpen((value) => !value)}
+            >
+              <span className="hidden sm:inline">{t.indexLabel} {String(rank.index).padStart(2, "0")} / {String(rank.total).padStart(2, "0")}</span>
+              <span className="sm:hidden">{t.indexLabel}</span>
+              <span className="relative flex h-4 w-4 items-center justify-center" aria-hidden>
+                <Menu size={16} className={`absolute transition-[opacity,transform] duration-150 ease-lab ${open ? "rotate-90 scale-75 opacity-0" : "rotate-0 scale-100 opacity-100"}`} />
+                <X size={16} className={`absolute transition-[opacity,transform] duration-150 ease-lab ${open ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-75 opacity-0"}`} />
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
       {open ? (
-        <div ref={panelRef} id="site-index" role="dialog" aria-modal="true" aria-label={t.siteIndexAria} className="pointer-events-auto fixed inset-0 z-40 overflow-y-auto bg-bg pt-20">
-          <nav aria-label={t.primaryAria} className="mx-auto grid min-h-[calc(100svh-5rem)] w-full max-w-[1440px] gap-10 px-5 pb-10 md:grid-cols-12 md:px-8 lg:px-[var(--page-gutter)]">
+        <div ref={panelRef} id="site-index" role="dialog" aria-modal="true" aria-label={t.siteIndexAria} className="pointer-events-auto fixed inset-0 z-40 overflow-y-auto bg-bg pt-16">
+          <nav aria-label={t.primaryAria} className="mx-auto grid min-h-[calc(100svh-4rem)] w-full max-w-[1440px] gap-10 px-5 pb-10 md:grid-cols-12 md:px-8 lg:px-[var(--page-gutter)]">
             <div className="md:col-span-3">
-              <p className="font-mono text-2xs uppercase tracking-[0.16em] text-signal">{t.panelTitle}</p>
+              <p className="sticker sticker--signal">{t.panelTitle}</p>
               <p className="mt-5 max-w-52 text-sm leading-relaxed text-ink-secondary">{t.panelBody}</p>
               <p className="mt-10 font-mono text-2xs uppercase tracking-[0.14em] text-ink-secondary">{t.panelHint}</p>
             </div>
-            <div className="border-t border-line md:col-span-8 md:col-start-5">
+            <div className="md:col-span-8 md:col-start-5">
               {site.nav.map((item, index) => {
                 const anchorHref = isHome && item.anchor ? `#${item.anchor}` : null;
                 const href = anchorHref ?? routeHref(item);
@@ -175,10 +197,10 @@ export function Nav({ locale }: { locale: Locale }) {
                       setOpen(false);
                     }}
                     aria-current={isActive(item) ? "true" : undefined}
-                    className="group grid grid-cols-[44px_1fr_auto] items-center gap-4 border-b border-line py-5 md:py-6"
+                    className="group grid grid-cols-[44px_1fr_auto] items-center gap-4 border-b-[2px] border-ink py-4 transition-colors duration-150 ease-lab hover:bg-sticker md:py-5"
                   >
-                    <span className="font-mono text-2xs tracking-[0.12em] text-signal">{String(index + 1).padStart(2, "0")}</span>
-                    <span className={`text-3xl font-semibold tracking-tight transition-transform duration-300 ease-lab group-hover:translate-x-2 md:text-4xl ${isActive(item) ? "text-ink" : "text-ink-secondary"}`}>{item.label}</span>
+                    <span className="sticker sticker--ink grid h-9 w-11 place-items-center justify-self-start p-0">{String(index + 1).padStart(2, "0")}</span>
+                    <span className={`font-display text-2xl leading-none tracking-[-0.03em] transition-transform duration-150 ease-lab group-hover:translate-x-2 md:text-4xl ${isActive(item) ? "text-signal-ink" : "text-ink"}`}>{item.label}</span>
                     <span className="font-mono text-2xs uppercase tracking-[0.12em] text-ink-secondary">{t.open}</span>
                   </Link>
                 );

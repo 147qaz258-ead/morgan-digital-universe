@@ -1,7 +1,8 @@
 import type { OriginStage } from "@/content/types";
 import { visualTokens } from "@/lib/visual-tokens";
 
-/** 每阶段的抽象 DOM/SVG 视觉（氛围图形，不冒充真实证据）。 */
+/** 每阶段的抽象 DOM/SVG 视觉（氛围图形，不冒充真实证据）。
+ *  V3.0：线宽 3px、纯黑描边，与页面边框同一套结构语言。 */
 export function StageVisual({ type }: { type: OriginStage["visualType"] }) {
   const stroke = visualTokens.brand;
   const accent = visualTokens.accent;
@@ -16,7 +17,7 @@ export function StageVisual({ type }: { type: OriginStage["visualType"] }) {
         {Array.from({ length: 4 }).map((_, i) => (
           <line key={`h${i}`} x1="10" y1={20 + i * 27} x2="190" y2={20 + i * 27} stroke={stroke} strokeOpacity="0.25" />
         ))}
-        <rect x="47" y="47" width="54" height="27" fill="none" stroke={accent} strokeWidth="1.5" />
+        <rect x="47" y="47" width="54" height="27" fill="none" stroke={accent} strokeWidth="3" />
         <circle cx="155" cy="33" r="4" fill={signal} />
       </svg>
     );
@@ -38,8 +39,8 @@ export function StageVisual({ type }: { type: OriginStage["visualType"] }) {
   if (type === "hardware") {
     return (
       <svg viewBox="0 0 200 120" className="h-full w-full" aria-hidden>
-        <rect x="60" y="30" width="80" height="60" fill="none" stroke={stroke} strokeWidth="1.5" />
-        <rect x="82" y="48" width="36" height="24" fill="none" stroke={accent} strokeWidth="1.5" />
+        <rect x="60" y="30" width="80" height="60" fill="none" stroke={stroke} strokeWidth="3" />
+        <rect x="82" y="48" width="36" height="24" fill="none" stroke={accent} strokeWidth="3" />
         {Array.from({ length: 6 }).map((_, i) => (
           <line key={`l${i}`} x1={40} y1={38 + i * 9} x2={60} y2={38 + i * 9} stroke={stroke} strokeOpacity="0.6" />
         ))}
@@ -52,8 +53,8 @@ export function StageVisual({ type }: { type: OriginStage["visualType"] }) {
   }
   return (
     <svg viewBox="0 0 200 120" className="h-full w-full" aria-hidden>
-      <path d="M30 100 L70 60 L100 75 L140 35" fill="none" stroke={stroke} strokeWidth="1.5" />
-      <circle cx="70" cy="60" r="5" fill="none" stroke={accent} strokeWidth="1.5" />
+      <path d="M30 100 L70 60 L100 75 L140 35" fill="none" stroke={stroke} strokeWidth="3" />
+      <circle cx="70" cy="60" r="5" fill="none" stroke={accent} strokeWidth="3" />
       <circle cx="140" cy="35" r="5" fill={signal} />
       <path d="M140 35 l14 -10 M140 35 l3 17" stroke={stroke} strokeOpacity="0.6" />
       <ellipse cx="100" cy="105" rx="60" ry="5" stroke={stroke} strokeOpacity="0.2" fill="none" />

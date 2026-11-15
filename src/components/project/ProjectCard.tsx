@@ -56,7 +56,7 @@ export function FeaturedProjectCard({ locale, project }: { locale: Locale; proje
         <Link
           href={localePath(locale, `/experiments/${project.slug}`)}
           transitionTypes={["project-forward"]}
-          className="mt-8 inline-flex items-center gap-2 border-b border-accent/30 pb-1 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-accent transition-colors duration-300 ease-lab hover:border-accent"
+          className="mt-8 inline-flex items-center gap-2 border-b-[3px] border-accent pb-1 font-mono text-xs font-bold uppercase tracking-[0.1em] text-accent transition-colors duration-150 ease-lab hover:bg-sticker hover:text-ink"
         >
           {t.experiments.openCase}
           <ArrowRight size={15} aria-hidden />
@@ -72,7 +72,7 @@ export function ArchiveProjectRow({ locale, project }: { locale: Locale; project
   return (
     <Link
       href={localePath(locale, `/experiments/${project.slug}`)}
-      className="group grid min-w-0 gap-5 border-b border-line py-6 transition-colors duration-300 ease-lab hover:bg-surface/60 md:grid-cols-[140px_minmax(0,1fr)] md:items-center md:gap-6 md:px-4"
+      className="group grid min-w-0 gap-5 border-b-[2px] border-ink py-6 transition-colors duration-150 ease-lab hover:bg-sticker md:grid-cols-[140px_minmax(0,1fr)] md:items-center md:gap-6 md:px-4"
     >
       {project.media.hero ? (
         <MediaFrame
